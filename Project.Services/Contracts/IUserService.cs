@@ -12,6 +12,6 @@ namespace Project.Services.Contracts
 
         Task<IList<string>> GetAllRolesThatUserBelongsToAsync(User user);
 
-        Task<bool> LogoutUserAsync();
+        Task LogoutUserAsync();
     }
 }

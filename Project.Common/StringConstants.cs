@@ -8,9 +8,10 @@
         //Error messages
         public const string WrongUsernameOrPasswordErrorMessage = "Wrong Username or Password";
 
-        //Action names stirng representation
+        //Action names string representation
         public const string ActionNameIndex = "Index";
         public const string ActionNameLogin = "Login";
+        public const string ActionNameLogout = "Logout";
 
         //Controller names string representation
         public const string HomeControllerName = "Home";

@@ -54,5 +54,10 @@ namespace Project.Controllers
             }
             throw new NotImplementedException(); //If we are to reach this point, some unauthorised routing is used, hence an error is thrown and the user should be redirected to a generic error page
         }
+
+        public IActionResult Logout() {
+            this.userService.LogoutUserAsync();
+            return this.RedirectToAction(StringConstants.ActionNameIndex, StringConstants.HomeControllerName);
+        }
     }
 }

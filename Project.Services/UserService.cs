@@ -31,9 +31,8 @@ namespace Project.Services
             return rolesThatUserBelongTo;
         }
 
-        public async Task<bool> LogoutUserAsync() {
+        public async Task LogoutUserAsync() {
             await this.signInManager.SignOutAsync();
-            return true;
         }
     }
 }

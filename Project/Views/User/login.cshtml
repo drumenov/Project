@@ -1,7 +1,7 @@
 ﻿@model LoginUserInputModel
 
 <section class="container mt-5 w-25">
-    <form method="post" asp-controller="users" asp-action="login">
+    <form method="post" asp-controller="@StringConstants.UserControllerName" asp-action="@StringConstants.ActionNameLogin">
         <div asp-validation-summary="ModelOnly"></div>
         <div class="form-group">
             <label asp-for="@Model.Username"></label>
@@ -14,7 +14,7 @@
             <span asp-validation-for="@Model.Password" class="text-danger"></span>
         </div>
         <div class="d-flex justify-content-end">
-            <input type="submit" class="btn btn-success" value="Login" />
+            <input type="submit" class="btn btn-success" value="@StringConstants.ActionNameLogin" />
         </div>
     </form>
 </section>
