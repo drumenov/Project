@@ -1,0 +1,27 @@
+﻿@model CreateCustomerInputModel
+    <section class="jumbotron w-50 mt-3">
+        <h3 class="text-center">Create a Customer</h3>
+        <form method="post" asp-action="create-customer" asp-controller="account" asp-area="administration">
+            <div class="form-group">
+                <label asp-for="@Model.CustomerName"></label>
+                <input asp-for="@Model.CustomerName" class="form-control" />
+                <span asp-validation-for="@Model.CustomerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Password"></label>
+                <input asp-for="@Model.Password" class="form-control" />
+                <span asp-validation-for="@Model.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.ConfirmPassword"></label>
+                <input asp-for="@Model.ConfirmPassword" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.IsCorporateClient" class="form-check-label"></label>
+                <input type="checkbox" asp-for="@Model.IsCorporateClient" value="Corporate" class="form-check-inline" />
+            </div>
+            <div class="d-flex justify-content-end">
+                <input type="submit" class="btn btn-primary" value="Create Client" />
+            </div>
+        </form>
+    </section>

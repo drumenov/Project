@@ -12,15 +12,16 @@
         public const string ActionNameIndex = "Index";
         public const string ActionNameLogin = "Login";
         public const string ActionNameLogout = "Logout";
+        public const string ActionNameCreateAdministrator = "create-admin";
 
         //Controller names string representation
         public const string HomeControllerName = "Home";
         public const string UserControllerName = "User";
 
         //Areas names stirng representation
-        public const string AriaNameAdministration = "Administration";
-        public const string AriaNameCustomer = "Customer";
-        public const string AriaNameTechnician = "Technician";
+        public const string AreaNameAdministration = "Administration";
+        public const string AreaNameCustomer = "Customer";
+        public const string AreaNameTechnician = "Technician";
 
         //User's roles names
         public const string AdminUserRole = "Admin";

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Models.Enums
+﻿namespace Project.Models.Enums
 {
     public enum Status
     {

@@ -1,4 +1,4 @@
-﻿using Models.Enums;
+﻿using Project.Models.Enums;
 
 namespace Project.Models.Entities
 {

@@ -1,4 +1,4 @@
-﻿using Models.Enums;
+﻿using Project.Models.Enums;
 using System.Collections.Generic;
 
 namespace Project.Models.Entities
