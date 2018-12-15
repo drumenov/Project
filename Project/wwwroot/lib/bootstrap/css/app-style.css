@@ -1,0 +1,4 @@
+﻿.validation-summary-errors>ul{
+    list-style: none;
+    color: red;
+}
