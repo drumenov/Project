@@ -24,7 +24,7 @@
         </div>
         <div class="form-group">
             <label asp-for="@Model.Level">Level of Expertise</label>
-            <select asp-items="@new SelectList(Enum.GetNames(typeof(TechnicianLevel)))" class="custom-select">
+            <select asp-items="@new SelectList(Enum.GetNames(typeof(TechnicianLevel)))" asp-for="@Model.Level" class="custom-select">
                 <option value="" selected disabled>Choose a Level of Expertise</option>
             </select>
         </div>

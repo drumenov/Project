@@ -47,7 +47,8 @@ namespace Project
 
             services.AddScoped<IUserService, UserService>();
             services.AddAutoMapper(config => {
-                config.CreateMap<CreateAdministratorInputModel, User>().ForMember(x => x.PasswordHash, y => y.Ignore());
+                config.CreateMap<CreateAdministratorInputModel, User>();
+                config.CreateMap<CreateCustomerInputModel, User>().ForMember(dest => dest.UserName, src => src.MapFrom(s => s.CustomerName));
             });
             services.AddAuthentication().AddCookie();
             services.AddMvc(options => {
@@ -59,6 +60,8 @@ namespace Project
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
+            } else {
+                app.UseExceptionHandler("/home/error");
             }
 
             app.UseHttpsRedirection();

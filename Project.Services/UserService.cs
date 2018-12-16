@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Project.Models.Entities;
 using Project.Services.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -38,8 +39,18 @@ namespace Project.Services
         }
 
         public async Task<bool> AddUserToRoleAsync(User user, string roleName) {
+            if (!await this.roleManager.RoleExistsAsync(roleName)) {
+                await this.CreateRole(roleName);
+            }
             IdentityResult result = await this.userManager.AddToRoleAsync(user, roleName);
             return result.Succeeded;
+        }
+
+        private async Task CreateRole(string roleName) {
+            IdentityResult result = await this.roleManager.CreateAsync(new AppRole { Name = roleName });
+            if (!result.Succeeded) {
+                throw new ApplicationException();
+            }
         }
     }
 }

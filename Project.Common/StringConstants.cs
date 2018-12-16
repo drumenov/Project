@@ -29,6 +29,7 @@
         //User's roles names
         public const string AdminUserRole = "Admin";
         public const string CustomerUserRole = "Customer";
+        public const string CorporateCustomerUserRole = "Corporate Customer";
         public const string TechnicianUserRole = "Technician";
 
         //Custom View names

@@ -8,8 +8,8 @@ namespace Project.Models.InputModels.Administration
         [Display(Name = "Client Name")]
         public string CustomerName { get; set; }
 
-        [Display(Name = "Is Corporate Client")]
-        public bool IsCorporateClient { get; set; }
+        [Display(Name = "Corporate Customer")]
+        public bool IsCorporateCustomer { get; set; }
 
         [Required]
         [UIHint(nameof(Password))]

@@ -37,8 +37,8 @@ namespace Project.Areas.Administration.Controllers
             if (!success) {
                 throw new ApplicationException();
             }
-            bool succeded = await this.userService.AddUserToRoleAsync(newAdminUser, StringConstants.AdminUserRole);
-            if (!succeded) {
+            success = await this.userService.AddUserToRoleAsync(newAdminUser, StringConstants.AdminUserRole);
+            if (!success) {
                 throw new ApplicationException();
             }
             return this.RedirectToAction(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new { area = StringConstants.AreaNameAdministration });
@@ -50,11 +50,24 @@ namespace Project.Areas.Administration.Controllers
 
         [HttpPost]
         [Route("/administration/[controller]/create-customer")]
-        public IActionResult CreateCustomer(CreateCustomerInputModel createCustomerInputModel) {
+        public async Task<IActionResult> CreateCustomer(CreateCustomerInputModel createCustomerInputModel) {
             if (!ModelState.IsValid) {
                 return this.View(StringConstants.CreateCustomerViewName, createCustomerInputModel);
             }
-            return null;
+            User newCustomer = this.mapper.Map<User>(createCustomerInputModel);
+            bool success = await this.userService.RegisterUserAsync(newCustomer, createCustomerInputModel.Password);
+            if (!success) {
+                throw new ApplicationException();
+            }
+            if (createCustomerInputModel.IsCorporateCustomer) {
+                success = await this.userService.AddUserToRoleAsync(newCustomer, StringConstants.CorporateCustomerUserRole);
+            } else {
+                success = await this.userService.AddUserToRoleAsync(newCustomer, StringConstants.CustomerUserRole);
+            }
+            if (!success) {
+                throw new ApplicationException();
+            }
+            return this.RedirectToAction(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new { area = StringConstants.AreaNameAdministration});
         }
 
         [HttpGet]
@@ -63,11 +76,20 @@ namespace Project.Areas.Administration.Controllers
 
         [HttpPost]
         [Route("/administration/[controller]/create-technician")]
-        public IActionResult CreateTechnician(CreateTechnicianInputModel createTechnicianInputModel) {
+        public async Task<IActionResult> CreateTechnician(CreateTechnicianInputModel createTechnicianInputModel) {
             if (!ModelState.IsValid) {
                 return this.View(StringConstants.CreateTechnicianViewName, createTechnicianInputModel);
             }
-            return null; //TODO: Proper handling of request required
+            User newTechnician = this.mapper.Map<User>(createTechnicianInputModel);
+            bool success = await this.userService.RegisterUserAsync(newTechnician, createTechnicianInputModel.Password);
+            if(!success) {
+                throw new ApplicationException();
+            }
+            success = await this.userService.AddUserToRoleAsync(newTechnician, StringConstants.TechnicianUserRole);
+            if (!success) {
+                throw new ApplicationException();
+            }
+            return this.RedirectToAction(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new { area = StringConstants.AreaNameAdministration });
         }
     }
 }
