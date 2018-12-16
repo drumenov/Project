@@ -4,8 +4,12 @@
     {
         //TempData keys
         public const string TempDataKeyHoldingUserRole = "UserRole";
-        public const string TempDataKeyHoldingNumberOfMaximumPages = "MaximumPages";
-        public const string TempDataKeyHoldingThePageNumber = "page";
+        public const string TempDataKeyHoldingNumberOfMaximumPagesForAdministrators = "MaximumPagesForAdministrators";
+        public const string TempDataKeyHoldingThePageNumberForAdministrators = "PageForAdministrators";
+        public const string TempDataKeyHoldingNumberOfMaximumPagesForCustomers = "MaximumPagesForCustomers";
+        public const string TempDataKeyHoldingThePageNumberForCustomers = "PageForCustomers";
+        public const string TempDataKeyHoldingNumberOfMaximumPagesForTechnicians = "MaximumPagesForTechnicians";
+        public const string TempDataKeyHoldingThePageNumberForTechnicians = "PageForTechnicians";
 
         //Error messages
         public const string WrongUsernameOrPasswordErrorMessage = "Wrong Username or Password";
@@ -40,6 +44,8 @@
         public const string CreateTechnicianViewName = "create-technician";
 
         //View Components names
-        public const string ViewComponentAdministrators = "Administrators";
+        public const string ViewComponentAdministratorsName = "Administrators";
+        public const string ViewComponentCustomersName = "Customers";
+        public const string ViewComponentTechniciansName = "Technicians";
     }
 }

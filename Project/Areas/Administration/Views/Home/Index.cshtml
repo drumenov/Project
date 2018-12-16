@@ -1,62 +1,193 @@
-﻿@{ 
-    int currentPage = (int)TempData[StringConstants.TempDataKeyHoldingThePageNumber];
-    int firstPageNumbertoDisplayInPagination = currentPage - IntegerConstants.NumberOfPagesOffset > 1 ? currentPage - IntegerConstants.NumberOfPagesOffset : 1;
+﻿@{
+    int currentPageForAdmins = (int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForAdministrators];
+    int firstPageNumberToDisplayInPaginationForAdministrators = currentPageForAdmins - IntegerConstants.NumberOfPagesOffset > 1
+        ? currentPageForAdmins - IntegerConstants.NumberOfPagesOffset
+        : 1;
+
+    int currentPageForCustomers = (int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForCustomers];
+    int firstPageNumberToDisplayInPaginationForCustomers = currentPageForCustomers - IntegerConstants.NumberOfPagesOffset > 1
+        ? currentPageForCustomers - IntegerConstants.NumberOfPagesOffset
+        : 1;
+
+    int currentPageForTechnicians = (int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians];
+    int firstPageNumberToDisplayInPaginationForTechnicians = currentPageForTechnicians - IntegerConstants.NumberOfPagesOffset > 1
+        ? currentPageForTechnicians - IntegerConstants.NumberOfPagesOffset
+        : 1;
 }
 
-<main>
-    <h1 class="mt-5 text-center">Hello Administrator - @User.Identity.Name</h1>
-    <section class="w-100 mt-5">
-        <div class="d-flex justify-content-around">
-            @await Component.InvokeAsync(StringConstants.ViewComponentAdministrators, new { page = TempData[StringConstants.TempDataKeyHoldingThePageNumber] })
-        </div>
 
-@{ 
-    int lastPageNumberToDisplayInPagination = currentPage + IntegerConstants.NumberOfPagesOffset < (int)TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPages] ? currentPage + IntegerConstants.NumberOfPagesOffset : (int)TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPages];
-}
+<h1 class="mt-5 text-center">Hello Administrator - @User.Identity.Name</h1>
+<div class="d-flex justify-content-around">
+    <section class="mt-5">
 
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
-                <li class="page-item @(currentPage - 1 < 1 ? "disabled" : String.Empty)">
-                    <a class="page-link"
-                       asp-action="@StringConstants.ActionNameIndex"
-                       asp-controller="@StringConstants.HomeControllerName"
-                       asp-area="@StringConstants.AreaNameAdministration"
-                       asp-route-page="@(currentPage - 1)">
-                        Previous
-                    </a>
-                </li>
-                @for (int pageNumber = firstPageNumbertoDisplayInPagination; pageNumber <= lastPageNumberToDisplayInPagination; pageNumber++) {
-                    <li class="page-item @(pageNumber == currentPage ? "active" : String.Empty)">
+        @await Component.InvokeAsync(StringConstants.ViewComponentAdministratorsName,
+       new { page = TempData[StringConstants.TempDataKeyHoldingThePageNumberForAdministrators] })
+        @if (TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPagesForAdministrators] != null) {
+
+
+            int lastPageNumberToDisplayInPaginationForAdministrators = currentPageForAdmins + IntegerConstants.NumberOfPagesOffset < (int)TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPagesForAdministrators]
+                ? currentPageForAdmins + IntegerConstants.NumberOfPagesOffset
+                : (int)TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPagesForAdministrators];
+
+
+            <nav aria-label="Admins page navigation">
+                <ul class="pagination">
+                    <li class="page-item @(currentPageForAdmins - 1 < 1 ? "disabled" : String.Empty)
+                    @(lastPageNumberToDisplayInPaginationForAdministrators == 0 ? "d-none" : String.Empty)">
                         <a class="page-link"
                            asp-action="@StringConstants.ActionNameIndex"
                            asp-controller="@StringConstants.HomeControllerName"
                            asp-area="@StringConstants.AreaNameAdministration"
-                           asp-route-page="@pageNumber">
-                            @pageNumber
+                           asp-route-adminsPage="@(currentPageForAdmins - 1)"
+                           asp-route-customersPage="@currentPageForCustomers"
+                           asp-route-techniciansPage="@currentPageForTechnicians">
+                            Previous
                         </a>
                     </li>
-                }
-                <li class="page-item @(currentPage + 1 > lastPageNumberToDisplayInPagination ? "disabled" : String.Empty)">
+                    @for (int pageNumber = firstPageNumberToDisplayInPaginationForAdministrators;
+                   pageNumber <= lastPageNumberToDisplayInPaginationForAdministrators;
+                   pageNumber++) {
+                <li class="page-item @(pageNumber == currentPageForAdmins ? "active" : String.Empty)">
                     <a class="page-link"
                        asp-action="@StringConstants.ActionNameIndex"
                        asp-controller="@StringConstants.HomeControllerName"
                        asp-area="@StringConstants.AreaNameAdministration"
-                       asp-route-page="@(currentPage + 1)">
-                       Next
+                       asp-route-adminsPage="@pageNumber"
+                       asp-route-customersPage="@currentPageForCustomers"
+                       asp-route-techniciansPage="@currentPageForTechnicians">
+                        @pageNumber
                     </a>
                 </li>
-            </ul>
-        </nav>
-
-
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" asp-action="index" asp-controller="home" asp-area="administration" asp-route-page="2">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
-        </nav>
+            }
+                    <li class="page-item
+                    @(currentPageForAdmins + 1 > lastPageNumberToDisplayInPaginationForAdministrators ? "disabled" : String.Empty)
+                    @(lastPageNumberToDisplayInPaginationForAdministrators == 0 ? "d-none" : String.Empty)">
+                        <a class="page-link"
+                           asp-action="@StringConstants.ActionNameIndex"
+                           asp-controller="@StringConstants.HomeControllerName"
+                           asp-area="@StringConstants.AreaNameAdministration"
+                           asp-route-adminsPage="@(currentPageForAdmins + 1)"
+                           asp-route-customersPage="@currentPageForCustomers"
+                           asp-route-techniciansPage="@currentPageForTechnicians">
+                            Next
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        }
     </section>
-</main>
+
+    <section>
+        @await Component.InvokeAsync(StringConstants.ViewComponentCustomersName,
+       new { page = TempData[StringConstants.TempDataKeyHoldingThePageNumberForCustomers] })
+        @if (TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPagesForCustomers] != null) {
+
+            int lastPageNumberToDisplayInPaginationForCustomers = currentPageForCustomers + IntegerConstants.NumberOfPagesOffset < (int)TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPagesForCustomers]
+                ? currentPageForCustomers + IntegerConstants.NumberOfPagesOffset
+                : (int)TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPagesForCustomers];
+
+
+            <nav aria-label="Customers page navigation">
+                <ul class="pagination">
+                    <li class="page-item @(currentPageForCustomers - 1 < 1 ? "disabled" : String.Empty)
+                    @(lastPageNumberToDisplayInPaginationForCustomers == 0 ? "d-none" : String.Empty)">
+                        <a class="page-link"
+                           asp-action="@StringConstants.ActionNameIndex"
+                           asp-controller="@StringConstants.HomeControllerName"
+                           asp-area="@StringConstants.AreaNameAdministration"
+                           asp-route-adminsPage="@currentPageForAdmins"
+                           asp-route-customersPage="@(currentPageForCustomers - 1)"
+                           asp-route-techniciansPage="@currentPageForTechnicians">
+                            Previous
+                        </a>
+                    </li>
+                    @for (int pageNumber = firstPageNumberToDisplayInPaginationForCustomers;
+                  pageNumber <= lastPageNumberToDisplayInPaginationForCustomers;
+                  pageNumber++) {
+                <li class="page-item @(pageNumber == currentPageForCustomers ? "active" : String.Empty)">
+                    <a class="page-link"
+                       asp-action="@StringConstants.ActionNameIndex"
+                       asp-controller="@StringConstants.HomeControllerName"
+                       asp-area="@StringConstants.AreaNameAdministration"
+                       asp-route-adminsPage="@currentPageForAdmins"
+                       asp-route-customersPage="@pageNumber"
+                       asp-route-techniciansPage="@currentPageForTechnicians">
+                        @pageNumber
+                    </a>
+                </li>
+            }
+                    <li class="page-item
+                    @(currentPageForCustomers + 1 > lastPageNumberToDisplayInPaginationForCustomers ? "disabled" : String.Empty)
+                    @(lastPageNumberToDisplayInPaginationForCustomers == 0 ? "d-none" : String.Empty)">
+                        <a class="page-link"
+                           asp-action="@StringConstants.ActionNameIndex"
+                           asp-controller="@StringConstants.HomeControllerName"
+                           asp-area="@StringConstants.AreaNameAdministration"
+                           asp-route-adminsPage="@currentPageForAdmins"
+                           asp-route-customersPage="@(currentPageForCustomers + 1)"
+                           asp-route-techniciansPage="@currentPageForTechnicians">
+                            Next
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        }
+    </section>
+
+    <section>
+        @await Component.InvokeAsync(StringConstants.ViewComponentTechniciansName,
+       new { page = TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians] })
+        @if (TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPagesForTechnicians] != null) {
+
+            int lastPageNumberToDisplayInPaginationForTechnicians = currentPageForTechnicians + IntegerConstants.NumberOfPagesOffset < (int)TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPagesForTechnicians]
+                ? currentPageForTechnicians + IntegerConstants.NumberOfPagesOffset
+                : (int)TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPagesForTechnicians];
+
+
+            <nav aria-label="Technicians page navigation">
+                <ul class="pagination">
+                    <li class="page-item @(currentPageForTechnicians - 1 < 1 ? "disabled" : String.Empty)
+                    @(lastPageNumberToDisplayInPaginationForTechnicians == 0 ? "d-none" : String.Empty)">
+                        <a class="page-link"
+                           asp-action="@StringConstants.ActionNameIndex"
+                           asp-controller="@StringConstants.HomeControllerName"
+                           asp-area="@StringConstants.AreaNameAdministration"
+                           asp-route-adminsPage="@currentPageForAdmins"
+                           asp-route-customersPage="@currentPageForCustomers"
+                           asp-route-techniciansPage="@(currentPageForTechnicians - 1)">
+                            Previous
+                        </a>
+                    </li>
+                    @for (int pageNumber = firstPageNumberToDisplayInPaginationForTechnicians;
+                 pageNumber <= lastPageNumberToDisplayInPaginationForTechnicians;
+                 pageNumber++) {
+                <li class="page-item @(pageNumber == currentPageForTechnicians ? "active" : String.Empty)">
+                    <a class="page-link"
+                       asp-action="@StringConstants.ActionNameIndex"
+                       asp-controller="@StringConstants.HomeControllerName"
+                       asp-area="@StringConstants.AreaNameAdministration"
+                       asp-route-adminsPage="@currentPageForAdmins"
+                       asp-route-customersPage="@currentPageForCustomers"
+                       asp-route-techniciansPage="@pageNumber">
+                        @pageNumber
+                    </a>
+                </li>
+            }
+                    <li class="page-item
+                    @(currentPageForTechnicians + 1 > lastPageNumberToDisplayInPaginationForTechnicians ? "disabled" : String.Empty)
+                    @(lastPageNumberToDisplayInPaginationForTechnicians == 0 ? "d-none" : String.Empty)">
+                        <a class="page-link"
+                           asp-action="@StringConstants.ActionNameIndex"
+                           asp-controller="@StringConstants.HomeControllerName"
+                           asp-area="@StringConstants.AreaNameAdministration"
+                           asp-route-adminsPage="@currentPageForAdmins"
+                           asp-route-customersPage="@currentPageForCustomers"
+                           asp-route-techniciansPage=@(currentPageForTechnicians + 1)>
+                            Next
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        }
+    </section>
+</div>

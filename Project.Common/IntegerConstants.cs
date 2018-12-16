@@ -6,7 +6,7 @@ namespace Project.Common
 {
     public static class IntegerConstants
     {
-        public const int ItemsPerPage = 1;
+        public const int ItemsPerPage = 5;
         public const int NumberOfPagesPossibletoNavigateTo = 5; /*This means that in the pagination rendering only five buttons with numbers will be rendered - 
                                                                 if the current page is 5, the visible buttons will be for 2 pages before, meaning pages 3 and 4,
                                                                 and 2 pages after, meaning pages 6 and 7.*/

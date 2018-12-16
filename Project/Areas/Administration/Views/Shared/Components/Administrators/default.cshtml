@@ -1,6 +1,7 @@
 ﻿@model  X.PagedList.PagedList<AdministratorViewModel>
 
-@foreach(var item in Model) {
-    <p>@item.Username</p>
-}
+<h1 class="text-danger">All this comes from a View Component called AdministratorsViewComponent. If you want to change how data is presented, look for the default.cshtml file of the View Component!!!</h1>
 
+@foreach(var item in Model) {
+    <div>@item.Username</div>
+}

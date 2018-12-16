@@ -9,13 +9,13 @@ using X.PagedList;
 
 namespace Project.Areas.Administration.Components
 {
-    [ViewComponent(Name = StringConstants.ViewComponentAdministratorsName)]
-    public class AdministratorsViewComponent : ViewComponent
+    [ViewComponent(Name = StringConstants.ViewComponentTechniciansName)]
+    public class TechnicianViewComponent : ViewComponent
     {
         private readonly IUserService userService;
         private readonly IMapper mapper;
 
-        public AdministratorsViewComponent(IUserService userService,
+        public TechnicianViewComponent(IUserService userService,
             IMapper mapper) {
             this.userService = userService;
             this.mapper = mapper;
@@ -24,16 +24,18 @@ namespace Project.Areas.Administration.Components
         public async Task<IViewComponentResult> InvokeAsync(int? page) {
             try {
                 int pageNumber = page ?? 1;
-                AdministratorViewModel[] allAdmins = this.mapper.ProjectTo<AdministratorViewModel>(await this.userService.GetAllUsersWithAGivenRoleAsync(StringConstants.AdminUserRole)).ToArray();
-                int maximumNumberOfPages = allAdmins.Count() / IntegerConstants.ItemsPerPage;
-                if (allAdmins.Count() > IntegerConstants.ItemsPerPage && allAdmins.Count() % IntegerConstants.ItemsPerPage != 0) {
+                TechnicianViewModel[] allTechnicians = this.mapper
+                    .ProjectTo<TechnicianViewModel>(await this.userService.GetAllUsersWithAGivenRoleAsync(StringConstants.TechnicianUserRole))
+                    .ToArray();
+                int maximumNumberOfPages = allTechnicians.Count() / IntegerConstants.ItemsPerPage;
+                if (allTechnicians.Count() > IntegerConstants.ItemsPerPage && allTechnicians.Count() % IntegerConstants.ItemsPerPage != 0) {
                     maximumNumberOfPages += 1;
                 }
                 if (pageNumber <= 0 || pageNumber > maximumNumberOfPages) { //This check for the feasibility of the page number. If it is "out of range" the default value of 1 is selected."
                     pageNumber = 1;
                 }
-                TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPagesForAdministrators] = maximumNumberOfPages;
-                IPagedList<AdministratorViewModel> adminsToDisplayOnPage = allAdmins.ToPagedList(pageNumber, IntegerConstants.ItemsPerPage);
+                TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPagesForTechnicians] = maximumNumberOfPages;
+                IPagedList<TechnicianViewModel> adminsToDisplayOnPage = allTechnicians.ToPagedList(pageNumber, IntegerConstants.ItemsPerPage);
                 return this.View(adminsToDisplayOnPage);
             }
             catch {

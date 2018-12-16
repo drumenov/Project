@@ -2,5 +2,6 @@
 {
     public class CustomerViewModel
     {
+        public bool IsCorporateCustomer { get; set; }
     }
 }
