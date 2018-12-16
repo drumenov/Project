@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Project.Data;
 using Project.Models.Entities;
+using Project.Models.InputModels.Administration;
 using Project.Plumbing.Middlewares.SeedAdmin;
 using Project.Services;
 using Project.Services.Contracts;
@@ -44,6 +46,9 @@ namespace Project
 
 
             services.AddScoped<IUserService, UserService>();
+            services.AddAutoMapper(config => {
+                config.CreateMap<CreateAdministratorInputModel, User>().ForMember(x => x.PasswordHash, y => y.Ignore());
+            });
             services.AddAuthentication().AddCookie();
             services.AddMvc(options => {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());

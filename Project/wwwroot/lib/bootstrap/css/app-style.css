@@ -1,4 +1,8 @@
-﻿.validation-summary-errors>ul{
+﻿body{
+    background-color: darkorange;
+}
+
+.validation-summary-errors>ul{
     list-style: none;
     color: red;
 }

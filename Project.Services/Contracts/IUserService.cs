@@ -13,5 +13,7 @@ namespace Project.Services.Contracts
         Task<IList<string>> GetAllRolesThatUserBelongsToAsync(User user);
 
         Task LogoutUserAsync();
+
+        Task<bool> AddUserToRoleAsync(User user, string roleName);
     }
 }

@@ -52,7 +52,7 @@ namespace Project.Controllers
                     StringConstants.HomeControllerName, //Action's name
                     new { area = StringConstants.AreaNameTechnician }); //Area's name
             }
-            throw new NotImplementedException(); //If we are to reach this point, some unauthorised routing is used, hence an error is thrown and the user should be redirected to a generic error page
+            throw new NotImplementedException(); //TODO: If we are to reach this point, some unauthorised routing is used, hence an error is thrown and the user should be redirected to a generic error page
         }
 
         public IActionResult Logout() {

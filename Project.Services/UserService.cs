@@ -9,10 +9,12 @@ namespace Project.Services
     public class UserService : IUserService
     {
         private readonly UserManager<User> userManager;
+        private readonly RoleManager<AppRole> roleManager;
         private readonly SignInManager<User> signInManager;
 
         public UserService(UserManager<User> userManager, RoleManager<AppRole> roleManager, SignInManager<User> signInManager) {
             this.userManager = userManager;
+            this.roleManager = roleManager;
             this.signInManager = signInManager;
         }
 
@@ -33,6 +35,11 @@ namespace Project.Services
 
         public async Task LogoutUserAsync() {
             await this.signInManager.SignOutAsync();
+        }
+
+        public async Task<bool> AddUserToRoleAsync(User user, string roleName) {
+            IdentityResult result = await this.userManager.AddToRoleAsync(user, roleName);
+            return result.Succeeded;
         }
     }
 }

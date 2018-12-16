@@ -13,10 +13,13 @@
         public const string ActionNameLogin = "Login";
         public const string ActionNameLogout = "Logout";
         public const string ActionNameCreateAdministrator = "create-admin";
+        public const string ActionNameCreateCustomer = "create-customer";
+        public const string ActionNameCreateTechnician = "create-technician";
 
         //Controller names string representation
         public const string HomeControllerName = "Home";
         public const string UserControllerName = "User";
+        public const string AccountControllerName = "Account";
 
         //Areas names stirng representation
         public const string AreaNameAdministration = "Administration";
@@ -27,5 +30,10 @@
         public const string AdminUserRole = "Admin";
         public const string CustomerUserRole = "Customer";
         public const string TechnicianUserRole = "Technician";
+
+        //Custom View names
+        public const string CreateAdministratorViewName = "create-admin";
+        public const string CreateCustomerViewName = "create-customer";
+        public const string CreateTechnicianViewName = "create-technician";
     }
 }

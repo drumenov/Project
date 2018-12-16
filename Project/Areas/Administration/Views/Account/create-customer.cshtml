@@ -1,7 +1,10 @@
 ﻿@model CreateCustomerInputModel
-    <section class="jumbotron w-50 mt-3">
+    <section class="jumbotron w-75 mt-3">
         <h3 class="text-center">Create a Customer</h3>
-        <form method="post" asp-action="create-customer" asp-controller="account" asp-area="administration">
+        <form method="post" 
+                asp-action="@StringConstants.ActionNameCreateCustomer" 
+                asp-controller="@StringConstants.AccountControllerName" 
+                asp-area="@StringConstants.AreaNameAdministration">
             <div class="form-group">
                 <label asp-for="@Model.CustomerName"></label>
                 <input asp-for="@Model.CustomerName" class="form-control" />

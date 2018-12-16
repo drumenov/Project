@@ -1,12 +1,15 @@
 ﻿@model CreateTechnicianInputModel
 
 
-<section class="jumbotron w-50">
+<section class="jumbotron w-75 mt-5">
     <h3 class="text-center">Create a Technician</h3>
-    <form method="post" asp-action="create-technician" asp-controller="account">
+    <form method="post"
+          asp-action="@StringConstants.ActionNameCreateTechnician"
+          asp-controller="@StringConstants.AccountControllerName"
+          asp-area="@StringConstants.AreaNameAdministration">
         <div form-group>
             <label asp-for="@Model.Name"></label>
-            <input asp-for="@Model.Name" class="form-control" value="@Model?.Name"/>
+            <input asp-for="@Model.Name" class="form-control" value="@Model?.Name" />
             <span asp-validation-for="@Model.Name" class="text-danger"></span>
         </div>
         <div class="form-group">
@@ -19,13 +22,16 @@
             <input asp-for="@Model.ConfirmPassword" class="form-control" />
             <span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
         </div>
-        <select asp-items="@new SelectList(Enum.GetNames(typeof(TechnicianLevel)))">
-            <option value="" selected disabled>Choose a Level of Expertise</option>
-        </select>
+        <div class="form-group">
+            <label asp-for="@Model.Level">Level of Expertise</label>
+            <select asp-items="@new SelectList(Enum.GetNames(typeof(TechnicianLevel)))" class="custom-select">
+                <option value="" selected disabled>Choose a Level of Expertise</option>
+            </select>
+        </div>
         <div>
             <span asp-validation-for="@Model.Level" class="text-danger"></span>
         </div>
-        <div class="d-flex justify-content-end">
+        <div class="d-flex justify-content-end mt-4">
             <input type="submit" class="btn btn-primary" value="Create a Technician" />
         </div>
     </form>
