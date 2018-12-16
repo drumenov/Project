@@ -1,30 +1,40 @@
 ﻿@model CreateCustomerInputModel
-    <section class="jumbotron w-75 mt-3">
-        <h3 class="text-center">Create a Customer</h3>
-        <form method="post" 
-                asp-action="@StringConstants.ActionNameCreateCustomer" 
-                asp-controller="@StringConstants.AccountControllerName" 
-                asp-area="@StringConstants.AreaNameAdministration">
-            <div class="form-group">
-                <label asp-for="@Model.CustomerName"></label>
-                <input asp-for="@Model.CustomerName" class="form-control" />
-                <span asp-validation-for="@Model.CustomerName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Password"></label>
-                <input asp-for="@Model.Password" class="form-control" />
-                <span asp-validation-for="@Model.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.ConfirmPassword"></label>
-                <input asp-for="@Model.ConfirmPassword" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.IsCorporateCustomer" class="form-check-label"></label>
-                <input type="checkbox" asp-for="@Model.IsCorporateCustomer" class="form-check-inline" />
-            </div>
-            <div class="d-flex justify-content-end">
-                <input type="submit" class="btn btn-primary" value="Create Client" />
-            </div>
-        </form>
-    </section>
+<main>
+    <div class="d-flex justify-content-center">
+        <section class="jumbotron w-75 mt-5">
+            <h3 class="text-center">Create a Customer</h3>
+            <form method="post"
+                  asp-action="@StringConstants.ActionNameCreateCustomer"
+                  asp-controller="@StringConstants.AccountControllerName"
+                  asp-area="@StringConstants.AreaNameAdministration">
+                <div class="form-group">
+                    <label asp-for="@Model.CustomerName"></label>
+                    <input asp-for="@Model.CustomerName" class="form-control" />
+                    <span asp-validation-for="@Model.CustomerName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Password"></label>
+                    <input asp-for="@Model.Password" class="form-control" />
+                    <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.ConfirmPassword"></label>
+                    <input asp-for="@Model.ConfirmPassword" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.IsCorporateCustomer" class="form-check-label"></label>
+                    <input type="checkbox" asp-for="@Model.IsCorporateCustomer" class="form-check-inline" />
+                </div>
+                <div class="d-flex justify-content-between mt-4">
+                    <div>
+                        <a class="btn btn-info text-white" id="back">Go Back</a>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <input type="reset" class="btn btn-danger" value="Clear" />
+                        <input type="submit" class="btn btn-primary mx-3" value="Create a Technician" />
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</main>

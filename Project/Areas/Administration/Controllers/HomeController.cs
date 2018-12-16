@@ -5,10 +5,13 @@ using Project.Common;
 
 namespace Project.Areas.Administration.Controllers
 {
-    [Area("Administration")]
     public class HomeController : BaseController
     {
-        [Authorize(Roles = StringConstants.AdminUserRole)]
-        public IActionResult Index() => this.View();
+        public IActionResult Index(int? page) {
+            int currentPage = page ?? 1;
+            TempData["page"] = currentPage;
+            return this.View();
+        }
     }
+    
 }

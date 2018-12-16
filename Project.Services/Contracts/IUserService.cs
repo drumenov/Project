@@ -1,5 +1,6 @@
 ﻿using Project.Models.Entities;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Project.Services.Contracts
@@ -15,5 +16,7 @@ namespace Project.Services.Contracts
         Task LogoutUserAsync();
 
         Task<bool> AddUserToRoleAsync(User user, string roleName);
+
+        Task<IQueryable<User>> GetAllUsersWithAGivenRoleAsync(string roleName);
     }
 }

@@ -1,1 +1,62 @@
-﻿<h1>Hello Administrator - @User.Identity.Name</h1>
+﻿@{ 
+    int currentPage = (int)TempData[StringConstants.TempDataKeyHoldingThePageNumber];
+    int firstPageNumbertoDisplayInPagination = currentPage - IntegerConstants.NumberOfPagesOffset > 1 ? currentPage - IntegerConstants.NumberOfPagesOffset : 1;
+}
+
+<main>
+    <h1 class="mt-5 text-center">Hello Administrator - @User.Identity.Name</h1>
+    <section class="w-100 mt-5">
+        <div class="d-flex justify-content-around">
+            @await Component.InvokeAsync(StringConstants.ViewComponentAdministrators, new { page = TempData[StringConstants.TempDataKeyHoldingThePageNumber] })
+        </div>
+
+@{ 
+    int lastPageNumberToDisplayInPagination = currentPage + IntegerConstants.NumberOfPagesOffset < (int)TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPages] ? currentPage + IntegerConstants.NumberOfPagesOffset : (int)TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPages];
+}
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item @(currentPage - 1 < 1 ? "disabled" : String.Empty)">
+                    <a class="page-link"
+                       asp-action="@StringConstants.ActionNameIndex"
+                       asp-controller="@StringConstants.HomeControllerName"
+                       asp-area="@StringConstants.AreaNameAdministration"
+                       asp-route-page="@(currentPage - 1)">
+                        Previous
+                    </a>
+                </li>
+                @for (int pageNumber = firstPageNumbertoDisplayInPagination; pageNumber <= lastPageNumberToDisplayInPagination; pageNumber++) {
+                    <li class="page-item @(pageNumber == currentPage ? "active" : String.Empty)">
+                        <a class="page-link"
+                           asp-action="@StringConstants.ActionNameIndex"
+                           asp-controller="@StringConstants.HomeControllerName"
+                           asp-area="@StringConstants.AreaNameAdministration"
+                           asp-route-page="@pageNumber">
+                            @pageNumber
+                        </a>
+                    </li>
+                }
+                <li class="page-item @(currentPage + 1 > lastPageNumberToDisplayInPagination ? "disabled" : String.Empty)">
+                    <a class="page-link"
+                       asp-action="@StringConstants.ActionNameIndex"
+                       asp-controller="@StringConstants.HomeControllerName"
+                       asp-area="@StringConstants.AreaNameAdministration"
+                       asp-route-page="@(currentPage + 1)">
+                       Next
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" asp-action="index" asp-controller="home" asp-area="administration" asp-route-page="2">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
+    </section>
+</main>
