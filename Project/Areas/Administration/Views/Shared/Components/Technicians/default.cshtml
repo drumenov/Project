@@ -1,1 +1,5 @@
-﻿<h1>And the last?!?!?!</h1>
+﻿@model X.PagedList.PagedList<TechnicianViewModel>
+
+@foreach(var item in Model) {
+    <div>@item.Username</div>
+}

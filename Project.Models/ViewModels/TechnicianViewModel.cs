@@ -2,5 +2,6 @@
 {
     public class TechnicianViewModel
     {
+        public string Username { get; set; }
     }
 }

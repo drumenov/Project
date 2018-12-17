@@ -85,7 +85,8 @@ namespace Project.Areas.Administration.Controllers
             if(!success) {
                 throw new ApplicationException();
             }
-            success = await this.userService.AddUserToRoleAsync(newTechnician, StringConstants.TechnicianUserRole);
+            success = await this.userService.AddUserToRoleAsync(newTechnician, String.Concat(createTechnicianInputModel.Level.ToString(), StringConstants.TechnicianUserRole));
+            
             if (!success) {
                 throw new ApplicationException();
             }

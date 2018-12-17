@@ -47,8 +47,15 @@ namespace Project.Services
 
         public async Task<IQueryable<User>> GetAllUsersWithAGivenRoleAsync(string roleName) {
             AppRole currentRole = await this.roleManager.FindByNameAsync(roleName);
-            var allUserIdsForAGivenRole =this.dbContext.UserRoles.Where(r => r.RoleId.Equals(currentRole.Id, StringComparison.Ordinal)).Select(res => res.UserId).ToArray();
-            var allUsersForAGivenRole = this.dbContext.Users.Where(u => allUserIdsForAGivenRole.Contains(u.Id));
+            if(currentRole == null) {
+                return null;
+            }
+            string[] allUserIdsForAGivenRole =this.dbContext
+                .UserRoles
+                .Where(r => r.RoleId.Equals(currentRole.Id, StringComparison.Ordinal))
+                .Select(res => res.UserId)
+                .ToArray();
+            IQueryable<User> allUsersForAGivenRole = this.dbContext.Users.Where(u => allUserIdsForAGivenRole.Contains(u.Id));
             return allUsersForAGivenRole;
         }
 

@@ -11,6 +11,7 @@ using Project.Models.InputModels.Administration;
 using Project.Plumbing.Middlewares.SeedAdmin;
 using Project.Services;
 using Project.Services.Contracts;
+using System.Text.RegularExpressions;
 
 namespace Project
 {
@@ -49,6 +50,7 @@ namespace Project
             services.AddAutoMapper(config => {
                 config.CreateMap<CreateAdministratorInputModel, User>();
                 config.CreateMap<CreateCustomerInputModel, User>().ForMember(dest => dest.UserName, src => src.MapFrom(s => s.CustomerName));
+                config.CreateMap<CreateTechnicianInputModel, User>().ForMember(dest => dest.UserName, src => src.MapFrom(s => s.Name));
             });
             services.AddAuthentication().AddCookie();
             services.AddMvc(options => {

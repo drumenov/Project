@@ -36,7 +36,13 @@
         public const string AdminUserRole = "Admin";
         public const string CustomerUserRole = "Customer";
         public const string CorporateCustomerUserRole = "Corporate Customer";
-        public const string TechnicianUserRole = "Technician";
+        public const string NoviceTechnicianUserRole = "NoviceTechnician";
+        public const string AverageTechnicianUserRole = "AverageTechnician";
+        public const string AdvancedTechnicianUserRole = "AdvancedTechnician";
+        public const string ExpertTechnicianUserRole = "ExpertTechnician";
+        public const string TechnicianUserRole = "Technician"; /*This is used when decideng whether the user is an admin, a customer or a technician 
+                                                                for the initial login process. Also for proper naming for the technicians roles 
+                                                                (i.e. when the technician is a novice, the role is NoviceTechnician - a simple concatenation).*/
 
         //Custom View names
         public const string CreateAdministratorViewName = "create-admin";

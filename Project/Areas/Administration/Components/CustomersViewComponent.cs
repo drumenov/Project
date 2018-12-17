@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Project.Common;
+using Project.Models.Entities;
 using Project.Models.ViewModels;
 using Project.Services.Contracts;
 using System.Collections.Generic;
@@ -23,15 +24,16 @@ namespace Project.Areas.Administration.Components
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int? page) {
+            var t = await this.userService.GetAllUsersWithAGivenRoleAsync(StringConstants.CustomerUserRole);
             try {
                 int pageNumber = page ?? 1;
-                CustomerViewModel[] allNonCorporateCustomers = this.mapper
-                .ProjectTo<CustomerViewModel>(await this.userService.GetAllUsersWithAGivenRoleAsync(StringConstants.CustomerUserRole))
-                .ToArray();
+                CustomerViewModel[] allNonCorporateCustomers = await this.userService.GetAllUsersWithAGivenRoleAsync(StringConstants.CustomerUserRole) != null
+                ? this.mapper.ProjectTo<CustomerViewModel>(await this.userService.GetAllUsersWithAGivenRoleAsync(StringConstants.CustomerUserRole)).ToArray()
+                : new CustomerViewModel[0];
 
-                CustomerViewModel[] allCorporateCustomers = this.mapper
-                    .ProjectTo<CustomerViewModel>(await this.userService.GetAllUsersWithAGivenRoleAsync(StringConstants.CorporateCustomerUserRole))
-                    .ToArray();
+                CustomerViewModel[] allCorporateCustomers = await this.userService.GetAllUsersWithAGivenRoleAsync(StringConstants.CorporateCustomerUserRole) != null
+                    ? this.mapper.ProjectTo<CustomerViewModel>(await this.userService.GetAllUsersWithAGivenRoleAsync(StringConstants.CorporateCustomerUserRole)).ToArray()
+                    : new CustomerViewModel[0];
 
                 IEnumerable<CustomerViewModel> allCustomers = allCorporateCustomers.Union(allNonCorporateCustomers);
 

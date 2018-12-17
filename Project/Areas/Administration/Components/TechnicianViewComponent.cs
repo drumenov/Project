@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Project.Common;
+using Project.Models.Entities;
 using Project.Models.ViewModels;
 using Project.Services.Contracts;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using X.PagedList;
@@ -24,9 +26,23 @@ namespace Project.Areas.Administration.Components
         public async Task<IViewComponentResult> InvokeAsync(int? page) {
             try {
                 int pageNumber = page ?? 1;
-                TechnicianViewModel[] allTechnicians = this.mapper
-                    .ProjectTo<TechnicianViewModel>(await this.userService.GetAllUsersWithAGivenRoleAsync(StringConstants.TechnicianUserRole))
-                    .ToArray();
+                string[] allTechnicianLevelsNames = new string[] {
+                    StringConstants.NoviceTechnicianUserRole,
+                    StringConstants.AverageTechnicianUserRole,
+                    StringConstants.AdvancedTechnicianUserRole,
+                    StringConstants.ExpertTechnicianUserRole
+                };
+
+                List<TechnicianViewModel> allTechnicians = new List<TechnicianViewModel>();
+                foreach(string technicianLevel in allTechnicianLevelsNames) {
+                    allTechnicians.AddRange(await this.userService.GetAllUsersWithAGivenRoleAsync(technicianLevel) != null
+                    ? this.mapper.ProjectTo<TechnicianViewModel>(await this.userService.GetAllUsersWithAGivenRoleAsync(technicianLevel)).ToArray()
+                    : new TechnicianViewModel[0]);
+                }
+
+                //TechnicianViewModel[] allTechnicians = this.mapper
+                //    .ProjectTo<TechnicianViewModel>(await this.userService.GetAllUsersWithAGivenRoleAsync(StringConstants.TechnicianUserRole))
+                //    .ToArray();
                 int maximumNumberOfPages = allTechnicians.Count() / IntegerConstants.ItemsPerPage;
                 if (allTechnicians.Count() > IntegerConstants.ItemsPerPage && allTechnicians.Count() % IntegerConstants.ItemsPerPage != 0) {
                     maximumNumberOfPages += 1;
