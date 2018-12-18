@@ -29,6 +29,12 @@
                     <a class="nav-link" href="#">Pricing</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" asp-action="@StringConstants.ActionNameOrderPart" 
+                                        asp-controller="@StringConstants.PartControllerName" 
+                                        asp-area="@StringConstants.AreaNameAdministration">
+                    Order Parts</a>
+                </li>
+                <li class="nav-item">
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Manager User Accounts

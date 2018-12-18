@@ -13,6 +13,7 @@
 
         //Error messages
         public const string WrongUsernameOrPasswordErrorMessage = "Wrong Username or Password";
+        public const string WrongAmountOfPartOrderedSelected = "You have selected a part to aroder, but the selected amount must be greater than zero.";
 
         //Action names string representation
         public const string ActionNameIndex = "Index";
@@ -21,11 +22,13 @@
         public const string ActionNameCreateAdministrator = "create-admin";
         public const string ActionNameCreateCustomer = "create-customer";
         public const string ActionNameCreateTechnician = "create-technician";
+        public const string ActionNameOrderPart = "order";
 
         //Controller names string representation
         public const string HomeControllerName = "Home";
         public const string UserControllerName = "User";
         public const string AccountControllerName = "Account";
+        public const string PartControllerName = "Part";
 
         //Areas names stirng representation
         public const string AreaNameAdministration = "Administration";

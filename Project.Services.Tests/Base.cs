@@ -27,7 +27,10 @@ namespace Project.Services.Tests
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             IServiceProvider provider = services.BuildServiceProvider();
 
-            this.UserService = new UserService(provider.GetService<UserManager<User>>(), provider.GetService<RoleManager<AppRole>>(), provider.GetService<SignInManager<User>>());
+            this.UserService = new UserService(provider.GetService<UserManager<User>>(), 
+                provider.GetService<RoleManager<AppRole>>(), 
+                provider.GetService<SignInManager<User>>(), 
+                provider.GetService<ApplicationDbContext>());
         }
 
         public IUserService UserService { get; }
