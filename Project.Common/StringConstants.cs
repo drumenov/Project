@@ -13,7 +13,8 @@
 
         //Error messages
         public const string WrongUsernameOrPasswordErrorMessage = "Wrong Username or Password";
-        public const string WrongAmountOfPartOrderedSelected = "You have selected a part to aroder, but the selected amount must be greater than zero.";
+        public const string WrongAmountOfOrderedPartSelected = "You have selected a part to order, but the selected amount must be greater than zero.";
+        public const string WrongAmountOfUnorderedPartSelected = "You have selected an amount for a part that you have not selected to order.";
 
         //Action names string representation
         public const string ActionNameIndex = "Index";

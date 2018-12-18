@@ -19,7 +19,10 @@ namespace Project.Models.Attributes.ValidationAttributes
                 .GetProperty(this.propertyName)
                 .GetValue(validationContext.ObjectInstance);
             if(partOrdered && amountOrdered <= 0) {
-                return new ValidationResult(StringConstants.WrongAmountOfPartOrderedSelected);
+                return new ValidationResult(StringConstants.WrongAmountOfOrderedPartSelected);
+            }
+            if(!partOrdered && amountOrdered != 0) {
+                return new ValidationResult(StringConstants.WrongAmountOfUnorderedPartSelected);
             }
             return ValidationResult.Success;
         }
