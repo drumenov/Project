@@ -2,6 +2,9 @@
 {
     public enum PartType
     {
-        Simple = 1
+        CarBody = 0,
+        Electronic = 1,
+        Interior = 2,
+        Chassis = 3,
     }
 }

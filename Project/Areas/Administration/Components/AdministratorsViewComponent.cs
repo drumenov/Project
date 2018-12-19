@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Project.Common;
-using Project.Models.ViewModels;
+using Project.Models.ViewModels.AdministrationAreaViewModels;
 using Project.Services.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,15 +24,9 @@ namespace Project.Areas.Administration.Components
         public async Task<IViewComponentResult> InvokeAsync(int? page) {
             try {
                 int pageNumber = page ?? 1;
-                AdministratorViewModel[] allAdmins = this.mapper.ProjectTo<AdministratorViewModel>(await this.userService.GetAllUsersWithAGivenRoleAsync(StringConstants.AdminUserRole)).ToArray();
-                int maximumNumberOfPages = allAdmins.Count() / IntegerConstants.ItemsPerPage;
-                if (allAdmins.Count() > IntegerConstants.ItemsPerPage && allAdmins.Count() % IntegerConstants.ItemsPerPage != 0) {
-                    maximumNumberOfPages += 1;
-                }
-                if (pageNumber <= 0 || pageNumber > maximumNumberOfPages) { //This check for the feasibility of the page number. If it is "out of range" the default value of 1 is selected."
-                    pageNumber = 1;
-                }
-                TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPagesForAdministrators] = maximumNumberOfPages;
+                AdministratorViewModel[] allAdmins = this.mapper
+                    .ProjectTo<AdministratorViewModel>(await this.userService.GetAllUsersWithAGivenRoleAsync(StringConstants.AdminUserRole))
+                    .ToArray();
                 IPagedList<AdministratorViewModel> adminsToDisplayOnPage = allAdmins.ToPagedList(pageNumber, IntegerConstants.ItemsPerPage);
                 return this.View(adminsToDisplayOnPage);
             }

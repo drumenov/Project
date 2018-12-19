@@ -5,3 +5,9 @@
 @foreach(var item in Model) {
     <div>@item.Username</div>
 }
+
+@Html.PagedListPager(Model, page => Url.Action("Index", "Home", new {
+    adminsPage = page,
+    customersPage = (int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForCustomers],
+    techniciansPage = (int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians]
+}))

@@ -15,11 +15,12 @@
         public const string WrongUsernameOrPasswordErrorMessage = "Wrong Username or Password";
         public const string WrongAmountOfOrderedPartSelected = "You have selected a part to order, but the selected amount must be greater than zero.";
         public const string WrongAmountOfUnorderedPartSelected = "You have selected an amount for a part that you have not selected to order.";
+        public const string WrongOrder = "You are trying to create an order without any parts.";
 
         //Action names string representation
-        public const string ActionNameIndex = "Index";
-        public const string ActionNameLogin = "Login";
-        public const string ActionNameLogout = "Logout";
+        public const string ActionNameIndex = "index";
+        public const string ActionNameLogin = "login";
+        public const string ActionNameLogout = "logout";
         public const string ActionNameCreateAdministrator = "create-admin";
         public const string ActionNameCreateCustomer = "create-customer";
         public const string ActionNameCreateTechnician = "create-technician";
