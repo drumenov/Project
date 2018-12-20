@@ -1,17 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Project.Areas.Administration.Controllers.Base;
 using Project.Common;
+using Project.Models.Entities;
 using Project.Models.InputModels.Administration;
+using Project.Services.Contracts;
+using System.Threading.Tasks;
 
 namespace Project.Areas.Administration.Controllers
 {
     public class PartController : BaseController
     {
+        private readonly IPartService partService;
+        private readonly UserManager<User> userManager;
+
+        public PartController(IPartService partService,
+            UserManager<User> userManager) {
+            this.partService = partService;
+            this.userManager = userManager;
+        }
+
         [HttpGet]
         public IActionResult Order() => this.View();
 
         [HttpPost]
-        public IActionResult Order(CreatePartOrderInputModel createPartOrderInputModel) {
+        public async Task<IActionResult> Order(CreatePartOrderInputModel createPartOrderInputModel) {
             if (!ModelState.IsValid) {
                 return this.View(createPartOrderInputModel);
             }
@@ -22,8 +35,9 @@ namespace Project.Areas.Administration.Controllers
                 this.ModelState.AddModelError("", StringConstants.WrongOrder);
                 return this.View(createPartOrderInputModel);
             }
-
-            return this.View();
+            User admin = await this.userManager.FindByNameAsync(this.User.Identity.Name);
+            int orderId = await this.partService.OrderPartsAsync(createPartOrderInputModel, admin);
+            return this.RedirectToAction(StringConstants.ActionNameOrderDetails, StringConstants.OrderControllerName, new { id = orderId });
         }
     }
 }

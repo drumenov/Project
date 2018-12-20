@@ -24,7 +24,7 @@ namespace Project.Areas.Administration.Controllers
 
         [HttpGet]
         [Route("/administration/[controller]/create-admin")]
-        public IActionResult CreateAdmin() => this.View(StringConstants.CreateAdministratorViewName);
+        public IActionResult CreateAdmin() => this.View();
 
         [HttpPost]
         [Route("/administration/[controller]/create-admin")]
@@ -46,7 +46,7 @@ namespace Project.Areas.Administration.Controllers
 
         [HttpGet]
         [Route("/administration/[controller]/create-customer")]
-        public IActionResult CreateCustomer() => this.View(StringConstants.CreateCustomerViewName);
+        public IActionResult CreateCustomer() => this.View();
 
         [HttpPost]
         [Route("/administration/[controller]/create-customer")]
@@ -72,7 +72,7 @@ namespace Project.Areas.Administration.Controllers
 
         [HttpGet]
         [Route("/administration/[controller]/create-technician")]
-        public IActionResult CreateTechnician() => this.View(StringConstants.CreateTechnicianViewName);
+        public IActionResult CreateTechnician() => this.View();
 
         [HttpPost]
         [Route("/administration/[controller]/create-technician")]

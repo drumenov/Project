@@ -25,12 +25,14 @@
         public const string ActionNameCreateCustomer = "create-customer";
         public const string ActionNameCreateTechnician = "create-technician";
         public const string ActionNameOrderPart = "order";
+        public const string ActionNameOrderDetails = "order-details";
 
         //Controller names string representation
         public const string HomeControllerName = "Home";
         public const string UserControllerName = "User";
         public const string AccountControllerName = "Account";
         public const string PartControllerName = "Part";
+        public const string OrderControllerName = "Order";
 
         //Areas names stirng representation
         public const string AreaNameAdministration = "Administration";

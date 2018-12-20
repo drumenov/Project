@@ -21,7 +21,7 @@ namespace Project.Models.Attributes.ValidationAttributes
             if(partOrdered && amountOrdered <= 0) {
                 return new ValidationResult(StringConstants.WrongAmountOfOrderedPartSelected);
             }
-            if(!partOrdered && amountOrdered != 0) {
+            if(partOrdered == false && amountOrdered != 0) {
                 return new ValidationResult(StringConstants.WrongAmountOfUnorderedPartSelected);
             }
             return ValidationResult.Success;

@@ -9,6 +9,7 @@ using Project.Data;
 using Project.Models.Entities;
 using Project.Models.InputModels.Administration;
 using Project.Plumbing.Middlewares.SeedAdmin;
+using Project.Plumbing.Middlewares.SeedPartTypes;
 using Project.Services;
 using Project.Services.Contracts;
 using System.Text.RegularExpressions;
@@ -47,6 +48,8 @@ namespace Project
 
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPartService, PartService>();
+
             services.AddAutoMapper(config => {
                 config.CreateMap<CreateAdministratorInputModel, User>();
                 config.CreateMap<CreateCustomerInputModel, User>().ForMember(dest => dest.UserName, src => src.MapFrom(s => s.CustomerName));
@@ -70,6 +73,7 @@ namespace Project
             app.UseAuthentication();
             app.UseStaticFiles();
             app.UseSeedAdminMiddleware();
+            app.UseSeedPartTypesMiddleware();
             app.UseMvc(routes => {
                 routes.MapRoute(
                     name: "areas",
