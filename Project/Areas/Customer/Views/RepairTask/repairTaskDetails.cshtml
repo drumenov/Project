@@ -1,0 +1,11 @@
+﻿@model RepairTaskViewModel
+
+<h1>Parts Required:</h1>
+@foreach (var part in Model.PartsRequired) {
+    <div>Type: @part.Type; Quantity: @part.Quantity</div>
+}
+
+<h1>Ppl working: </h1>
+@foreach(var technician in Model.Technicians) {
+    <div>Technician: @technician</div>
+}

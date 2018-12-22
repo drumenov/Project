@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project.Data;
 
 namespace Project.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181222142036_AddedRequiredPartsPropertyInTheRpairTaskEntity")]
+    partial class AddedRequiredPartsPropertyInTheRpairTaskEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,13 +224,7 @@ namespace Project.Data.Migrations
 
                     b.Property<int>("Status");
 
-                    b.Property<Guid>("UserId");
-
-                    b.Property<string>("UserId1");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("RepairTask");
                 });
@@ -385,13 +381,6 @@ namespace Project.Data.Migrations
                     b.HasOne("Project.Models.Entities.User", "User")
                         .WithMany("Receipts")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Project.Models.Entities.RepairTask", b =>
-                {
-                    b.HasOne("Project.Models.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("Project.Models.Entities.UserRepairTask", b =>

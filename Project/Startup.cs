@@ -8,11 +8,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Project.Data;
 using Project.Models.Entities;
 using Project.Models.InputModels.Administration;
+using Project.Models.ViewModels.Administration;
+using Project.Models.ViewModels.Customer;
 using Project.Plumbing.Middlewares.SeedAdmin;
-using Project.Plumbing.Middlewares.SeedPartTypes;
 using Project.Services;
 using Project.Services.Contracts;
-using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace Project
 {
@@ -28,9 +29,11 @@ namespace Project
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services) {
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options => {
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                Configuration.GetConnectionString("DefaultConnection"));
+                options.UseLazyLoadingProxies();
+            });
 
             services.AddIdentity<User, AppRole>(options => {
                 options.Password.RequireDigit = false;
@@ -49,11 +52,20 @@ namespace Project
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPartService, PartService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IPartService, PartService>();
+            services.AddScoped<IRepairTaskService, RepairTaskService>();
 
             services.AddAutoMapper(config => {
                 config.CreateMap<CreateAdministratorInputModel, User>();
-                config.CreateMap<CreateCustomerInputModel, User>().ForMember(dest => dest.UserName, src => src.MapFrom(s => s.CustomerName));
-                config.CreateMap<CreateTechnicianInputModel, User>().ForMember(dest => dest.UserName, src => src.MapFrom(s => s.Name));
+                config.CreateMap<CreateCustomerInputModel, User>()
+                    .ForMember(dest => dest.UserName, src => src.MapFrom(s => s.CustomerName));
+                config.CreateMap<CreateTechnicianInputModel, User>()
+                    .ForMember(dest => dest.UserName, src => src.MapFrom(s => s.Name));
+                config.CreateMap<Order, OrderViewModel>()
+                    .ForMember(dest => dest.Username, src => src.MapFrom(s => s.User.UserName));
+                config.CreateMap<RepairTask, RepairTaskViewModel>()
+                    .ForMember(dest => dest.Technicians, src => src.MapFrom(s => s.Technicians.SelectMany(t => t.Expert.UserName)));
             });
             services.AddAuthentication().AddCookie();
             services.AddMvc(options => {
@@ -65,7 +77,8 @@ namespace Project
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
-            } else {
+            }
+            else {
                 app.UseExceptionHandler("/home/error");
             }
 
@@ -73,7 +86,6 @@ namespace Project
             app.UseAuthentication();
             app.UseStaticFiles();
             app.UseSeedAdminMiddleware();
-            app.UseSeedPartTypesMiddleware();
             app.UseMvc(routes => {
                 routes.MapRoute(
                     name: "areas",

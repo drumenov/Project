@@ -22,23 +22,32 @@ namespace Project.Services
                 User = admin
             };
             if (createPartOrderInputModel.IsCarBodyPart) {
-                Part part = this.GetPart(PartType.CarBody);
-                part.Quantity += createPartOrderInputModel.CarBodyPartAmount;
+                Part part = new Part {
+                    Type = PartType.CarBody,
+                    Quantity = createPartOrderInputModel.CarBodyPartAmount
+                };
                 order.OrderedParts.Add(part);
             }
             if (createPartOrderInputModel.IsChassisPart) {
-                Part part = this.GetPart(PartType.Chassis);
-                part.Quantity += createPartOrderInputModel.ChassisPartAmount;
+                Part part = new Part {
+                    Type = PartType.Chassis,
+                    Quantity = createPartOrderInputModel.ChassisPartAmount
+                };
                 order.OrderedParts.Add(part);
             }
             if (createPartOrderInputModel.IsElectronicPart) {
-                Part part = this.GetPart(PartType.Electronic);
-                part.Quantity += createPartOrderInputModel.ElectronicPartAmount;
+                Part part = new Part {
+                    Type = PartType.Electronic,
+                    Quantity = createPartOrderInputModel.ElectronicPartAmount
+                };
                 order.OrderedParts.Add(part);
             }
             if (createPartOrderInputModel.IsInteriorPart) {
-                Part part = this.GetPart(PartType.Interior);
-                part.Quantity += createPartOrderInputModel.InteriorPartAmount;
+                Part part = new Part {
+                    Type = PartType.Interior,
+                    Quantity = createPartOrderInputModel.InteriorPartAmount
+                };
+                order.OrderedParts.Add(part);
             }
             await this.dbContext
                 .Orders
@@ -51,10 +60,15 @@ namespace Project.Services
             }
         }
 
-        private Part GetPart(PartType partType) {
-            return this.dbContext
-                .Parts
-                .SingleOrDefault(p => p.Type == partType);
-        }
+        //private void IncreasePartTypeAvailableCount(PartType partType, int partAmountOrdered) {
+        //    Part part = this.GetPart(partType);
+        //    part.Quantity += partAmountOrdered;
+        //}
+
+        //private Part GetPart(PartType partType) {
+        //    return this.dbContext
+        //        .Parts
+        //        .SingleOrDefault(p => p.Type == partType);
+        //}
     }
 }

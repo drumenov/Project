@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Project.Common;
-using Project.Models.Entities;
-using Project.Models.ViewModels;
-using Project.Models.ViewModels.AdministrationAreaViewModels;
+using Project.Common.Constants;
+using Project.Models.ViewModels.Administration;
 using Project.Services.Contracts;
 using System.Collections.Generic;
 using System.Linq;

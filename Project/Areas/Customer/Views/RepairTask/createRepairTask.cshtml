@@ -1,11 +1,11 @@
-﻿@model CreatePartOrderInputModel
+﻿@model RepairTaskInputModel
 <section class="d-flex justify-content-center">
     <div class="jumbotron w-75 mt-3 d-flex justify-content-center">
-        
+
         <form method="post"
-              asp-action="@StringConstants.ActionNameOrderPart"
-              asp-controller="@StringConstants.PartControllerName"
-              asp-area="@StringConstants.AreaNameAdministration">
+              asp-action="@StringConstants.ActionNameCreateRepairTask"
+              asp-controller="@StringConstants.RepairTaskControllerName"
+              asp-area="@StringConstants.AreaNameCustomer">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-inline">
                 <label asp-for="@Model.IsCarBodyPart" class="form-check-label"></label>

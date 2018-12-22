@@ -1,4 +1,4 @@
-﻿namespace Project.Models.ViewModels.AdministrationAreaViewModels
+﻿namespace Project.Models.ViewModels.Administration
 {
     public class AdministratorViewModel
     {

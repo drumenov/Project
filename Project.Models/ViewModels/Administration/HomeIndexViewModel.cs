@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Project.Models.ViewModels.AdministrationAreaViewModels
+namespace Project.Models.ViewModels.Administration
 {
     public class HomeIndexViewModel
     {

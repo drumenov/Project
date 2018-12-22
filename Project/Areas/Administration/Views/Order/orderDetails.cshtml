@@ -1,3 +1,8 @@
-﻿@model int
+﻿@model OrderViewModel
 
-<h1>The ID of the order is: @(Model)</h1>
+<h1>The ID of the order is: @Model.Id</h1>
+<h3>Ordered by: @Model.Username</h3>
+
+@foreach(var part in Model.OrderedParts) {
+    <div>@part.Type - @part.Quantity</div>
+}

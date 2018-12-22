@@ -1,4 +1,4 @@
-﻿namespace Project.Common
+﻿namespace Project.Common.Constants
 {
     public static class StringConstants
     {
@@ -16,6 +16,7 @@
         public const string WrongAmountOfOrderedPartSelected = "You have selected a part to order, but the selected amount must be greater than zero.";
         public const string WrongAmountOfUnorderedPartSelected = "You have selected an amount for a part that you have not selected to order.";
         public const string WrongOrder = "You are trying to create an order without any parts.";
+        public const string WrongRepairTask = "You are trying to order some repairs, but you have not selected which parts are to be repaired.";
 
         //Action names string representation
         public const string ActionNameIndex = "index";
@@ -26,6 +27,7 @@
         public const string ActionNameCreateTechnician = "create-technician";
         public const string ActionNameOrderPart = "order";
         public const string ActionNameOrderDetails = "order-details";
+        public const string ActionNameCreateRepairTask = "create-repair-task";
 
         //Controller names string representation
         public const string HomeControllerName = "Home";
@@ -33,6 +35,7 @@
         public const string AccountControllerName = "Account";
         public const string PartControllerName = "Part";
         public const string OrderControllerName = "Order";
+        public const string RepairTaskControllerName = "RepairTask";
 
         //Areas names stirng representation
         public const string AreaNameAdministration = "Administration";
@@ -50,6 +53,7 @@
         public const string TechnicianUserRole = "Technician"; /*This is used when decideng whether the user is an admin, a customer or a technician 
                                                                 for the initial login process. Also for proper naming for the technicians roles 
                                                                 (i.e. when the technician is a novice, the role is NoviceTechnician - a simple concatenation).*/
+        public const string UserRolesThatAreAuthorisedToUseTheCustomerArea = "Customer, Corporate Customer";
 
         //Custom View names
         public const string CreateAdministratorViewName = "create-admin";

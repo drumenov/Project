@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Project.Common;
+using Project.Common.Constants;
 
 namespace Project.Areas.Administration.Controllers.Base
 {

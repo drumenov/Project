@@ -1,4 +1,4 @@
-﻿using Project.Common;
+﻿using Project.Common.Constants;
 using System.ComponentModel.DataAnnotations;
 
 namespace Project.Models.Attributes.ValidationAttributes

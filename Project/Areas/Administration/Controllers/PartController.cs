@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Project.Areas.Administration.Controllers.Base;
-using Project.Common;
+using Project.Common.Constants;
 using Project.Models.Entities;
 using Project.Models.InputModels.Administration;
 using Project.Services.Contracts;
@@ -25,7 +25,7 @@ namespace Project.Areas.Administration.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Order(CreatePartOrderInputModel createPartOrderInputModel) {
-            if (!ModelState.IsValid) {
+            if (ModelState.IsValid == false) {
                 return this.View(createPartOrderInputModel);
             }
             if(createPartOrderInputModel.IsCarBodyPart == false

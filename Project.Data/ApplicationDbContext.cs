@@ -18,6 +18,8 @@ namespace Project.Data
 
         public DbSet<ExpertReceipt> ExpertsReceipts { get; set; }
 
+        public DbSet<RepairTask> RepairTask { get; set; } //TODO: When initial testing is performed, name this property appropriately.
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) {
         }

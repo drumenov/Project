@@ -10,7 +10,5 @@ namespace Project.Models.Entities
         public virtual ICollection<UserRepairTask> RepairTasks { get; set; }
 
         public virtual ICollection<Receipt> Receipts { get; set; }
-
-
     }
 }
