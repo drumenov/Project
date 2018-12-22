@@ -22,9 +22,8 @@ namespace Project.Areas.Administration.Components
             this.mapper = mapper;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int? page) {
+        public async Task<IViewComponentResult> InvokeAsync(int page) {
             try {
-                int pageNumber = page ?? 1;
                 string[] allTechnicianLevelsNames = new string[] {
                     StringConstants.NoviceTechnicianUserRole,
                     StringConstants.AverageTechnicianUserRole,
@@ -50,7 +49,7 @@ namespace Project.Areas.Administration.Components
                 //    pageNumber = 1;
                 //}
                 //TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPagesForTechnicians] = maximumNumberOfPages;
-                IPagedList<TechnicianViewModel> adminsToDisplayOnPage = allTechnicians.ToPagedList(pageNumber, IntegerConstants.ItemsPerPage);
+                IPagedList<TechnicianViewModel> adminsToDisplayOnPage = allTechnicians.ToPagedList(page, IntegerConstants.ItemsPerPage);
                 return this.View(adminsToDisplayOnPage);
             }
             catch {

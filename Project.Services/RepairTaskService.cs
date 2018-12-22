@@ -59,5 +59,11 @@ namespace Project.Services
             RepairTask repairTask = this.dbContext.RepairTask.FirstOrDefault(t => t.Id == id);
             return repairTask;
         }
+
+        public IQueryable<RepairTask> GetAllPending() {
+            return this.dbContext
+                .RepairTask
+                .Where(t => t.Status == Models.Enums.Status.Pending);
+        }
     }
 }

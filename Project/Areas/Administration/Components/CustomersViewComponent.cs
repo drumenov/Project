@@ -22,9 +22,8 @@ namespace Project.Areas.Administration.Components
             this.mapper = mapper;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int? page) {
+        public async Task<IViewComponentResult> InvokeAsync(int page) {
             try {
-                int pageNumber = page ?? 1;
                 CustomerViewModel[] allNonCorporateCustomers = await this.userService.GetAllUsersWithAGivenRoleAsync(StringConstants.CustomerUserRole) != null
                 ? this.mapper.ProjectTo<CustomerViewModel>(await this.userService.GetAllUsersWithAGivenRoleAsync(StringConstants.CustomerUserRole)).ToArray()
                 : new CustomerViewModel[0];
@@ -43,7 +42,7 @@ namespace Project.Areas.Administration.Components
                 //    pageNumber = 1;
                 //}
                 //TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPagesForCustomers] = maximumNumberOfPages;
-                IPagedList<CustomerViewModel> customersToDisplayPerPage = allCustomers.ToPagedList(pageNumber, IntegerConstants.ItemsPerPage);
+                IPagedList<CustomerViewModel> customersToDisplayPerPage = allCustomers.ToPagedList(page, IntegerConstants.ItemsPerPage);
                 return this.View(customersToDisplayPerPage);
             }
             catch {

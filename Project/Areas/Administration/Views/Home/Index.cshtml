@@ -1,18 +1,17 @@
 ﻿<h1 class="mt-5 text-center">Hello Administrator - @User.Identity.Name</h1>
 <div class="d-flex justify-content-around">
     <section class="mt-5">
-        <vc:administrators page="(int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForAdministrators]">
-
-        </vc:administrators>
+        <vc:administrators page="(int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForAdministrators]"></vc:administrators>
     </section>
     <section>
-        <vc:customers page="(int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForCustomers]">
-
-        </vc:customers>
+        <vc:customers page="(int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForCustomers]"></vc:customers>
     </section>
     <section>
-        <vc:technicians page="(int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians]">
-
-        </vc:technicians>
+        <vc:technicians page="(int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians]"></vc:technicians>
+    </section>
+</div>
+<div class="d-flex justify-content-around">
+    <section>
+        <vc:pending-repair-tasks page="(int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForPendingRepairTasks]"></vc:pending-repair-tasks>
     </section>
 </div>

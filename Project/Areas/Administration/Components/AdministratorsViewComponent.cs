@@ -21,13 +21,12 @@ namespace Project.Areas.Administration.Components
             this.mapper = mapper;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int? page) {
+        public async Task<IViewComponentResult> InvokeAsync(int page) {
             try {
-                int pageNumber = page ?? 1;
                 AdministratorViewModel[] allAdmins = this.mapper
                     .ProjectTo<AdministratorViewModel>(await this.userService.GetAllUsersWithAGivenRoleAsync(StringConstants.AdminUserRole))
                     .ToArray();
-                IPagedList<AdministratorViewModel> adminsToDisplayOnPage = allAdmins.ToPagedList(pageNumber, IntegerConstants.ItemsPerPage);
+                IPagedList<AdministratorViewModel> adminsToDisplayOnPage = allAdmins.ToPagedList(page, IntegerConstants.ItemsPerPage);
                 return this.View(adminsToDisplayOnPage);
             }
             catch {

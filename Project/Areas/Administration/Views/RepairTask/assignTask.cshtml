@@ -1,0 +1,14 @@
+﻿@model AvailableTechniciansForRepairTaskViewModel
+<form method="post"
+      asp-action="@StringConstants.ActionNameAssignTask"
+      asp-controller="@StringConstants.RepairTaskControllerName"
+      asp-area="@StringConstants.AreaNameAdministration"
+      asp-route-id="@Model.TaskId">
+    <select multiple asp-for="@Model.SelectedTechnicians">
+        @foreach (var technician in Model.AvailableTechnicinsName) {
+            <option value="@technician" asp-for="@Model.SelectedTechnicians">@technician</option>
+        }
+    </select>
+    <input type="submit" class="btn btn-primary" />
+</form>
+

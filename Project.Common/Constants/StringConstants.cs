@@ -4,12 +4,13 @@
     {
         //TempData keys
         public const string TempDataKeyHoldingUserRole = "UserRole";
-        public const string TempDataKeyHoldingNumberOfMaximumPagesForAdministrators = "MaximumPagesForAdministrators";
+        //public const string TempDataKeyHoldingNumberOfMaximumPagesForAdministrators = "MaximumPagesForAdministrators";
         public const string TempDataKeyHoldingThePageNumberForAdministrators = "PageForAdministrators";
-        public const string TempDataKeyHoldingNumberOfMaximumPagesForCustomers = "MaximumPagesForCustomers";
+        //public const string TempDataKeyHoldingNumberOfMaximumPagesForCustomers = "MaximumPagesForCustomers";
         public const string TempDataKeyHoldingThePageNumberForCustomers = "PageForCustomers";
-        public const string TempDataKeyHoldingNumberOfMaximumPagesForTechnicians = "MaximumPagesForTechnicians";
+        //public const string TempDataKeyHoldingNumberOfMaximumPagesForTechnicians = "MaximumPagesForTechnicians";
         public const string TempDataKeyHoldingThePageNumberForTechnicians = "PageForTechnicians";
+        public const string TempDataKeyHoldingThePageNumberForPendingRepairTasks = "PageForPendingRepairTasks";
 
         //Error messages
         public const string WrongUsernameOrPasswordErrorMessage = "Wrong Username or Password";
@@ -28,6 +29,7 @@
         public const string ActionNameOrderPart = "order";
         public const string ActionNameOrderDetails = "order-details";
         public const string ActionNameCreateRepairTask = "create-repair-task";
+        public const string ActionNameAssignTask = "assign-repair-task";
 
         //Controller names string representation
         public const string HomeControllerName = "Home";
@@ -64,5 +66,6 @@
         public const string ViewComponentAdministratorsName = "Administrators";
         public const string ViewComponentCustomersName = "Customers";
         public const string ViewComponentTechniciansName = "Technicians";
+        public const string ViewComponentPendingRepairTasks = "PendingRepairTasks";
     }
 }

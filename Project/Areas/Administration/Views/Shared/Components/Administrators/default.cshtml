@@ -6,8 +6,9 @@
     <div>@item.Username</div>
 }
 
-@Html.PagedListPager(Model, page => Url.Action("Index", "Home", new {
+@Html.PagedListPager(Model, page => Url.Action(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new {
     adminsPage = page,
-    customersPage = (int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForCustomers],
-    techniciansPage = (int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians]
+    customersPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForCustomers],
+    techniciansPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians],
+    pendingRepairTasks = TempData[StringConstants.TempDataKeyHoldingThePageNumberForPendingRepairTasks]
 }))

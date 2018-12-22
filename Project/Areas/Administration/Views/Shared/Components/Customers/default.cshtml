@@ -3,8 +3,9 @@
 @foreach (var customer in Model) {
     <div>@customer.Username</div>
 }
-@Html.PagedListPager(Model, page => Url.Action("Index", "Home", new {
-    adminsPage = (int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForAdministrators],
+@Html.PagedListPager(Model, page => Url.Action(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new {
+    adminsPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForAdministrators],
     customersPage = page,
-    techniciansPage = (int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians]
+    techniciansPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians],
+    pendingRepairTasks = TempData[StringConstants.TempDataKeyHoldingThePageNumberForPendingRepairTasks]
 }))

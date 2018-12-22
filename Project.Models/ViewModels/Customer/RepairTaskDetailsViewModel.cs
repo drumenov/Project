@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Project.Models.ViewModels.Customer
 {
-    public class RepairTaskViewModel
+    public class RepairTaskDetailsViewModel
     {
         public ICollection<Part> PartsRequired { get; set; }
 

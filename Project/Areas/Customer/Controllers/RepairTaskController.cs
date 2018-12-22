@@ -51,7 +51,7 @@ namespace Project.Areas.Customer.Controllers
         [Route("customer/[controller]/repair-task-details/{id}")]
         public IActionResult RepairTaskDetails(int id) {
             RepairTask repairTask = this.repairTaskService.GetById(id);
-            RepairTaskViewModel repairTaskViewModel = this.mapper.Map<RepairTaskViewModel>(repairTask);
+            RepairTaskDetailsViewModel repairTaskViewModel = this.mapper.Map<RepairTaskDetailsViewModel>(repairTask);
             return this.View(repairTaskViewModel);
         }
     }

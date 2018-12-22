@@ -1,0 +1,21 @@
+﻿@model X.PagedList.PagedList<RepairTaskSimpleInfoViewModel>
+
+@foreach (var order in Model) {
+    <div>
+        @order.Username
+        <a class="btn btn-primary" 
+            asp-action="@StringConstants.ActionNameAssignTask" 
+            asp-controller="@StringConstants.RepairTaskControllerName" 
+            asp-area="@StringConstants.AreaNameAdministration" 
+            asp-route-id="@order.Id">
+                Assign Task
+        </a>
+    </div>
+}
+
+@Html.PagedListPager(Model, page => Url.Action(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new {
+    adminsPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForAdministrators],
+    customersPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForCustomers],
+    techniciansPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians],
+    pendingRepairTasks = page
+}))

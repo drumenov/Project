@@ -55,6 +55,7 @@ namespace Project
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IPartService, PartService>();
             services.AddScoped<IRepairTaskService, RepairTaskService>();
+            services.AddScoped<ITechnicianService, TechnicianService>();
 
             services.AddAutoMapper(config => {
                 config.CreateMap<CreateAdministratorInputModel, User>();
@@ -64,8 +65,10 @@ namespace Project
                     .ForMember(dest => dest.UserName, src => src.MapFrom(s => s.Name));
                 config.CreateMap<Order, OrderViewModel>()
                     .ForMember(dest => dest.Username, src => src.MapFrom(s => s.User.UserName));
-                config.CreateMap<RepairTask, RepairTaskViewModel>()
+                config.CreateMap<RepairTask, RepairTaskDetailsViewModel>()
                     .ForMember(dest => dest.Technicians, src => src.MapFrom(s => s.Technicians.SelectMany(t => t.Expert.UserName)));
+                config.CreateMap<RepairTask, Models.ViewModels.Administration.RepairTaskSimpleInfoViewModel>()
+                    .ForMember(dest => dest.Username, src => src.MapFrom(s => s.User.UserName));
             });
             services.AddAuthentication().AddCookie();
             services.AddMvc(options => {

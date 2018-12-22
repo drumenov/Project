@@ -90,7 +90,7 @@ namespace Project.Areas.Administration.Controllers
             if (!success) {
                 throw new ApplicationException();
             }
-            return this.RedirectToAction(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new { area = StringConstants.AreaNameAdministration });
+            return this.RedirectToAction(StringConstants.ActionNameIndex, StringConstants.HomeControllerName);
         }
     }
 }
