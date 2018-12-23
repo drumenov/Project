@@ -1,5 +1,7 @@
 ﻿@model X.PagedList.PagedList<RepairTaskSimpleInfoViewModel>
 
+<h1 class="text-center text-danger">Pending Repair Tasks View Component</h1>
+
 @foreach (var order in Model) {
     <div>
         @order.Username
@@ -17,5 +19,7 @@
     adminsPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForAdministrators],
     customersPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForCustomers],
     techniciansPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians],
-    pendingRepairTasks = page
+    pendingRepairTasks = page,
+    workedOnRepairTasksPage = TempData[StringConstants.TempDataKeyHoldingThePageForWorkedOnRepairTasks],
+    finishedRepairTasksPage = TempData[StringConstants.TempDataKeyHoldingThePageForFinishedRepairTasks]
 }))

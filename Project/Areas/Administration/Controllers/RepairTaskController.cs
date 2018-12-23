@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Project.Areas.Administration.Controllers.Base;
 using Project.Common.Constants;
+using Project.Models.Entities;
+using Project.Models.InputModels.Administration;
 using Project.Models.ViewModels.Administration;
 using Project.Services.Contracts;
 using System;
@@ -14,10 +16,12 @@ namespace Project.Areas.Administration.Controllers
     public class RepairTaskController : BaseController
     {
         private readonly ITechnicianService technicianService;
+        private readonly IRepairTaskService repairTaskService;
 
         public RepairTaskController(ITechnicianService technicianService,
-            IMapper mapper) {
+            IRepairTaskService repairTaskService) {
             this.technicianService = technicianService;
+            this.repairTaskService = repairTaskService;
         }
 
         [HttpGet]

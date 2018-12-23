@@ -14,11 +14,14 @@ namespace Project.Services
     {
         private readonly ApplicationDbContext dbContext;
         private readonly UserManager<User> userManager;
+        private readonly IRepairTaskService repairTaskService;
 
         public TechnicianService(ApplicationDbContext dbContext,
-            UserManager<User> userManager) {
+            UserManager<User> userManager,
+            IRepairTaskService repairTaskService) {
             this.dbContext = dbContext;
             this.userManager = userManager;
+            this.repairTaskService = repairTaskService;
         }
 
         public async Task AddTechniciansToRepairTaskAsync(ICollection<string> availableTechniciansName, int taskId) {
@@ -28,9 +31,12 @@ namespace Project.Services
                     .UsersRepairsTasks
                     .Add(new UserRepairTask {
                         RepairTaskId = taskId,
-                        UserId = user.Id
+                        UserId = user.Id,
+                        IsFinished = false,
                     });
             }
+            RepairTask repairTask = this.repairTaskService.GetById(taskId);
+            repairTask.Status = Models.Enums.Status.WorkedOn;
             if(await this.dbContext.SaveChangesAsync() == 0) {
                 throw new ApplicationException();
             }

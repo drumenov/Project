@@ -1,5 +1,7 @@
 ﻿@model X.PagedList.PagedList<CustomerViewModel>
 
+<h1 class="text-danger text-center">Customer's View Component</h1>
+
 @foreach (var customer in Model) {
     <div>@customer.Username</div>
 }
@@ -7,5 +9,7 @@
     adminsPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForAdministrators],
     customersPage = page,
     techniciansPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians],
-    pendingRepairTasks = TempData[StringConstants.TempDataKeyHoldingThePageNumberForPendingRepairTasks]
+    pendingRepairTasks = TempData[StringConstants.TempDataKeyHoldingThePageNumberForPendingRepairTasks],
+    workedOnRepairTasksPage = TempData[StringConstants.TempDataKeyHoldingThePageForWorkedOnRepairTasks],
+    finishedRepairTasksPage = TempData[StringConstants.TempDataKeyHoldingThePageForFinishedRepairTasks]
 }))

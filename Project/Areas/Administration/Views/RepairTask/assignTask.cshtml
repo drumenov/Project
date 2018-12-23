@@ -4,11 +4,11 @@
       asp-controller="@StringConstants.RepairTaskControllerName"
       asp-area="@StringConstants.AreaNameAdministration"
       asp-route-id="@Model.TaskId">
-    <select multiple asp-for="@Model.SelectedTechnicians">
+    <select asp-for="@Model.SelectedTechnicians" multiple>
         @foreach (var technician in Model.AvailableTechnicinsName) {
-            <option value="@technician" asp-for="@Model.SelectedTechnicians">@technician</option>
+            <option value="@technician">@technician</option>
         }
-    </select>
-    <input type="submit" class="btn btn-primary" />
+        </select>
+        <input type="submit" class="btn btn-primary" />
 </form>
 

@@ -12,5 +12,11 @@ namespace Project.Services.Contracts
         RepairTask GetById(int id);
 
         IQueryable<RepairTask> GetAllPending();
+
+        IQueryable<RepairTask> GetAllWorkedByATechnician(string technicianId);
+
+        IQueryable<RepairTask> GetAllWorkedOn();
+
+        IQueryable<RepairTask> GetAllFinishedRepairTasks();
     }
 }

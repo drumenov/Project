@@ -7,5 +7,7 @@
 
         public int RepairTaskId { get; set; }
         public virtual RepairTask RepairTask { get; set; }
+
+        public bool IsFinished { get; set; }
     }
 }

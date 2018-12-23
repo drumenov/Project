@@ -1,4 +1,5 @@
-﻿using Project.Data;
+﻿using Microsoft.AspNetCore.Identity;
+using Project.Data;
 using Project.Models.Entities;
 using Project.Models.InputModels.Customer;
 using Project.Services.Contracts;
@@ -11,9 +12,12 @@ namespace Project.Services
     public class RepairTaskService : IRepairTaskService
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly UserManager<User> userManager;
 
-        public RepairTaskService(ApplicationDbContext dbContext) {
+        public RepairTaskService(ApplicationDbContext dbContext,
+            UserManager<User> userManager) {
             this.dbContext = dbContext;
+            this.userManager = userManager;
         }
 
         public async Task<int> CreateRepairTaskAsync(RepairTaskInputModel repairTaskInputModel, User user) {
@@ -64,6 +68,30 @@ namespace Project.Services
             return this.dbContext
                 .RepairTask
                 .Where(t => t.Status == Models.Enums.Status.Pending);
+        }
+
+        public IQueryable<RepairTask> GetAllWorkedByATechnician(string technicianName) {
+            return this.dbContext
+                .UsersRepairsTasks
+                .Where(userRepairTask => userRepairTask.UserId == this.userManager
+                                                                    .FindByNameAsync(technicianName)
+                                                                    .GetAwaiter()
+                                                                    .GetResult()
+                                                                    .Id)
+                .Select(technician => technician.RepairTask);
+        }
+
+        public IQueryable<RepairTask> GetAllWorkedOn() {
+            return this.dbContext
+                .RepairTask
+                .Where(repairTask => repairTask.Status == Models.Enums.Status.WorkedOn);
+        }
+
+        public IQueryable<RepairTask> GetAllFinishedRepairTasks() {
+            return this.dbContext
+                .UsersRepairsTasks
+                .Where(usersRepairsTasks => usersRepairsTasks.RepairTask.Status == Models.Enums.Status.Finished)
+                .Select(filteredRepairTasks => filteredRepairTasks.RepairTask);
         }
     }
 }

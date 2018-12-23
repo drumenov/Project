@@ -1,6 +1,6 @@
 ﻿<h1 class="mt-5 text-center">Hello Administrator - @User.Identity.Name</h1>
-<div class="d-flex justify-content-around">
-    <section class="mt-5">
+<div class="d-flex justify-content-around mt-5">
+    <section>
         <vc:administrators page="(int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForAdministrators]"></vc:administrators>
     </section>
     <section>
@@ -10,8 +10,14 @@
         <vc:technicians page="(int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians]"></vc:technicians>
     </section>
 </div>
-<div class="d-flex justify-content-around">
+<div class="d-flex justify-content-around mt-5">
     <section>
         <vc:pending-repair-tasks page="(int)TempData[StringConstants.TempDataKeyHoldingThePageNumberForPendingRepairTasks]"></vc:pending-repair-tasks>
+    </section>
+    <section>
+        <vc:worked-on-repair-tasks page="(int)TempData[StringConstants.TempDataKeyHoldingThePageForWorkedOnRepairTasks]"></vc:worked-on-repair-tasks>
+    </section>
+    <section>
+        <vc:finished-repair-tasks page="(int)TempData[StringConstants.TempDataKeyHoldingThePageForFinishedRepairTasks]"></vc:finished-repair-tasks>
     </section>
 </div>

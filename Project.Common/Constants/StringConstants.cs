@@ -11,6 +11,8 @@
         //public const string TempDataKeyHoldingNumberOfMaximumPagesForTechnicians = "MaximumPagesForTechnicians";
         public const string TempDataKeyHoldingThePageNumberForTechnicians = "PageForTechnicians";
         public const string TempDataKeyHoldingThePageNumberForPendingRepairTasks = "PageForPendingRepairTasks";
+        public const string TempDataKeyHoldingThePageForWorkedOnRepairTasks = "PageForWorkedOnRepairTasks";
+        public const string TempDataKeyHoldingThePageForFinishedRepairTasks = "PageForFinishedRepairTasks";
 
         //Error messages
         public const string WrongUsernameOrPasswordErrorMessage = "Wrong Username or Password";
@@ -56,6 +58,7 @@
                                                                 for the initial login process. Also for proper naming for the technicians roles 
                                                                 (i.e. when the technician is a novice, the role is NoviceTechnician - a simple concatenation).*/
         public const string UserRolesThatAreAuthorisedToUseTheCustomerArea = "Customer, Corporate Customer";
+        public const string UserRolesThatAreAuthorisedToUseTheTechnicianArea = "NoviceTechnician, AverageTechnician, AdvancedTechnician, ExpertTechnician";
 
         //Custom View names
         public const string CreateAdministratorViewName = "create-admin";
@@ -67,5 +70,8 @@
         public const string ViewComponentCustomersName = "Customers";
         public const string ViewComponentTechniciansName = "Technicians";
         public const string ViewComponentPendingRepairTasks = "PendingRepairTasks";
+        public const string ViewComponentWorkedOn = "WorkedOn";
+        public const string ViewComponentWorkedOnRepairTasks = "WorkedOnRepairTasks";
+        public const string ViewComponentFinishedRepairTasks = "FinishedRepairTasks";
     }
 }
