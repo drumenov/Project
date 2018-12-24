@@ -45,7 +45,10 @@ namespace Project.Areas.Customer.Controllers
             User user = await this.userManager.FindByNameAsync(this.User.Identity.Name);
             int repairTaskId = await this.repairTaskService.CreateRepairTaskAsync(repairTaskInputModel, user);
             return this.RedirectToAction("repair-task-details", new { id = repairTaskId}); //TODO: Redirect to a detailed view of the order.
-        }
+        } /*TODO: Check if all types of parts exists 
+                                                                                                         in DB and only then create the RepairTask 
+                                                                                                         object. Otherwise, the part is created and 
+                                                                                                         added in the DB - unwanted behavior*/
 
         [HttpGet]
         [Route("customer/[controller]/repair-task-details/{id}")]

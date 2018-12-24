@@ -1,1 +1,12 @@
 ﻿<h1>Hello, I am @User.Identity.Name</h1>
+<div class="d-flex justify-content-around">
+    <section>
+        <vc:a-customer-pending-repair-tasks page="(int)TempData[StringConstants.TempDataKeyHoldingThePageForPendingRepairTasksPerCustomer]"></vc:a-customer-pending-repair-tasks>
+    </section>
+    <section>
+        <vc:a-customer-worked-on-repair-tasks page="(int)TempData[StringConstants.TempDataKeyHoldingThePageForWorkedOnRepairTasksPerCustomer]"></vc:a-customer-worked-on-repair-tasks>
+    </section>
+    <section>
+        <vc:a-customer-finished-repair-tasks page="(int)TempData[StringConstants.TempDataKeyHoldingThePageforFinishedRepairTasksPerCustomer]"></vc:a-customer-finished-repair-tasks>
+    </section>
+</div>

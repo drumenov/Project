@@ -1,1 +1,8 @@
-﻿<vc:worked-on page=(int)TempData[StringConstants.TempDataKeyHoldingThePageForWorkedOnRepairTasks]></vc:worked-on>
+﻿<div class="d-flex justify-content-around">
+    <section>
+        <vc:worked-on-repair-tasks-by-technician page=(int)TempData[StringConstants.TempDataKeyHoldingThePageForWorkedOnRepairTasks]></vc:worked-on-repair-tasks-by-technician>
+    </section>
+    <section>
+        <vc:technician-finished-repair-tasks page="(int)TempData[StringConstants.TempDataKeyHoldingThePageForFinishedRepairTasksByTechnician]"></vc:technician-finished-repair-tasks>
+    </section>
+</div>

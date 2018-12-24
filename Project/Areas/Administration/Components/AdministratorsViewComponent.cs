@@ -9,7 +9,7 @@ using X.PagedList;
 
 namespace Project.Areas.Administration.Components
 {
-    [ViewComponent(Name = StringConstants.ViewComponentAdministratorsName)]
+    [ViewComponent(Name = StringConstants.ViewComponentAllAdministratorsNames)]
     public class AdministratorsViewComponent : ViewComponent
     {
         private readonly IUserService userService;

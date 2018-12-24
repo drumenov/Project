@@ -59,6 +59,12 @@ namespace Project.Services
             return availableTechnicians;
         }
 
-        
+        public IQueryable<RepairTask> GetAllFinishedRepairTaskPerTechnician(string technicianName) {
+            string technicianId = this.userManager.FindByNameAsync(technicianName).GetAwaiter().GetResult().Id;
+            return this.dbContext
+                .UsersRepairsTasks
+                .Where(userRepairTask => userRepairTask.UserId == technicianId && userRepairTask.IsFinished)
+                .Select(finishedRepairTasksByTechnician => finishedRepairTasksByTechnician.RepairTask);
+        }
     }
 }

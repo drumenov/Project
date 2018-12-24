@@ -9,7 +9,7 @@ using X.PagedList;
 
 namespace Project.Areas.Administration.Components
 {
-    [ViewComponent(Name = StringConstants.ViewComponentWorkedOnRepairTasks)]
+    [ViewComponent(Name = StringConstants.ViewComponentAllWorkedOnRepairTasks)]
     public class WorkedOnRepairTasksViewComponent : ViewComponent
     {
         private readonly IRepairTaskService repairTaskService;

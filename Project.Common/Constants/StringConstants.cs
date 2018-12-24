@@ -12,7 +12,12 @@
         public const string TempDataKeyHoldingThePageNumberForTechnicians = "PageForTechnicians";
         public const string TempDataKeyHoldingThePageNumberForPendingRepairTasks = "PageForPendingRepairTasks";
         public const string TempDataKeyHoldingThePageForWorkedOnRepairTasks = "PageForWorkedOnRepairTasks";
+        public const string TempDataKeyHoldingThePageForWorkedOnRepairTasksByTechnician = "PageForWorkedOnRepairTasksByTechnician";
         public const string TempDataKeyHoldingThePageForFinishedRepairTasks = "PageForFinishedRepairTasks";
+        public const string TempDataKeyHoldingThePageForFinishedRepairTasksByTechnician = "PageForFinishedRepairTasksByTechnician";
+        public const string TempDataKeyHoldingThePageForPendingRepairTasksPerCustomer = "PageForPendingRepairTasksPerCustomer";
+        public const string TempDataKeyHoldingThePageForWorkedOnRepairTasksPerCustomer = "PageForWorkedOnRepairTasksPerCustomer";
+        public const string TempDataKeyHoldingThePageforFinishedRepairTasksPerCustomer = "PageForFinishedRepairTasksPerCustomer";
 
         //Error messages
         public const string WrongUsernameOrPasswordErrorMessage = "Wrong Username or Password";
@@ -32,6 +37,7 @@
         public const string ActionNameOrderDetails = "order-details";
         public const string ActionNameCreateRepairTask = "create-repair-task";
         public const string ActionNameAssignTask = "assign-repair-task";
+        public const string ActionNameDoMagic = "technician-does-magic";
 
         //Controller names string representation
         public const string HomeControllerName = "Home";
@@ -66,12 +72,16 @@
         public const string CreateTechnicianViewName = "create-technician";
 
         //View Components names
-        public const string ViewComponentAdministratorsName = "Administrators";
-        public const string ViewComponentCustomersName = "Customers";
-        public const string ViewComponentTechniciansName = "Technicians";
-        public const string ViewComponentPendingRepairTasks = "PendingRepairTasks";
-        public const string ViewComponentWorkedOn = "WorkedOn";
-        public const string ViewComponentWorkedOnRepairTasks = "WorkedOnRepairTasks";
-        public const string ViewComponentFinishedRepairTasks = "FinishedRepairTasks";
+        public const string ViewComponentAllAdministratorsNames = "Administrators";
+        public const string ViewComponentAllCustomersNames = "Customers";
+        public const string ViewComponentAllTechniciansNames = "Technicians";
+        public const string ViewComponentAllPendingRepairTasks = "AllPendingRepairTasks";
+        public const string ViewComponentWorkedOnRepairsTaskByTechnician = "WorkedOnRepairTasksByTechnician";
+        public const string ViewComponentAllWorkedOnRepairTasks = "AllWorkedOnRepairTasks";
+        public const string ViewComponentAllFinishedRepairTasks = "AllFinishedRepairTasks";
+        public const string ViewComponentFinishedRepairTasksByTechnician = "TechnicianFinishedRepairTasks";
+        public const string ViewComponentCustomerPendingRepairTasks = "ACustomerPendingRepairTasks";
+        public const string ViewComponentCustomerWorkedOnRepairTasks = "ACustomerWorkedOnRepairTasks";
+        public const string ViewComponentCustomerFinishedRepairTasks = "ACustomerFinishedRepairTasks";
     }
 }

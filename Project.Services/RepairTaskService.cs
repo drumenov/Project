@@ -71,13 +71,10 @@ namespace Project.Services
         }
 
         public IQueryable<RepairTask> GetAllWorkedByATechnician(string technicianName) {
+            string technicianId = this.userManager.FindByNameAsync(technicianName).GetAwaiter().GetResult().Id;
             return this.dbContext
                 .UsersRepairsTasks
-                .Where(userRepairTask => userRepairTask.UserId == this.userManager
-                                                                    .FindByNameAsync(technicianName)
-                                                                    .GetAwaiter()
-                                                                    .GetResult()
-                                                                    .Id)
+                .Where(userRepairTask => userRepairTask.UserId == technicianId && userRepairTask.IsFinished == false)
                 .Select(technician => technician.RepairTask);
         }
 
@@ -87,11 +84,60 @@ namespace Project.Services
                 .Where(repairTask => repairTask.Status == Models.Enums.Status.WorkedOn);
         }
 
-        public IQueryable<RepairTask> GetAllFinishedRepairTasks() {
+        public IQueryable<RepairTask> GetAllFinished() {
             return this.dbContext
                 .UsersRepairsTasks
                 .Where(usersRepairsTasks => usersRepairsTasks.RepairTask.Status == Models.Enums.Status.Finished)
                 .Select(filteredRepairTasks => filteredRepairTasks.RepairTask);
+        }
+
+        public async Task<IQueryable<RepairTask>> GetPendingPerCustomerAsync(string customerName) {
+            Guid customerId = Guid.Parse(this.userManager.FindByNameAsync(customerName).GetAwaiter().GetResult().Id);
+            return this.dbContext
+                .RepairTask
+                .Where(repairTask => repairTask.UserId == customerId);
+        }
+
+        public async Task<IQueryable<RepairTask>> GetWorkedOnPerCustomerAsync(string customerName) {
+            Guid customerId = Guid.Parse(this.userManager.FindByNameAsync(customerName).GetAwaiter().GetResult().Id);
+            return this.dbContext
+                .RepairTask
+                .Where(repairTask => repairTask.UserId == customerId && repairTask.Status == Models.Enums.Status.WorkedOn);
+
+        }
+
+        public async Task<IQueryable<RepairTask>> GetFinishedPerCustomerAsync(string customerName) {
+            Guid customerId = Guid.Parse(this.userManager.FindByNameAsync(customerName).GetAwaiter().GetResult().Id);
+            return this.dbContext
+                .RepairTask
+                .Where(repairTask => repairTask.UserId == customerId && repairTask.Status == Models.Enums.Status.Finished);
+        }
+
+        public async Task TechnicianCompletesARepairTaskAsync(int repairTaskId, string technicianName) {
+            string technicianId = this.userManager.FindByNameAsync(technicianName).GetAwaiter().GetResult().Id;
+            this.dbContext
+                .UsersRepairsTasks
+                .Where(userRepairTask => userRepairTask.UserId == technicianId && userRepairTask.RepairTaskId == repairTaskId)
+                .FirstOrDefault().IsFinished = true;
+            
+            if(await this.dbContext.SaveChangesAsync() == 0) {
+                throw new ApplicationException();
+            }
+            await TryCompoleteRepairTaskAsync(repairTaskId);
+        }
+
+        private async Task TryCompoleteRepairTaskAsync(int repairTaskId) {
+            if(this.dbContext
+                .UsersRepairsTasks
+                .All(userRepairTask => userRepairTask.IsFinished)) {
+                this.dbContext
+                    .RepairTask
+                    .FirstOrDefault(repairTask => repairTask.Id == repairTaskId)
+                    .Status = Models.Enums.Status.Finished;
+                if(await this.dbContext.SaveChangesAsync() == 0) {
+                    throw new ApplicationException();
+                }
+            }
         }
     }
 }

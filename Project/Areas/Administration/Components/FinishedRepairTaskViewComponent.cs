@@ -9,7 +9,7 @@ using X.PagedList;
 
 namespace Project.Areas.Administration.Components
 {
-    [ViewComponent(Name = StringConstants.ViewComponentFinishedRepairTasks)]
+    [ViewComponent(Name = StringConstants.ViewComponentAllFinishedRepairTasks)]
     public class FinishedRepairTaskViewComponent : ViewComponent
     {
         private readonly IRepairTaskService repairTaskService;
@@ -24,7 +24,7 @@ namespace Project.Areas.Administration.Components
         public async Task<IViewComponentResult> InvokeAsync(int page) {
             RepairTaskViewModel[] allFinishedRepairTasks = this.mapper
                                                                 .ProjectTo<RepairTaskViewModel>(this.repairTaskService
-                                                                                                        .GetAllFinishedRepairTasks())
+                                                                                                        .GetAllFinished())
                                                                 .ToArray();
             IPagedList<RepairTaskViewModel> finishedRepairTasksToDisplay = allFinishedRepairTasks.ToPagedList(page, IntegerConstants.ItemsPerPage);
             return this.View(finishedRepairTasksToDisplay);

@@ -17,6 +17,14 @@ namespace Project.Services.Contracts
 
         IQueryable<RepairTask> GetAllWorkedOn();
 
-        IQueryable<RepairTask> GetAllFinishedRepairTasks();
+        IQueryable<RepairTask> GetAllFinished();
+
+        Task<IQueryable<RepairTask>> GetPendingPerCustomerAsync(string customerName);
+
+        Task<IQueryable<RepairTask>> GetWorkedOnPerCustomerAsync(string customerName);
+
+        Task<IQueryable<RepairTask>> GetFinishedPerCustomerAsync(string customerName);
+
+        Task TechnicianCompletesARepairTaskAsync(int repairTaskId, string technicianName);
     }
 }

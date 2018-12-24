@@ -11,7 +11,7 @@ using X.PagedList;
 
 namespace Project.Areas.Technician.Components
 {
-    [ViewComponent(Name = StringConstants.ViewComponentWorkedOn)]
+    [ViewComponent(Name = StringConstants.ViewComponentWorkedOnRepairsTaskByTechnician)]
     public class WorkedOnRepairTasksViewComponent : ViewComponent
     {
         private readonly UserManager<User> userManager;

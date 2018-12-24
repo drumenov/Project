@@ -1,0 +1,11 @@
+﻿@model X.PagedList.PagedList<RepairTaskViewModel>
+
+<h1 class="text-danger text-center">Here be Technician's Finished Repair Tasks</h1>
+@foreach(var finishedRepairTask in Model) {
+    <div>@finishedRepairTask.Id</div>
+}
+
+@Html.PagedListPager(Model, page => Url.Action(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new {
+    workedOnRepairTasksByTechnicianPage = TempData[StringConstants.TempDataKeyHoldingThePageForWorkedOnRepairTasksByTechnician],
+    finishedRepairTasksByTechnicianPage = page
+}))

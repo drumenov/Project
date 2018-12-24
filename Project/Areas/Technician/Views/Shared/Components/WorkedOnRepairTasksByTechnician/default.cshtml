@@ -1,0 +1,17 @@
+﻿@model X.PagedList.PagedList<RepairTaskViewModel>
+
+@foreach(var repairTask in Model) {
+<form method="post"
+        asp-action="@StringConstants.ActionNameDoMagic"
+        asp-controller="@StringConstants.RepairTaskControllerName"
+        asp-area="@StringConstants.AreaNameTechnician"
+        asp-route-id="@repairTask.Id">
+    <div>Assigned task Id: @repairTask.Id</div>
+    <input type="submit" class="btn btn-primary" value="Do Magic" />
+</form>
+}
+
+@Html.PagedListPager(Model, page => Url.Action(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new {
+    workedOnRepairTasksByTechnicianPage = page,
+    finishedRepairTasksByTechnicianPage = TempData[StringConstants.TempDataKeyHoldingThePageForFinishedRepairTasksByTechnician]
+}))
