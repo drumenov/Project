@@ -26,5 +26,7 @@ namespace Project.Services.Contracts
         Task<IQueryable<RepairTask>> GetFinishedPerCustomerAsync(string customerName);
 
         Task TechnicianCompletesARepairTaskAsync(int repairTaskId, string technicianName);
+
+        IQueryable<User> GetTechniciansHavingWorkedOnARepairTask(int repairTaskId);
     }
 }

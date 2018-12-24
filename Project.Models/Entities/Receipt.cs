@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Project.Models.Entities
 {
     public class Receipt
     {
+        public Receipt() {
+            this.ExpertsHavingWorkedOnRepairTask = new HashSet<ExpertReceipt>();
+        }
+
         public int Id { get; set; }
 
         public string UserId { get; set; }

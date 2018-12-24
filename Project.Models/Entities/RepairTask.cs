@@ -13,7 +13,7 @@ namespace Project.Models.Entities
 
         public int Id { get; set; }
 
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         public virtual User User { get; set; }
 
         public virtual ICollection<UserRepairTask> Technicians { get; set; }

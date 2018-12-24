@@ -13,19 +13,26 @@ namespace Project.Services
     {
         private readonly ApplicationDbContext dbContext;
         private readonly UserManager<User> userManager;
+        private readonly IPartService partService;
 
         public RepairTaskService(ApplicationDbContext dbContext,
-            UserManager<User> userManager) {
+            UserManager<User> userManager,
+            IPartService partService) {
             this.dbContext = dbContext;
             this.userManager = userManager;
+            this.partService = partService;
         }
 
         public async Task<int> CreateRepairTaskAsync(RepairTaskInputModel repairTaskInputModel, User user) {
+
             RepairTask repairTask = new RepairTask {
                 Status = Models.Enums.Status.Pending,
                 User = user
             };
             if (repairTaskInputModel.IsCarBodyPart) {
+                if(this.partService.PartTypeExists(Models.Enums.PartType.CarBody) == false) {
+                    throw new ArgumentNullException();
+                }
                 Part part = new Part {
                     Quantity = repairTaskInputModel.CarBodyPartAmount,
                     Type = Models.Enums.PartType.CarBody
@@ -33,6 +40,9 @@ namespace Project.Services
                 repairTask.PartsRequired.Add(part);
             }
             if (repairTaskInputModel.IsChassisPart) {
+                if (this.partService.PartTypeExists(Models.Enums.PartType.CarBody) == false) {
+                    throw new ArgumentNullException();
+                }
                 Part part = new Part {
                     Type = Models.Enums.PartType.Chassis,
                     Quantity = repairTaskInputModel.ChassisPartAmount
@@ -40,6 +50,9 @@ namespace Project.Services
                 repairTask.PartsRequired.Add(part);
             }
             if (repairTaskInputModel.IsElectronicPart) {
+                if (this.partService.PartTypeExists(Models.Enums.PartType.CarBody) == false) {
+                    throw new ArgumentNullException();
+                }
                 Part part = new Part {
                     Type = Models.Enums.PartType.Electronic,
                     Quantity = repairTaskInputModel.ElectronicPartAmount
@@ -47,6 +60,9 @@ namespace Project.Services
                 repairTask.PartsRequired.Add(part);
             }
             if (repairTaskInputModel.IsInteriorPart) {
+                if (this.partService.PartTypeExists(Models.Enums.PartType.CarBody) == false) {
+                    throw new ArgumentNullException();
+                }
                 Part part = new Part {
                     Type = Models.Enums.PartType.Interior,
                     Quantity = repairTaskInputModel.InteriorPartAmount
@@ -92,14 +108,14 @@ namespace Project.Services
         }
 
         public async Task<IQueryable<RepairTask>> GetPendingPerCustomerAsync(string customerName) {
-            Guid customerId = Guid.Parse(this.userManager.FindByNameAsync(customerName).GetAwaiter().GetResult().Id);
+            string customerId = this.userManager.FindByNameAsync(customerName).GetAwaiter().GetResult().Id;
             return this.dbContext
                 .RepairTask
                 .Where(repairTask => repairTask.UserId == customerId);
         }
 
         public async Task<IQueryable<RepairTask>> GetWorkedOnPerCustomerAsync(string customerName) {
-            Guid customerId = Guid.Parse(this.userManager.FindByNameAsync(customerName).GetAwaiter().GetResult().Id);
+            string customerId = this.userManager.FindByNameAsync(customerName).GetAwaiter().GetResult().Id;
             return this.dbContext
                 .RepairTask
                 .Where(repairTask => repairTask.UserId == customerId && repairTask.Status == Models.Enums.Status.WorkedOn);
@@ -108,9 +124,21 @@ namespace Project.Services
 
         public async Task<IQueryable<RepairTask>> GetFinishedPerCustomerAsync(string customerName) {
             Guid customerId = Guid.Parse(this.userManager.FindByNameAsync(customerName).GetAwaiter().GetResult().Id);
+
+            var t = this.dbContext
+                .RepairTask
+                .Where(repairTask => Guid.Parse(repairTask.User.Id) == customerId && repairTask.Status == Models.Enums.Status.Finished);
+
             return this.dbContext
                 .RepairTask
-                .Where(repairTask => repairTask.UserId == customerId && repairTask.Status == Models.Enums.Status.Finished);
+                .Where(repairTask => Guid.Parse(repairTask.User.Id) == customerId && repairTask.Status == Models.Enums.Status.Finished);
+        }
+
+        public IQueryable<User> GetTechniciansHavingWorkedOnARepairTask(int repairTaskId) {
+            return this.dbContext
+                .UsersRepairsTasks
+                .Where(userRepairTask => userRepairTask.RepairTaskId == repairTaskId)
+                .Select(filteredUserRepairTask => filteredUserRepairTask.Expert);
         }
 
         public async Task TechnicianCompletesARepairTaskAsync(int repairTaskId, string technicianName) {
@@ -137,6 +165,7 @@ namespace Project.Services
                 if(await this.dbContext.SaveChangesAsync() == 0) {
                     throw new ApplicationException();
                 }
+                //TODO: Create receipt here.
             }
         }
     }

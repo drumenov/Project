@@ -56,6 +56,7 @@ namespace Project
             services.AddScoped<IPartService, PartService>();
             services.AddScoped<IRepairTaskService, RepairTaskService>();
             services.AddScoped<ITechnicianService, TechnicianService>();
+            services.AddScoped<IReceiptService, ReceiptService>();
 
             services.AddAutoMapper(config => {
                 config.CreateMap<CreateAdministratorInputModel, User>();

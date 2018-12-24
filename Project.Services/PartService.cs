@@ -59,16 +59,11 @@ namespace Project.Services
                 return order.Id;
             }
         }
-
-        //private void IncreasePartTypeAvailableCount(PartType partType, int partAmountOrdered) {
-        //    Part part = this.GetPart(partType);
-        //    part.Quantity += partAmountOrdered;
-        //}
-
-        //private Part GetPart(PartType partType) {
-        //    return this.dbContext
-        //        .Parts
-        //        .SingleOrDefault(p => p.Type == partType);
-        //}
+        
+        public bool PartTypeExists(PartType partType) {
+            return this.dbContext
+                .Parts
+                .Any(part => part.Type == partType);
+        }
     }
 }
