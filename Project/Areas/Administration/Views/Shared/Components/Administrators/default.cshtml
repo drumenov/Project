@@ -1,16 +1,26 @@
 ﻿@model X.PagedList.PagedList<AdministratorViewModel>
+<div class="card">
+    <div class="card-header">
+        All Administrators
+    </div>
+    <div class="card-body">
+        @foreach (var appUser in Model) {
+            <p class="card-text">@appUser.Username</p>
+        }
+        @if (Model.Count != 0) {
+            @Html.PagedListPager(Model, page => Url.Action(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new {
+            adminsPage = page,
+            customersPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForCustomers],
+            techniciansPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians],
+            pendingRepairTasks = TempData[StringConstants.TempDataKeyHoldingThePageNumberForPendingRepairTasks],
+            workedOnRepairTasksPage = TempData[StringConstants.TempDataKeyHoldingThePageForWorkedOnRepairTasks],
+            finishedRepairTasksPage = TempData[StringConstants.TempDataKeyHoldingThePageForFinishedRepairTasks]}), 
+            new X.PagedList.Mvc.Common.PagedListRenderOptions {
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link" }
+            })
+         }
+    </div>
+</div>
 
-<h1 class="text-danger">Admin's View Component</h1>
 
-@foreach(var item in Model) {
-    <div>@item.Username</div>
-}
-
-@Html.PagedListPager(Model, page => Url.Action(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new {
-    adminsPage = page,
-    customersPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForCustomers],
-    techniciansPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians],
-    pendingRepairTasks = TempData[StringConstants.TempDataKeyHoldingThePageNumberForPendingRepairTasks],
-    workedOnRepairTasksPage = TempData[StringConstants.TempDataKeyHoldingThePageForWorkedOnRepairTasks],
-    finishedRepairTasksPage = TempData[StringConstants.TempDataKeyHoldingThePageForFinishedRepairTasks]
-}))

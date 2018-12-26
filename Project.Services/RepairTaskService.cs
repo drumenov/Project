@@ -40,7 +40,7 @@ namespace Project.Services
                 repairTask.PartsRequired.Add(part);
             }
             if (repairTaskInputModel.IsChassisPart) {
-                if (this.partService.PartTypeExists(Models.Enums.PartType.CarBody) == false) {
+                if (this.partService.PartTypeExists(Models.Enums.PartType.Chassis) == false) {
                     throw new ArgumentNullException();
                 }
                 Part part = new Part {
@@ -50,7 +50,7 @@ namespace Project.Services
                 repairTask.PartsRequired.Add(part);
             }
             if (repairTaskInputModel.IsElectronicPart) {
-                if (this.partService.PartTypeExists(Models.Enums.PartType.CarBody) == false) {
+                if (this.partService.PartTypeExists(Models.Enums.PartType.Electronic) == false) {
                     throw new ArgumentNullException();
                 }
                 Part part = new Part {
@@ -60,7 +60,7 @@ namespace Project.Services
                 repairTask.PartsRequired.Add(part);
             }
             if (repairTaskInputModel.IsInteriorPart) {
-                if (this.partService.PartTypeExists(Models.Enums.PartType.CarBody) == false) {
+                if (this.partService.PartTypeExists(Models.Enums.PartType.Interior) == false) {
                     throw new ArgumentNullException();
                 }
                 Part part = new Part {

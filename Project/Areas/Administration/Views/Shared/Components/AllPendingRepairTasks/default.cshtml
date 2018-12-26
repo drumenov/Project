@@ -1,25 +1,37 @@
 ﻿@model X.PagedList.PagedList<RepairTaskSimpleInfoViewModel>
 
-<h1 class="text-center text-danger">Pending Repair Tasks View Component</h1>
-
-@foreach (var order in Model) {
-    <div>
-        @order.Username
-        <a class="btn btn-primary" 
-            asp-action="@StringConstants.ActionNameAssignTask" 
-            asp-controller="@StringConstants.RepairTaskControllerName" 
-            asp-area="@StringConstants.AreaNameAdministration" 
-            asp-route-id="@order.Id">
-                Assign Task
-        </a>
+<div class="card">
+    <div class="card-header">
+        All Pending Repair Tasks to be Assigned
     </div>
-}
+    <div class="card-body">
+        @foreach (var order in Model) {
+            <p class="card-text">
+                @order.Username
+                <a class="btn btn-primary"
+                   asp-action="@StringConstants.ActionNameAssignTask"
+                   asp-controller="@StringConstants.RepairTaskControllerName"
+                   asp-area="@StringConstants.AreaNameAdministration"
+                   asp-route-id="@order.Id">
+                    Assign Task
+                </a>
+            </p>
+        }
+        @if (Model.Count != 0) {
+            @Html.PagedListPager(Model, page => Url.Action(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new {
+            adminsPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForAdministrators],
+            customersPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForCustomers],
+            techniciansPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians],
+            pendingRepairTasks = page,
+            workedOnRepairTasksPage = TempData[StringConstants.TempDataKeyHoldingThePageForWorkedOnRepairTasks],
+            finishedRepairTasksPage = TempData[StringConstants.TempDataKeyHoldingThePageForFinishedRepairTasks]
+            }), new X.PagedList.Mvc.Common.PagedListRenderOptions {
+                LiElementClasses = new string[] {"page-item"},
+                PageClasses = new string[] {"page-link"}
+            })
+         }
+    </div>
+</div>
 
-@Html.PagedListPager(Model, page => Url.Action(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new {
-    adminsPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForAdministrators],
-    customersPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForCustomers],
-    techniciansPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians],
-    pendingRepairTasks = page,
-    workedOnRepairTasksPage = TempData[StringConstants.TempDataKeyHoldingThePageForWorkedOnRepairTasks],
-    finishedRepairTasksPage = TempData[StringConstants.TempDataKeyHoldingThePageForFinishedRepairTasks]
-}))
+
+
