@@ -22,5 +22,9 @@ namespace Project.Services
                 .FirstOrDefault(o => o.Id == orderId);
             return order;
         }
+
+        public IQueryable<Order> GetAll() {
+            return this.dbContext.Orders;
+        }
     }
 }

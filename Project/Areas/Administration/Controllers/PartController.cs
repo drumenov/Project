@@ -37,7 +37,7 @@ namespace Project.Areas.Administration.Controllers
             }
             User admin = await this.userManager.FindByNameAsync(this.User.Identity.Name);
             int orderId = await this.partService.OrderPartsAsync(createPartOrderInputModel, admin);
-            return this.RedirectToAction(StringConstants.ActionNameOrderDetails, StringConstants.OrderControllerName, new { id = orderId });
+            return this.RedirectToAction(StringConstants.ActionNameAllOrders, StringConstants.OrderControllerName);
         }
     }
 }

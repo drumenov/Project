@@ -20,26 +20,38 @@
 
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" 
+                        asp-action="@StringConstants.ActionNameIndex"
+                        asp-controller="@StringConstants.HomeControllerName"
+                        asp-area="@StringConstants.AreaNameAdministration">
+                            Home 
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-action="@StringConstants.ActionNameOrderPart" 
-                                        asp-controller="@StringConstants.PartControllerName" 
-                                        asp-area="@StringConstants.AreaNameAdministration">
-                    Order Parts</a>
+                    <div class="dropdown mr-3">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="parts" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Parts
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="parts">
+                            <a class="dropdown-item"
+                               asp-action="@StringConstants.ActionNameOrderPart"
+                               asp-controller="@StringConstants.PartControllerName">
+                                Order Parts
+                            </a>
+                            <a class="dropdown-item"
+                               asp-action="@StringConstants.ActionNameAllOrders"
+                               asp-controller="@StringConstants.OrderControllerName">
+                                All Orders
+                            </a>
+                        </div>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="createUsers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Manager User Accounts
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <div class="dropdown-menu" aria-labelledby="createUsers">
                             <a class="dropdown-item" 
                                 asp-action="@StringConstants.CreateAdministratorViewName" 
                                 asp-controller="@StringConstants.AccountControllerName">

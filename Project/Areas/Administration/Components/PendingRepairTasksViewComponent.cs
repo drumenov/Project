@@ -13,11 +13,14 @@ namespace Project.Areas.Administration.Components
     public class PendingRepairTasksViewComponent : ViewComponent
     {
         private readonly IRepairTaskService repairTaskService;
+        private readonly IPartService partService;
         private readonly IMapper mapper;
 
         public PendingRepairTasksViewComponent(IRepairTaskService repairTaskService,
+            IPartService partService,
             IMapper mapper) {
             this.repairTaskService = repairTaskService;
+            this.partService = partService;
             this.mapper = mapper;
         }
 
@@ -27,6 +30,12 @@ namespace Project.Areas.Administration.Components
                 .ToArray();
             IPagedList<RepairTaskSimpleInfoViewModel> pendingRepairTasksToDisplayOnPage = allPendingRepairTasks
                                                                                             .ToPagedList(page, IntegerConstants.ItemsPerPage);
+            foreach(RepairTaskSimpleInfoViewModel pendingRepairTask in pendingRepairTasksToDisplayOnPage) {
+                this.partService.AllPartsForRepairTaskAreAvailable(pendingRepairTask);
+                if(pendingRepairTask.CanBeAssigned == false) {
+
+                }
+            }
             return this.View(pendingRepairTasksToDisplayOnPage);
         }
     }

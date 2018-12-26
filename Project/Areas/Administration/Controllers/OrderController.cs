@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Project.Areas.Administration.Controllers.Base;
+using Project.Common.Constants;
 using Project.Models.Entities;
 using Project.Models.ViewModels.Administration;
 using Project.Services.Contracts;
+using System.Linq;
+using X.PagedList;
 
 namespace Project.Areas.Administration.Controllers
 {
@@ -22,16 +25,29 @@ namespace Project.Areas.Administration.Controllers
             this.userManager = userManager;
         }
 
+        //[HttpGet]
+        //[Route("/administration/[controller]/order-details/{id}")]
+        //public IActionResult OrderDetails(int id) {
+        //    Order order = this.orderService.GetOrderById(id);
+        //    OrderViewModel orderViewModel = new OrderViewModel {
+        //        Id = id,
+        //        OrderedParts = order.OrderedParts,
+        //        Username = order.User.UserName
+        //    }; //TODO: Try to do this useing automapper.
+        //    return this.View(orderViewModel);
+        //}
+
+
+
         [HttpGet]
-        [Route("/administration/[controller]/order-details/{id}")]
-        public IActionResult OrderDetails(int id) {
-            Order order = this.orderService.GetOrderById(id);
-            OrderViewModel orderViewModel = new OrderViewModel {
-                Id = id,
-                OrderedParts = order.OrderedParts,
-                Username = order.User.UserName
-            }; //TODO: Try to do this useing automapper.
-            return this.View(orderViewModel);
+        [Route("/administration/[controller]/all-orders")]
+        public IActionResult AllOrders(int? page) {
+            int currentPage = page ?? 1;
+            OrderViewModel[] allOrders = this.mapper
+                .ProjectTo<OrderViewModel>(this.orderService.GetAll())
+                .ToArray();
+            IPagedList ordersToDisplay = allOrders.ToPagedList(currentPage, IntegerConstants.ItemsPerPage);
+            return this.View(ordersToDisplay);
         }
     }
 }

@@ -1,13 +1,25 @@
 ﻿@model X.PagedList.PagedList<RepairTaskViewModel>
 
-<h1 class="text-center text-danger">Here be Repair Tasks per Cusotmer that are worked on</h1>
+<div class="card">
+    <div class="card-header">
+        @User.Identity.Name&#39;s Worked on Repair Tasks
+    </div>
+    <div class="card-body">
+        @foreach (var repairTask in Model) {
+            <p class="card-text">@repairTask.Id</p>
+        }
+        @if (Model.Count != 0) {
+            @Html.PagedListPager(Model, page => Url.Action(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new {
+           pendingRepairTasksPerCustomerPage = TempData[StringConstants.TempDataKeyHoldingThePageForPendingRepairTasksPerCustomer],
+           workedOnRepairTasksPerCustomerPage = page,
+           finishedRepairTasksPerCustomerPage = TempData[StringConstants.TempDataKeyHoldingThePageforFinishedRepairTasksPerCustomer]}), 
+           new X.PagedList.Mvc.Common.PagedListRenderOptions {
+               LiElementClasses = new string[] {"page-item"},
+               PageClasses = new string[] {"page-link"}
+           })
+         }
+    </div>
+</div>
 
-@foreach(var repairTask in Model) {
-    <div>@repairTask.Id</div>
-}
 
-@Html.PagedListPager(Model, page => Url.Action(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new {
-    pendingRepairTasksPerCustomerPage = TempData[StringConstants.TempDataKeyHoldingThePageForPendingRepairTasksPerCustomer],
-    workedOnRepairTasksPerCustomerPage = page,
-    finishedRepairTasksPerCustomerPage = TempData[StringConstants.TempDataKeyHoldingThePageforFinishedRepairTasksPerCustomer]
-}))
+

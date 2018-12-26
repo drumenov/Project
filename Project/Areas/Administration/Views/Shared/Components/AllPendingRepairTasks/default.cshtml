@@ -8,14 +8,17 @@
         @foreach (var order in Model) {
             <p class="card-text">
                 @order.Username
-                <a class="btn btn-primary"
+                <a class="btn btn-primary @(order.CanBeAssigned == true ? String.Empty : "disabled")"
                    asp-action="@StringConstants.ActionNameAssignTask"
                    asp-controller="@StringConstants.RepairTaskControllerName"
-                   asp-area="@StringConstants.AreaNameAdministration"
                    asp-route-id="@order.Id">
                     Assign Task
                 </a>
             </p>
+            @foreach (string message in order.PartsMissingMeesage) {
+                <span class="small text-danger">@message</span>
+            }
+
         }
         @if (Model.Count != 0) {
             @Html.PagedListPager(Model, page => Url.Action(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new {
@@ -29,7 +32,7 @@
                 LiElementClasses = new string[] {"page-item"},
                 PageClasses = new string[] {"page-link"}
             })
-         }
+        }
     </div>
 </div>
 

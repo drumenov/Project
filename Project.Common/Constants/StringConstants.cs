@@ -18,6 +18,7 @@
         public const string TempDataKeyHoldingThePageForPendingRepairTasksPerCustomer = "PageForPendingRepairTasksPerCustomer";
         public const string TempDataKeyHoldingThePageForWorkedOnRepairTasksPerCustomer = "PageForWorkedOnRepairTasksPerCustomer";
         public const string TempDataKeyHoldingThePageforFinishedRepairTasksPerCustomer = "PageForFinishedRepairTasksPerCustomer";
+        public const string TempDataKeyHoldingGenericError = "error";
 
         //Error messages
         public const string WrongUsernameOrPasswordErrorMessage = "Wrong Username or Password";
@@ -25,6 +26,8 @@
         public const string WrongAmountOfUnorderedPartSelected = "You have selected an amount for a part that you have not selected to order.";
         public const string WrongOrder = "You are trying to create an order without any parts.";
         public const string WrongRepairTask = "You are trying to order some repairs, but you have not selected which parts are to be repaired.";
+        public const string NotEnoughPartsAvailable = "The amount of additional needed parts of type {0} is {1}";
+        public const string RepairTaskGenericAssignmentFailure = "Either not enough parts are available or someone else has already assign this task.";
 
         //Action names string representation
         public const string ActionNameIndex = "index";
@@ -34,10 +37,11 @@
         public const string ActionNameCreateCustomer = "create-customer";
         public const string ActionNameCreateTechnician = "create-technician";
         public const string ActionNameOrderPart = "order";
-        public const string ActionNameOrderDetails = "order-details";
+        //public const string ActionNameOrderDetails = "order-details";
         public const string ActionNameCreateRepairTask = "create-repair-task";
         public const string ActionNameAssignTask = "assign-repair-task";
         public const string ActionNameDoMagic = "technician-does-magic";
+        public const string ActionNameAllOrders = "all-orders";
 
         //Controller names string representation
         public const string HomeControllerName = "Home";
