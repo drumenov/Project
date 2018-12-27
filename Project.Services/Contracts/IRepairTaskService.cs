@@ -28,5 +28,9 @@ namespace Project.Services.Contracts
         Task TechnicianCompletesARepairTaskAsync(int repairTaskId, string technicianName);
 
         IQueryable<User> GetTechniciansHavingWorkedOnARepairTask(int repairTaskId);
+
+        Task RemoveTechnicianFromRepairTaskAsync(string nameOfTechnicianToRemove, int id);
+
+        Task AddTechnicianToRepairTaskAsync(string nameOfTechnicianToAdd, int id);
     }
 }

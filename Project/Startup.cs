@@ -66,10 +66,14 @@ namespace Project
                     .ForMember(dest => dest.UserName, src => src.MapFrom(s => s.Name));
                 config.CreateMap<Order, OrderViewModel>()
                     .ForMember(dest => dest.Username, src => src.MapFrom(s => s.User.UserName));
-                config.CreateMap<RepairTask, RepairTaskDetailsViewModel>()
+                config.CreateMap<RepairTask, Models.ViewModels.Customer.RepairTaskDetailsViewModel>()
                     .ForMember(dest => dest.Technicians, src => src.MapFrom(s => s.Technicians.SelectMany(t => t.Expert.UserName)));
                 config.CreateMap<RepairTask, Models.ViewModels.Administration.RepairTaskSimpleInfoViewModel>()
                     .ForMember(dest => dest.Username, src => src.MapFrom(s => s.User.UserName));
+                config.CreateMap<RepairTask, Models.ViewModels.Administration.RepairTaskDetailsViewModel>()
+                    .ForMember(dest => dest.Username, src => src.MapFrom(s => s.User.UserName))
+                    .ForMember(dest => dest.TechniciansWorkingOnRepairTask, src => src.MapFrom(s => s.Technicians.Select(t => t.Expert).ToArray()))
+                    .ForMember(dest => dest.PartsRequired, src => src.MapFrom(s => s.PartsRequired));
             });
             services.AddAuthentication().AddCookie();
             services.AddMvc(options => {
@@ -91,6 +95,11 @@ namespace Project
             app.UseStaticFiles();
             app.UseSeedAdminMiddleware();
             app.UseMvc(routes => {
+                routes.MapRoute(
+                    name: "customerDetails",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{customerName}"
+                    );
+
                 routes.MapRoute(
                     name: "areas",
                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"

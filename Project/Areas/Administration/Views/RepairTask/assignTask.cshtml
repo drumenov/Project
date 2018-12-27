@@ -1,14 +1,25 @@
 ﻿@model AvailableTechniciansForRepairTaskViewModel
-<form method="post"
-      asp-action="@StringConstants.ActionNameAssignTask"
-      asp-controller="@StringConstants.RepairTaskControllerName"
-      asp-area="@StringConstants.AreaNameAdministration"
-      asp-route-id="@Model.TaskId">
-    <select asp-for="@Model.SelectedTechnicians" multiple>
-        @foreach (var technician in Model.AvailableTechnicinsName) {
-            <option value="@technician">@technician</option>
-        }
-        </select>
-        <input type="submit" class="btn btn-primary" />
-</form>
-
+<div class="row d-flex justify-content-center mt-5">
+    <div class="card">
+        <div class="card-header">
+            Available Technicians for this Repair Task (You may select more than one technician by holding down the CTRL button.)
+        </div>
+        <span asp-validation-for="@Model.SelectedTechnicians" class="text-center text-danger"></span>
+        <div class="card-body">
+            <form method="post"
+                  asp-action="@StringConstants.ActionNameAssignTask"
+                  asp-controller="@StringConstants.RepairTaskControllerName"
+                  asp-area="@StringConstants.AreaNameAdministration"
+                  asp-route-id="@Model.TaskId">
+                <select asp-for="@Model.SelectedTechnicians" multiple class="w-100">
+                    @foreach (var technician in Model.AvailableTechnicinsName) {
+                        <option value="@technician">@technician</option>
+                    }
+                </select>
+                <div class="d-flex justify-content-end">
+                    <input type="submit" class="btn btn-primary mt-3" value="Assign Technicians" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -37,7 +37,7 @@ namespace Project.Services
             }
             RepairTask repairTask = this.repairTaskService.GetById(taskId);
             repairTask.Status = Models.Enums.Status.WorkedOn;
-            if(await this.dbContext.SaveChangesAsync() == 0) {
+            if (await this.dbContext.SaveChangesAsync() == 0) {
                 throw new ApplicationException();
             }
         }
@@ -51,7 +51,7 @@ namespace Project.Services
             };
             List<User> allTechnicians = new List<User>();
             foreach (var technicianLevel in allTechnicianRoles) {
-               allTechnicians.AddRange(await this.userManager.GetUsersInRoleAsync(technicianLevel));
+                allTechnicians.AddRange(await this.userManager.GetUsersInRoleAsync(technicianLevel));
             }
             User[] availableTechnicians = allTechnicians
                 .Where(x => x.RepairTasks.Count < IntegerConstants.ThresholdDefiningAvailableTechnician)
@@ -65,6 +65,41 @@ namespace Project.Services
                 .UsersRepairsTasks
                 .Where(userRepairTask => userRepairTask.UserId == technicianId && userRepairTask.IsFinished)
                 .Select(finishedRepairTasksByTechnician => finishedRepairTasksByTechnician.RepairTask);
+        }
+
+        public async Task<IEnumerable<string>> GetAllNamesOfTechniciansNotWorkingOnAGivenTask(int taskId) {
+
+            List<User> allUsersWithoutAnyRepairTasks = this.dbContext
+                .Users
+                .Where(user => user.RepairTasks.Count == 0)
+                .ToList();
+
+            foreach (User user in allUsersWithoutAnyRepairTasks.ToList()) {
+                if (await this.userManager.IsInRoleAsync(user, StringConstants.AdminUserRole)
+                    || await this.userManager.IsInRoleAsync(user, StringConstants.CustomerUserRole)
+                    || await this.userManager.IsInRoleAsync(user, StringConstants.CorporateCustomerUserRole)) {
+                    allUsersWithoutAnyRepairTasks.Remove(user);
+                }
+            }
+
+            List<string> namesOfTechniciansWithoutAnyRepairTasks = allUsersWithoutAnyRepairTasks.Select(user => user.UserName).ToList();
+
+            var techniciansWorkingOnSomeTasks = this.dbContext
+                 .Users
+                 .Where(user => user.RepairTasks.Count < IntegerConstants.ThresholdDefiningAvailableTechnician)
+                 .SelectMany(user => user.RepairTasks)
+                 .Where(filteredUsers => filteredUsers.RepairTaskId != taskId)
+                 .Select(filteredRepairTasks => filteredRepairTasks.Expert.UserName);
+            var techniciansThatCanBeAssigned = namesOfTechniciansWithoutAnyRepairTasks.Union(techniciansWorkingOnSomeTasks);
+            return techniciansThatCanBeAssigned;
+        }
+
+        public IQueryable<string> GetAllNamesOfTechniciansWorkingOnAGivenTask(int taskId) {
+            return this.dbContext
+                .RepairTask
+                .Where(repairTask => repairTask.Id == taskId)
+                .SelectMany(filteredRepairTasks => filteredRepairTasks.Technicians)
+                .Select(technician => technician.Expert.UserName);
         }
     }
 }

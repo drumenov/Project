@@ -12,5 +12,9 @@ namespace Project.Services.Contracts
         Task AddTechniciansToRepairTaskAsync(ICollection<string> availableTechniciansName, int taskId);
 
         IQueryable<RepairTask> GetAllFinishedRepairTaskPerTechnician(string technicianName);
+
+        Task<IEnumerable<string>> GetAllNamesOfTechniciansNotWorkingOnAGivenTask(int taskId);
+
+        IQueryable<string> GetAllNamesOfTechniciansWorkingOnAGivenTask(int taskId);
     }
 }

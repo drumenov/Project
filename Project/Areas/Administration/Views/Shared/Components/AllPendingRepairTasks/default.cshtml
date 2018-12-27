@@ -6,15 +6,26 @@
     </div>
     <div class="card-body">
         @foreach (var order in Model) {
-            <p class="card-text">
-                @order.Username
+            <div class="card-text d-flex justify-content-around">
+                <a asp-action="@StringConstants.ActionNameCustomerDetails"
+                    asp-controller="@StringConstants.RepairTaskControllerName"
+                    asp-area="@StringConstants.AreaNameAdministration"
+                    asp-route-customerName="@order.Username">
+                        @order.Username
+                </a>
+                <a asp-action="@StringConstants.ActionNameRepairTaskDetails"
+                   asp-controller="@StringConstants.RepairTaskControllerName"
+                   asp-area="@StringConstants.AreaNameAdministration"
+                   asp-route-id="@order.Id">
+                    @order.Id
+                </a>
                 <a class="btn btn-primary @(order.CanBeAssigned == true ? String.Empty : "disabled")"
                    asp-action="@StringConstants.ActionNameAssignTask"
                    asp-controller="@StringConstants.RepairTaskControllerName"
                    asp-route-id="@order.Id">
                     Assign Task
                 </a>
-            </p>
+            </div>
             @foreach (string message in order.PartsMissingMeesage) {
                 <span class="small text-danger">@message</span>
             }

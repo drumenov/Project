@@ -32,9 +32,6 @@ namespace Project.Areas.Administration.Components
                                                                                             .ToPagedList(page, IntegerConstants.ItemsPerPage);
             foreach(RepairTaskSimpleInfoViewModel pendingRepairTask in pendingRepairTasksToDisplayOnPage) {
                 this.partService.AllPartsForRepairTaskAreAvailable(pendingRepairTask);
-                if(pendingRepairTask.CanBeAssigned == false) {
-
-                }
             }
             return this.View(pendingRepairTasksToDisplayOnPage);
         }

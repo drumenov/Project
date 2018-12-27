@@ -168,5 +168,48 @@ namespace Project.Services
                 //TODO: Create receipt here.
             }
         }
+
+        public async Task RemoveTechnicianFromRepairTaskAsync(string nameOfTechnicianToRemove, int id) {
+            string technicianId = this.userManager.FindByNameAsync(nameOfTechnicianToRemove).GetAwaiter().GetResult().Id;
+            UserRepairTask repairTaskToRemove = this.dbContext
+                                                .UsersRepairsTasks
+                                                .Where(usersRepairTasks => usersRepairTasks.Expert.Id == technicianId && usersRepairTasks.RepairTaskId == id)
+                                                .FirstOrDefault();
+            if(repairTaskToRemove == null) {
+                throw new ArgumentNullException();
+            }
+            this.dbContext
+                .UsersRepairsTasks
+                .Remove(repairTaskToRemove);
+            if(await this.dbContext.SaveChangesAsync() == 0) {
+                throw new ApplicationException();
+            }
+            await this.CheckWhetherThereAreAnyTechnicianStillAssignedToTheTaskAsync(id);
+        }
+
+        private async Task CheckWhetherThereAreAnyTechnicianStillAssignedToTheTaskAsync(int id) {
+            if (this.dbContext
+                    .RepairTask
+                    .Where(repairTask => repairTask.Id == id)
+                    .SelectMany(filteredRepairTasks => filteredRepairTasks.Technicians)
+                    .Count() == 0) { //This check whether there are any technicians working on the repair task. If all have been removed, the status of the repair task must be changed back to pending
+                RepairTask currentRepairTask = this.dbContext.RepairTask.First(repairTask => repairTask.Id == id);
+                currentRepairTask.Status = Models.Enums.Status.Pending;
+            }
+            if(await this.dbContext.SaveChangesAsync() == 0) {
+                throw new ApplicationException();
+            }
+        }
+
+        public async Task AddTechnicianToRepairTaskAsync(string nameOfTechnicianToAdd, int id) {
+            string userId = this.userManager.FindByNameAsync(nameOfTechnicianToAdd).GetAwaiter().GetResult().Id;
+            UserRepairTask userRepairTask = new UserRepairTask {
+                UserId = userId,
+                RepairTaskId = id
+            };
+            if(await this.dbContext.SaveChangesAsync() == 0) {
+                throw new ApplicationException();
+            }
+        }
     }
 }

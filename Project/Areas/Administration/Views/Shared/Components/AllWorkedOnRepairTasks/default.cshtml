@@ -6,7 +6,24 @@
     </div>
     <div class="card-body">
         @foreach (var repairTaskWorkedOn in Model) {
-            <p class="card-text">@repairTaskWorkedOn.Id</p>
+            <div class="d-flex justify-content-between">
+                <p class="card-text">
+                    <a asp-action="@StringConstants.ActionNameRepairTaskDetails"
+                       asp-controller="@StringConstants.RepairTaskControllerName"
+                       asp-area="@StringConstants.AreaNameAdministration"
+                       asp-route-id="@repairTaskWorkedOn.Id">
+                        @repairTaskWorkedOn.Id
+                    </a>
+
+                </p>
+                <a class="btn btn-outline-info"
+                   asp-action="@StringConstants.ActionaNameAddRemoveTechnicians"
+                   asp-controller="@StringConstants.RepairTaskControllerName"
+                   asp-area="@StringConstants.AreaNameAdministration"
+                   asp-route-id="@repairTaskWorkedOn.Id">
+                    Add&#47;Remove Technicians
+                </a>
+            </div>
         }
         @if (Model.Count != 0) {
             @Html.PagedListPager(Model, page => Url.Action(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new {
@@ -15,12 +32,12 @@
             techniciansPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians],
             pendingRepairTasks = TempData[StringConstants.TempDataKeyHoldingThePageNumberForPendingRepairTasks],
             workedOnRepairTasksPage = page,
-            finishedRepairTasksPage = TempData[StringConstants.TempDataKeyHoldingThePageForFinishedRepairTasks]}), 
+            finishedRepairTasksPage = TempData[StringConstants.TempDataKeyHoldingThePageForFinishedRepairTasks]}),
             new X.PagedList.Mvc.Common.PagedListRenderOptions {
                 LiElementClasses = new string[] {"page-item"},
                 PageClasses = new string[] {"page-link"}
             })
-         }
+        }
     </div>
 </div>
 

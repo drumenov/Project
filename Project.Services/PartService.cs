@@ -71,18 +71,12 @@ namespace Project.Services
 
         public void AllPartsForRepairTaskAreAvailable(RepairTaskSimpleInfoViewModel repairTaskSimpleInfoViewModel) {
 
-            var t = this.dbContext
-                .RepairTask
-                .Where(rt => rt.Status != Status.Pending)
-                .SelectMany(x => x.PartsRequired)
-                .Where(r => r.Type == PartType.CarBody)
-                .Sum(u => u.Quantity);
-
             bool repairTaskCanBeAssgned = true;
             foreach(Part requiredPart in repairTaskSimpleInfoViewModel.PartsRequired) {
                 int orderedPartsOfType = this.dbContext
-                                                    .Parts
-                                                    .Where(part => requiredPart.Type == part.Type)
+                                                    .Orders
+                                                    .SelectMany(order => order.OrderedParts)
+                                                    .Where(part => part.Type == requiredPart.Type)
                                                     .Sum(filteredParts => filteredParts.Quantity);
                 int usedPartsOfType = this.dbContext
                                             .RepairTask
@@ -91,12 +85,12 @@ namespace Project.Services
                                             .Where(part => part.Type == PartType.CarBody)
                                             .Sum(filteredParts => filteredParts.Quantity);
 
-                int totalAvailablePartsOfType = Math.Abs(orderedPartsOfType - usedPartsOfType);
-                if (requiredPart.Quantity > orderedPartsOfType - usedPartsOfType) {
+                int totalAvailablePartsOfType = orderedPartsOfType - usedPartsOfType;
+                if (requiredPart.Quantity > totalAvailablePartsOfType) {
                     repairTaskCanBeAssgned = false;
                     repairTaskSimpleInfoViewModel
                         .PartsMissingMeesage
-                        .Add(String.Format(StringConstants.NotEnoughPartsAvailable,requiredPart.Type, totalAvailablePartsOfType));
+                        .Add(String.Format(StringConstants.NotEnoughPartsAvailable,requiredPart.Type, requiredPart.Quantity - totalAvailablePartsOfType));
                 }
                 repairTaskSimpleInfoViewModel.CanBeAssigned = repairTaskCanBeAssgned;
             }
