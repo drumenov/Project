@@ -8,7 +8,7 @@
         @foreach (var order in Model) {
             <div class="card-text d-flex justify-content-around">
                 <a asp-action="@StringConstants.ActionNameCustomerDetails"
-                    asp-controller="@StringConstants.RepairTaskControllerName"
+                    asp-controller="@StringConstants.CustomerControllerName"
                     asp-area="@StringConstants.AreaNameAdministration"
                     asp-route-customerName="@order.Username">
                         @order.Username

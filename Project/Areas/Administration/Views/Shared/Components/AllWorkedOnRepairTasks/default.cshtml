@@ -7,6 +7,12 @@
     <div class="card-body">
         @foreach (var repairTaskWorkedOn in Model) {
             <div class="d-flex justify-content-between">
+                <a asp-action="@StringConstants.ActionNameCustomerDetails"
+                    asp-controller="@StringConstants.CustomerControllerName"
+                    asp-area="@StringConstants.AreaNameAdministration"
+                    asp-route-customerName="@repairTaskWorkedOn.Username">
+                    @repairTaskWorkedOn.Username
+                </a>
                 <p class="card-text">
                     <a asp-action="@StringConstants.ActionNameRepairTaskDetails"
                        asp-controller="@StringConstants.RepairTaskControllerName"

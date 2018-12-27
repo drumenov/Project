@@ -74,6 +74,12 @@ namespace Project
                     .ForMember(dest => dest.Username, src => src.MapFrom(s => s.User.UserName))
                     .ForMember(dest => dest.TechniciansWorkingOnRepairTask, src => src.MapFrom(s => s.Technicians.Select(t => t.Expert).ToArray()))
                     .ForMember(dest => dest.PartsRequired, src => src.MapFrom(s => s.PartsRequired));
+                config.CreateMap<RepairTask, Models.ViewModels.Technician.RepairTaskDetailsViewModel>()
+                    .ForMember(dest => dest.Username, src => src.MapFrom(s => s.User.UserName))
+                    .ForMember(dest => dest.TechniciansWorkingOnRepairTask, src => src.MapFrom(s => s.Technicians.Select(t => t.Expert).ToArray()))
+                    .ForMember(dest => dest.PartsRequired, src => src.MapFrom(s => s.PartsRequired));
+                config.CreateMap<RepairTask, Models.ViewModels.Administration.RepairTaskViewModel>()
+                    .ForMember(dest => dest.Username, src => src.MapFrom(s => s.User.UserName));
             });
             services.AddAuthentication().AddCookie();
             services.AddMvc(options => {

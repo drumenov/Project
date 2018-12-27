@@ -111,7 +111,7 @@ namespace Project.Services
             string customerId = this.userManager.FindByNameAsync(customerName).GetAwaiter().GetResult().Id;
             return this.dbContext
                 .RepairTask
-                .Where(repairTask => repairTask.UserId == customerId);
+                .Where(repairTask => repairTask.UserId == customerId && repairTask.Status == Models.Enums.Status.Pending);
         }
 
         public async Task<IQueryable<RepairTask>> GetWorkedOnPerCustomerAsync(string customerName) {
@@ -123,15 +123,10 @@ namespace Project.Services
         }
 
         public async Task<IQueryable<RepairTask>> GetFinishedPerCustomerAsync(string customerName) {
-            Guid customerId = Guid.Parse(this.userManager.FindByNameAsync(customerName).GetAwaiter().GetResult().Id);
-
-            var t = this.dbContext
-                .RepairTask
-                .Where(repairTask => Guid.Parse(repairTask.User.Id) == customerId && repairTask.Status == Models.Enums.Status.Finished);
-
+            string customerId = this.userManager.FindByNameAsync(customerName).GetAwaiter().GetResult().Id;
             return this.dbContext
                 .RepairTask
-                .Where(repairTask => Guid.Parse(repairTask.User.Id) == customerId && repairTask.Status == Models.Enums.Status.Finished);
+                .Where(repairTask => repairTask.User.Id == customerId && repairTask.Status == Models.Enums.Status.Finished);
         }
 
         public IQueryable<User> GetTechniciansHavingWorkedOnARepairTask(int repairTaskId) {
@@ -207,6 +202,9 @@ namespace Project.Services
                 UserId = userId,
                 RepairTaskId = id
             };
+            await this.dbContext
+                .UsersRepairsTasks
+                .AddAsync(userRepairTask);
             if(await this.dbContext.SaveChangesAsync() == 0) {
                 throw new ApplicationException();
             }

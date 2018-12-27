@@ -108,11 +108,5 @@ namespace Project.Areas.Administration.Controllers
             }
             return this.RedirectToAction(StringConstants.ActionNameRepairTaskDetails, new { id });
         }
-
-        [HttpGet]
-        [Route("/administration/[controller]/customer-details/{customerName}")]
-        public IActionResult CustomerDetails(string customerName) {
-            return null;
-        }
     }
 }

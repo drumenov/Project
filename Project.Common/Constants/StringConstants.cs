@@ -54,6 +54,7 @@
         public const string PartControllerName = "Part";
         public const string OrderControllerName = "Order";
         public const string RepairTaskControllerName = "RepairTask";
+        public const string CustomerControllerName = "Customer";
 
         //Areas names stirng representation
         public const string AreaNameAdministration = "Administration";

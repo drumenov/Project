@@ -30,15 +30,19 @@ namespace Project.Services
                                                                     .GetTechniciansHavingWorkedOnARepairTask(repairTaskId)
                                                                     .ToArray();
             foreach (User technician in techniciansHavingWorkedOnTheRepairTask) {
-                if(await this.userManager.IsInRoleAsync(technician, StringConstants.NoviceTechnicianUserRole)){
+                if (await this.userManager.IsInRoleAsync(technician, StringConstants.NoviceTechnicianUserRole)) {
                     totalPrice += 25m;
-                } else if(await this.userManager.IsInRoleAsync(technician, StringConstants.AverageTechnicianUserRole)) {
+                }
+                else if (await this.userManager.IsInRoleAsync(technician, StringConstants.AverageTechnicianUserRole)) {
                     totalPrice += 50m;
-                } else if(await this.userManager.IsInRoleAsync(technician, StringConstants.AdvancedTechnicianUserRole)) {
+                }
+                else if (await this.userManager.IsInRoleAsync(technician, StringConstants.AdvancedTechnicianUserRole)) {
                     totalPrice += 75m;
-                } else if(await this.userManager.IsInRoleAsync(technician, StringConstants.ExpertTechnicianUserRole)) {
+                }
+                else if (await this.userManager.IsInRoleAsync(technician, StringConstants.ExpertTechnicianUserRole)) {
                     totalPrice += 100m;
-                } else {
+                }
+                else {
                     throw new ApplicationException();
                 }
             }
@@ -49,7 +53,7 @@ namespace Project.Services
 
             await this.dbContext.Receipts.AddAsync(receipt);
 
-            if(await this.dbContext.SaveChangesAsync() == 0) {
+            if (await this.dbContext.SaveChangesAsync() == 0) {
                 throw new ApplicationException();
             }
 
@@ -64,9 +68,18 @@ namespace Project.Services
             await this.dbContext
                 .ExpertsReceipts
                 .AddRangeAsync(expertsReceipts);
-            if(await this.dbContext.SaveChangesAsync() == 0) {
+            if (await this.dbContext.SaveChangesAsync() == 0) {
                 throw new ApplicationException();
             }
+        }
+
+        public decimal GetTotalRevenuePerCustomer(string customerName) {
+            string customerId = this.userManager.FindByNameAsync(customerName).GetAwaiter().GetResult().Id;
+            decimal totalRevenue = this.dbContext
+                .Receipts
+                .Where(receipt => receipt.UserId == customerId)
+                .Sum(filteredReceipts => filteredReceipts.TotalPrice);
+            return totalRevenue;
         }
     }
 }
