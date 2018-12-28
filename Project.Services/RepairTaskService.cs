@@ -14,13 +14,16 @@ namespace Project.Services
         private readonly ApplicationDbContext dbContext;
         private readonly UserManager<User> userManager;
         private readonly IPartService partService;
+        private readonly IReceiptService receiptService;
 
         public RepairTaskService(ApplicationDbContext dbContext,
             UserManager<User> userManager,
-            IPartService partService) {
+            IPartService partService,
+            IReceiptService receiptService) {
             this.dbContext = dbContext;
             this.userManager = userManager;
             this.partService = partService;
+            this.receiptService = receiptService;
         }
 
         public async Task<int> CreateRepairTaskAsync(RepairTaskInputModel repairTaskInputModel, User user) {
@@ -68,7 +71,7 @@ namespace Project.Services
                     Quantity = repairTaskInputModel.InteriorPartAmount
                 };
             }
-            this.dbContext.RepairTask.Add(repairTask);
+            this.dbContext.RepairTasks.Add(repairTask);
             if(await this.dbContext.SaveChangesAsync() == 0) {
                 throw new ApplicationException();
             }
@@ -76,13 +79,13 @@ namespace Project.Services
         }
 
         public RepairTask GetById(int id) {
-            RepairTask repairTask = this.dbContext.RepairTask.FirstOrDefault(t => t.Id == id);
+            RepairTask repairTask = this.dbContext.RepairTasks.FirstOrDefault(t => t.Id == id);
             return repairTask;
         }
 
         public IQueryable<RepairTask> GetAllPending() {
             return this.dbContext
-                .RepairTask
+                .RepairTasks
                 .Where(t => t.Status == Models.Enums.Status.Pending);
         }
 
@@ -96,28 +99,27 @@ namespace Project.Services
 
         public IQueryable<RepairTask> GetAllWorkedOn() {
             return this.dbContext
-                .RepairTask
+                .RepairTasks
                 .Where(repairTask => repairTask.Status == Models.Enums.Status.WorkedOn);
         }
 
         public IQueryable<RepairTask> GetAllFinished() {
             return this.dbContext
-                .UsersRepairsTasks
-                .Where(usersRepairsTasks => usersRepairsTasks.RepairTask.Status == Models.Enums.Status.Finished)
-                .Select(filteredRepairTasks => filteredRepairTasks.RepairTask);
+                .RepairTasks
+                .Where(repairTask => repairTask.Status == Models.Enums.Status.Finished);
         }
 
         public async Task<IQueryable<RepairTask>> GetPendingPerCustomerAsync(string customerName) {
             string customerId = this.userManager.FindByNameAsync(customerName).GetAwaiter().GetResult().Id;
             return this.dbContext
-                .RepairTask
+                .RepairTasks
                 .Where(repairTask => repairTask.UserId == customerId && repairTask.Status == Models.Enums.Status.Pending);
         }
 
         public async Task<IQueryable<RepairTask>> GetWorkedOnPerCustomerAsync(string customerName) {
             string customerId = this.userManager.FindByNameAsync(customerName).GetAwaiter().GetResult().Id;
             return this.dbContext
-                .RepairTask
+                .RepairTasks
                 .Where(repairTask => repairTask.UserId == customerId && repairTask.Status == Models.Enums.Status.WorkedOn);
 
         }
@@ -125,7 +127,7 @@ namespace Project.Services
         public async Task<IQueryable<RepairTask>> GetFinishedPerCustomerAsync(string customerName) {
             string customerId = this.userManager.FindByNameAsync(customerName).GetAwaiter().GetResult().Id;
             return this.dbContext
-                .RepairTask
+                .RepairTasks
                 .Where(repairTask => repairTask.User.Id == customerId && repairTask.Status == Models.Enums.Status.Finished);
         }
 
@@ -153,13 +155,15 @@ namespace Project.Services
             if(this.dbContext
                 .UsersRepairsTasks
                 .All(userRepairTask => userRepairTask.IsFinished)) {
-                this.dbContext
-                    .RepairTask
-                    .FirstOrDefault(repairTask => repairTask.Id == repairTaskId)
-                    .Status = Models.Enums.Status.Finished;
+                RepairTask currentRepairTask = this.dbContext
+                    .RepairTasks
+                    .FirstOrDefault(repairTask => repairTask.Id == repairTaskId);
+                currentRepairTask.Status = Models.Enums.Status.Finished;
                 if(await this.dbContext.SaveChangesAsync() == 0) {
                     throw new ApplicationException();
                 }
+                string customerId = currentRepairTask.UserId;
+                await this.receiptService.GenerateReceiptAsync(this.GetTechniciansHavingWorkedOnARepairTask(repairTaskId).ToArray(), customerId, currentRepairTask);
                 //TODO: Create receipt here.
             }
         }
@@ -184,15 +188,15 @@ namespace Project.Services
 
         private async Task CheckWhetherThereAreAnyTechnicianStillAssignedToTheTaskAsync(int id) {
             if (this.dbContext
-                    .RepairTask
+                    .RepairTasks
                     .Where(repairTask => repairTask.Id == id)
                     .SelectMany(filteredRepairTasks => filteredRepairTasks.Technicians)
                     .Count() == 0) { //This check whether there are any technicians working on the repair task. If all have been removed, the status of the repair task must be changed back to pending
-                RepairTask currentRepairTask = this.dbContext.RepairTask.First(repairTask => repairTask.Id == id);
+                RepairTask currentRepairTask = this.dbContext.RepairTasks.First(repairTask => repairTask.Id == id);
                 currentRepairTask.Status = Models.Enums.Status.Pending;
-            }
-            if(await this.dbContext.SaveChangesAsync() == 0) {
-                throw new ApplicationException();
+                if (await this.dbContext.SaveChangesAsync() == 0) {
+                    throw new ApplicationException();
+                }
             }
         }
 

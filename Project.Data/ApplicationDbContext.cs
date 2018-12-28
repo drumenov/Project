@@ -18,7 +18,7 @@ namespace Project.Data
 
         public DbSet<ExpertReceipt> ExpertsReceipts { get; set; }
 
-        public DbSet<RepairTask> RepairTask { get; set; } //TODO: When initial testing is performed, name this property appropriately.
+        public DbSet<RepairTask> RepairTasks { get; set; } //TODO: When initial testing is performed, name this property appropriately.
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) {
@@ -30,6 +30,11 @@ namespace Project.Data
         protected override void OnModelCreating(ModelBuilder builder) {
             builder.Entity<UserRepairTask>().HasKey(k => new { k.RepairTaskId, k.UserId });
             builder.Entity<ExpertReceipt>().HasKey(k => new { k.UserId, k.ReceiptId });
+            builder.Entity<Receipt>()
+                    .HasOne<RepairTask>(receipt => receipt.RepairTask)
+                    .WithOne(repairTask => repairTask.Receipt)
+                    .HasForeignKey<RepairTask>(rt => rt.ReceiptId).OnDelete(DeleteBehavior.SetNull);
+
 
             base.OnModelCreating(builder);
         }

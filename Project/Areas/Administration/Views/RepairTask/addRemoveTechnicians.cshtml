@@ -12,16 +12,22 @@
                   asp-area="@StringConstants.AreaNameAdministration"
                   asp-route-id="@Model.Id">
                 <div class="row d-flex justify-content-around">
-                    <select multiple asp-for="@Model.TechniciansToRemove" class="col-md-5">
-                        @foreach (string nameOfTechniciansWorkingOnRepairTask in Model.TechniciansWorkingOnRepairTask) {
-                            <option value="@nameOfTechniciansWorkingOnRepairTask">@nameOfTechniciansWorkingOnRepairTask</option>
-                        }
-                    </select>
-                    <select multiple asp-for="@Model.TechniciansToAdd" class="col-md-5">
-                        @foreach (string nameOfAvailableTechnicianToAdd in Model.AvailableTechnicians) {
-                            <option value="@nameOfAvailableTechnicianToAdd">@nameOfAvailableTechnicianToAdd</option>
-                        }
-                    </select>
+                    <div class="col-md-5">
+                        <h6 class="text-center">Technicians to Remove</h6>
+                        <select multiple asp-for="@Model.TechniciansToRemove" class="col-md-12">
+                            @foreach (string nameOfTechniciansWorkingOnRepairTask in Model.TechniciansWorkingOnRepairTask) {
+                                <option value="@nameOfTechniciansWorkingOnRepairTask">@nameOfTechniciansWorkingOnRepairTask</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <h6 class="text-center">Technicians to Add</h6>
+                        <select multiple asp-for="@Model.TechniciansToAdd" class="col-md-12">
+                            @foreach (string nameOfAvailableTechnicianToAdd in Model.AvailableTechnicians) {
+                                <option value="@nameOfAvailableTechnicianToAdd">@nameOfAvailableTechnicianToAdd</option>
+                            }
+                        </select>
+                    </div>
                 </div>
                 <div class="d-flex justify-content-center mt-3">
                     <input type="submit" class="btn btn-primary" value="Commit Changes" />

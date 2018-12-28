@@ -79,7 +79,7 @@ namespace Project.Services
                                                     .Where(part => part.Type == requiredPart.Type)
                                                     .Sum(filteredParts => filteredParts.Quantity);
                 int usedPartsOfType = this.dbContext
-                                            .RepairTask
+                                            .RepairTasks
                                             .Where(repairTask => repairTask.Status != Status.Pending)
                                             .SelectMany(filteredRepairTasks => filteredRepairTasks.PartsRequired)
                                             .Where(part => part.Type == PartType.CarBody)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project.Models.Entities
 {
@@ -17,5 +18,7 @@ namespace Project.Models.Entities
         public virtual ICollection<ExpertReceipt> ExpertsHavingWorkedOnRepairTask { get; set; }
 
         public decimal TotalPrice { get; set; }
+        
+        public virtual RepairTask RepairTask { get; set; }
     }
 }

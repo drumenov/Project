@@ -10,7 +10,7 @@
         }
         @if (Model.Count != 0) {
             @Html.PagedListPager(Model, page => Url.Action(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new {
-            adminsPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForTechnicians],
+            adminsPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForAdministrators],
             customersPage = TempData[StringConstants.TempDataKeyHoldingThePageNumberForCustomers],
             techniciansPage = page,
             pendingRepairTasks = TempData[StringConstants.TempDataKeyHoldingThePageNumberForPendingRepairTasks],

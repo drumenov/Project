@@ -46,6 +46,7 @@
         public const string ActionNameAllOrders = "all-orders";
         public const string ActionaNameAddRemoveTechnicians = "add-or-remove-technicians";
         public const string ActionNameCustomerDetails = "customer-details";
+        public const string ActionNameRepairTaskReceipt = "repair-task-receipt";
 
         //Controller names string representation
         public const string HomeControllerName = "Home";

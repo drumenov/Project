@@ -13,53 +13,51 @@ namespace Project.Services
     public class ReceiptService : IReceiptService
     {
         private readonly ApplicationDbContext dbContext;
-        private readonly IRepairTaskService repairTaskService;
         private readonly UserManager<User> userManager;
 
         public ReceiptService(ApplicationDbContext dbContext,
-            IRepairTaskService repairTaskService,
             UserManager<User> userManager) {
             this.dbContext = dbContext;
-            this.repairTaskService = repairTaskService;
             this.userManager = userManager;
         }
 
-        public async Task GenerateReceiptAsync(int repairTaskId) {
+        public async Task GenerateReceiptAsync(ICollection<User> techniciansHavingWrokedOnRepairTask, string customerId, RepairTask repairTask) {
             decimal totalPrice = 0.0m;
-            User[] techniciansHavingWorkedOnTheRepairTask = this.repairTaskService
-                                                                    .GetTechniciansHavingWorkedOnARepairTask(repairTaskId)
-                                                                    .ToArray();
-            foreach (User technician in techniciansHavingWorkedOnTheRepairTask) {
+            foreach (User technician in techniciansHavingWrokedOnRepairTask) {
                 if (await this.userManager.IsInRoleAsync(technician, StringConstants.NoviceTechnicianUserRole)) {
-                    totalPrice += 25m;
+                    totalPrice += IntegerConstants.NoviceTechnicianPriceRate;
                 }
                 else if (await this.userManager.IsInRoleAsync(technician, StringConstants.AverageTechnicianUserRole)) {
-                    totalPrice += 50m;
+                    totalPrice += IntegerConstants.AverageTechnicianPriceRate;
                 }
                 else if (await this.userManager.IsInRoleAsync(technician, StringConstants.AdvancedTechnicianUserRole)) {
-                    totalPrice += 75m;
+                    totalPrice += IntegerConstants.AdvancedTechnicianPriceRate;
                 }
                 else if (await this.userManager.IsInRoleAsync(technician, StringConstants.ExpertTechnicianUserRole)) {
-                    totalPrice += 100m;
+                    totalPrice += IntegerConstants.ExpertTechnicianPriceRate;
                 }
                 else {
                     throw new ApplicationException();
                 }
             }
+            User customer = await this.userManager.FindByIdAsync(customerId);
+            bool isCorporateCustomer = await this.userManager.IsInRoleAsync(customer, StringConstants.CorporateCustomerUserRole);
+            if (isCorporateCustomer) {
+                totalPrice *= IntegerConstants.CorporateClientPriceReduction;
+            }
             Receipt receipt = new Receipt {
-                UserId = this.repairTaskService.GetById(repairTaskId).UserId,
+                UserId = customerId,
                 TotalPrice = totalPrice
             };
-
             await this.dbContext.Receipts.AddAsync(receipt);
 
             if (await this.dbContext.SaveChangesAsync() == 0) {
                 throw new ApplicationException();
             }
-
+            repairTask.ReceiptId = receipt.Id;
             List<ExpertReceipt> expertsReceipts = new List<ExpertReceipt>();
 
-            foreach (User technician in techniciansHavingWorkedOnTheRepairTask) {
+            foreach (User technician in techniciansHavingWrokedOnRepairTask) {
                 expertsReceipts.Add(new ExpertReceipt {
                     UserId = technician.Id,
                     ReceiptId = receipt.Id

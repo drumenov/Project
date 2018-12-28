@@ -45,8 +45,8 @@ namespace Project
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.ConfigureApplicationCookie(options => {
-                options.AccessDeniedPath = "/home/unauthorised-access";
-                options.LoginPath = "/users/login";
+                options.AccessDeniedPath = "/home/unauthorised-access"; //TODO: Make proper routing
+                options.LoginPath = "/users/login"; //TODO: Make proper routing
             });
 
 
@@ -79,7 +79,14 @@ namespace Project
                     .ForMember(dest => dest.TechniciansWorkingOnRepairTask, src => src.MapFrom(s => s.Technicians.Select(t => t.Expert).ToArray()))
                     .ForMember(dest => dest.PartsRequired, src => src.MapFrom(s => s.PartsRequired));
                 config.CreateMap<RepairTask, Models.ViewModels.Administration.RepairTaskViewModel>()
-                    .ForMember(dest => dest.Username, src => src.MapFrom(s => s.User.UserName));
+                    .ForMember(dest => dest.Username, src => src.MapFrom(s => s.User.UserName))
+                    .ForMember(dest => dest.CountOfTechniciansCurrentlyWorkingOnTheRepairTask, src => src.MapFrom(s => s.Technicians.Where(t => t.IsFinished == false).Count()))
+                    .ForMember(dest => dest.CountOfTechniciansHavingFinishedWorkingOnTheRepairTask, src => src.MapFrom(s => s.Technicians.Where(t => t.IsFinished).Count()));
+                config.CreateMap<RepairTask, RepairTaskReceiptViewModel>()
+                    .ForMember(dest => dest.ReceiptId, src => src.MapFrom(s => s.ReceiptId))
+                    .ForMember(dest => dest.TotalRevenue, src => src.MapFrom(s => s.Receipt.TotalPrice))
+                    .ForMember(dest => dest.CustomerName, src => src.MapFrom(s => s.User.UserName))
+                    .ForMember(dest => dest.NamesOfTechniciansHavingWorkedOnTheRepairTask, src => src.MapFrom(s => s.Technicians.SelectMany(t => t.Expert.UserName)));
             });
             services.AddAuthentication().AddCookie();
             services.AddMvc(options => {

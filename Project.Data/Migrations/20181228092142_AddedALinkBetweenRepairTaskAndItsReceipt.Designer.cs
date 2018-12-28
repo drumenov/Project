@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project.Data;
 
 namespace Project.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181228092142_AddedALinkBetweenRepairTaskAndItsReceipt")]
+    partial class AddedALinkBetweenRepairTaskAndItsReceipt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,13 +152,9 @@ namespace Project.Data.Migrations
 
                     b.Property<string>("Content");
 
-                    b.Property<int>("RepairTaskId");
-
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RepairTaskId");
 
                     b.HasIndex("UserId");
 
@@ -224,8 +222,6 @@ namespace Project.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("FeedbackId");
-
                     b.Property<int?>("ReceiptId");
 
                     b.Property<int>("Status");
@@ -234,15 +230,13 @@ namespace Project.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FeedbackId");
-
                     b.HasIndex("ReceiptId")
                         .IsUnique()
                         .HasFilter("[ReceiptId] IS NOT NULL");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RepairTasks");
+                    b.ToTable("RepairTask");
                 });
 
             modelBuilder.Entity("Project.Models.Entities.User", b =>
@@ -371,11 +365,6 @@ namespace Project.Data.Migrations
 
             modelBuilder.Entity("Project.Models.Entities.Feedback", b =>
                 {
-                    b.HasOne("Project.Models.Entities.RepairTask", "RepairTask")
-                        .WithMany()
-                        .HasForeignKey("RepairTaskId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Project.Models.Entities.User", "Customer")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -408,10 +397,6 @@ namespace Project.Data.Migrations
 
             modelBuilder.Entity("Project.Models.Entities.RepairTask", b =>
                 {
-                    b.HasOne("Project.Models.Entities.Feedback", "Feedback")
-                        .WithMany()
-                        .HasForeignKey("FeedbackId");
-
                     b.HasOne("Project.Models.Entities.Receipt", "Receipt")
                         .WithOne("RepairTask")
                         .HasForeignKey("Project.Models.Entities.RepairTask", "ReceiptId")

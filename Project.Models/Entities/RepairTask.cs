@@ -1,6 +1,7 @@
 ﻿using Project.Models.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project.Models.Entities
 {
@@ -21,5 +22,12 @@ namespace Project.Models.Entities
         public virtual ICollection<Part> PartsRequired { get; set; }
 
         public Status Status { get; set; }
+
+        public int? ReceiptId { get; set; }
+        public virtual Receipt Receipt { get; set; }
+
+        [ForeignKey(nameof(Feedback))]
+        public int? FeedbackId { get; set; }
+        public virtual Feedback Feedback { get; set; }
     }
 }

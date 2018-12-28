@@ -8,9 +8,9 @@
         @foreach (var repairTaskWorkedOn in Model) {
             <div class="d-flex justify-content-between">
                 <a asp-action="@StringConstants.ActionNameCustomerDetails"
-                    asp-controller="@StringConstants.CustomerControllerName"
-                    asp-area="@StringConstants.AreaNameAdministration"
-                    asp-route-customerName="@repairTaskWorkedOn.Username">
+                   asp-controller="@StringConstants.CustomerControllerName"
+                   asp-area="@StringConstants.AreaNameAdministration"
+                   asp-route-customerName="@repairTaskWorkedOn.Username">
                     @repairTaskWorkedOn.Username
                 </a>
                 <p class="card-text">
@@ -30,6 +30,13 @@
                     Add&#47;Remove Technicians
                 </a>
             </div>
+            <small class="d-block @(repairTaskWorkedOn.NoTechniciansWorking ? "text-danger" : String.Empty)">
+                Count of Technicians currently working on the Repair Task is <strong>@repairTaskWorkedOn.CountOfTechniciansCurrentlyWorkingOnTheRepairTask</strong>.
+            </small>
+            <small class="d-block @(repairTaskWorkedOn.NoTechnicianHasFinishedWrokingOnTheRepairTask ? "text-danger" : String.Empty)">
+                Count of Technicians having finished working on the Repair Task is <strong>@repairTaskWorkedOn.CountOfTechniciansHavingFinishedWorkingOnTheRepairTask</strong>.
+            </small>
+            
         }
         @if (Model.Count != 0) {
             @Html.PagedListPager(Model, page => Url.Action(StringConstants.ActionNameIndex, StringConstants.HomeControllerName, new {

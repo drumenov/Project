@@ -96,9 +96,10 @@ namespace Project.Services
 
         public IQueryable<string> GetAllNamesOfTechniciansWorkingOnAGivenTask(int taskId) {
             return this.dbContext
-                .RepairTask
+                .RepairTasks
                 .Where(repairTask => repairTask.Id == taskId)
                 .SelectMany(filteredRepairTasks => filteredRepairTasks.Technicians)
+                .Where(techniciansNotHavingFinishedTheGivenTask => techniciansNotHavingFinishedTheGivenTask.IsFinished == false)
                 .Select(technician => technician.Expert.UserName);
         }
     }

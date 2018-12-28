@@ -99,14 +99,27 @@ namespace Project.Areas.Administration.Controllers
             if(ModelState.IsValid == false) {
                 return this.View(addRemoveTechniciansViewModel);
             }
-            foreach(string nameOfTechnicianToRemove in addRemoveTechniciansViewModel.TechniciansToRemove) {
-                await this.repairTaskService.RemoveTechnicianFromRepairTaskAsync(nameOfTechnicianToRemove, id);
-            }
-
-            foreach(string nameOfTechnicianToAdd in addRemoveTechniciansViewModel.TechniciansToAdd) {
+            foreach (string nameOfTechnicianToAdd in addRemoveTechniciansViewModel.TechniciansToAdd) { /*Here the order is VERY IMPORTANT. Adding of technicians 
+                                                                                                        must be the first operation since the removing of 
+                                                                                                        technicians checks whether there are any technicians 
+                                                                                                        left to work on the task. If there are none, the status 
+                                                                                                        of the task is changed to PENDING. Hence, if the adding 
+                                                                                                        is done after the removing and the changing of the 
+                                                                                                        status there is a conflict (we have a PENDING Repair Task
+                                                                                                        that has a Technician assigned to it).*/
                 await this.repairTaskService.AddTechnicianToRepairTaskAsync(nameOfTechnicianToAdd, id);
             }
+            foreach (string nameOfTechnicianToRemove in addRemoveTechniciansViewModel.TechniciansToRemove) {
+                await this.repairTaskService.RemoveTechnicianFromRepairTaskAsync(nameOfTechnicianToRemove, id);
+            }
             return this.RedirectToAction(StringConstants.ActionNameRepairTaskDetails, new { id });
+        }
+
+        [HttpGet]
+        [Route("/administration/[controller]/ActionNameRepairTaskReceipt/{id}")]
+        public IActionResult RepairTaskReceipt(int id) {
+
+            return this.View();
         }
     }
 }
