@@ -26,7 +26,7 @@ namespace Project.Areas.Customer.Components
                 .ProjectTo<RepairTaskViewModel>(await this.repairTaskService.GetPendingPerCustomerAsync(this.User.Identity.Name))
                 .ToArray();
             IPagedList<RepairTaskViewModel> pendingRepairTasksPerCustomersToDisplay = allPendingRepairTaskPerCusotmer
-                                                                                        .ToPagedList(page, IntegerConstants.ItemsPerPage);
+                                                                                        .ToPagedList(page, IntegerConstants.ItemsPerPageInViewComponents);
             return this.View(pendingRepairTasksPerCustomersToDisplay);
         }
     }

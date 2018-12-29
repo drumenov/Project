@@ -42,7 +42,7 @@ namespace Project.Areas.Administration.Components
                 //    pageNumber = 1;
                 //}
                 //TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPagesForCustomers] = maximumNumberOfPages;
-                IPagedList<CustomerViewModel> customersToDisplayPerPage = allCustomers.ToPagedList(page, IntegerConstants.ItemsPerPage);
+                IPagedList<CustomerViewModel> customersToDisplayPerPage = allCustomers.ToPagedList(page, IntegerConstants.ItemsPerPageInViewComponents);
                 return this.View(customersToDisplayPerPage);
             }
             catch {

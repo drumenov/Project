@@ -79,5 +79,14 @@ namespace Project.Services
                 .Sum(filteredReceipts => filteredReceipts.TotalPrice);
             return totalRevenue;
         }
+
+        public IQueryable<Receipt> GetAll() {
+            return this.dbContext
+                .Receipts;
+        }
+
+        public IQueryable<Receipt> GetById(int id) {
+            return this.dbContext.Receipts.Where(receipt => receipt.Id == id);
+        }
     }
 }

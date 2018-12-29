@@ -49,7 +49,7 @@ namespace Project.Areas.Administration.Components
                 //    pageNumber = 1;
                 //}
                 //TempData[StringConstants.TempDataKeyHoldingNumberOfMaximumPagesForTechnicians] = maximumNumberOfPages;
-                IPagedList<TechnicianViewModel> adminsToDisplayOnPage = allTechnicians.ToPagedList(page, IntegerConstants.ItemsPerPage);
+                IPagedList<TechnicianViewModel> adminsToDisplayOnPage = allTechnicians.ToPagedList(page, IntegerConstants.ItemsPerPageInViewComponents);
                 return this.View(adminsToDisplayOnPage);
             }
             catch {

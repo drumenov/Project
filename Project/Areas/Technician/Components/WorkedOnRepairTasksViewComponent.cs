@@ -30,7 +30,7 @@ namespace Project.Areas.Technician.Components
             RepairTaskViewModel[] repairTaskViewModel = this.mapper
                 .ProjectTo<RepairTaskViewModel>(this.repairTaskService.GetAllWorkedByATechnician(this.User.Identity.Name))
                 .ToArray();
-            IPagedList<RepairTaskViewModel> repairTasksToDisplay = repairTaskViewModel.ToPagedList(page, IntegerConstants.ItemsPerPage);
+            IPagedList<RepairTaskViewModel> repairTasksToDisplay = repairTaskViewModel.ToPagedList(page, IntegerConstants.ItemsPerPageInViewComponents);
             return this.View(repairTasksToDisplay);
         }
     }

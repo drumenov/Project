@@ -29,7 +29,7 @@ namespace Project.Areas.Administration.Components
                 .ProjectTo<RepairTaskSimpleInfoViewModel>(this.repairTaskService.GetAllPending())
                 .ToArray();
             IPagedList<RepairTaskSimpleInfoViewModel> pendingRepairTasksToDisplayOnPage = allPendingRepairTasks
-                                                                                            .ToPagedList(page, IntegerConstants.ItemsPerPage);
+                                                                                            .ToPagedList(page, IntegerConstants.ItemsPerPageInViewComponents);
             foreach(RepairTaskSimpleInfoViewModel pendingRepairTask in pendingRepairTasksToDisplayOnPage) {
                 this.partService.AllPartsForRepairTaskAreAvailable(pendingRepairTask);
             }

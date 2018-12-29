@@ -27,7 +27,7 @@ namespace Project.Areas.Customer.Components
                 .ToArray();
 
             IPagedList<RepairTaskViewModel> workedOnRepairTasksPerCustomerToDisplay = allWorkedOnRepairTasksPerCustomer
-                                                                                        .ToPagedList(page, IntegerConstants.ItemsPerPage);
+                                                                                        .ToPagedList(page, IntegerConstants.ItemsPerPageInViewComponents);
             return this.View(workedOnRepairTasksPerCustomerToDisplay);
         }
     }

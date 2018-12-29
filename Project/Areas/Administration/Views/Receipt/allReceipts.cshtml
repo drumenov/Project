@@ -1,0 +1,42 @@
+﻿@model X.PagedList.PagedList<ReceiptViewModel>
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Receipt ID</th>
+                <th>Customer</th>
+                <th>Total Revenue</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var receipt in Model) {
+                <tr>
+                    <td>
+                        <a asp-action="@StringConstants.ActionNameReceiptDetails"
+                           asp-controller="@StringConstants.ReceiptControllerName"
+                           asp-area="@StringConstants.AreaNameAdministration"
+                           asp-route-id="@receipt.Id">
+                                @receipt.Id
+                        </a>
+                    </td>
+                    <td>
+                        <a asp-action="@StringConstants.ActionNameCustomerDetails"
+                           asp-controller="@StringConstants.CustomerControllerName"
+                           asp-area="@StringConstants.AreaNameAdministration"
+                           asp-route-customerName="@receipt.Customer">
+                                @receipt.Customer
+                        </a>
+                    </td>
+                    <td>@receipt.TotalRevenue</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Model.Count != 0) {
+        @Html.PagedListPager(Model, page => Url.Action(StringConstants.ActionNameAllReceipts, StringConstants.ReceiptControllerName, new { page = page }),
+            new X.PagedList.Mvc.Common.PagedListRenderOptions {
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link" }
+            });
+    }
+</div>

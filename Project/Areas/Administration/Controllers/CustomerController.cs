@@ -20,7 +20,7 @@ namespace Project.Areas.Administration.Controllers
 
         [HttpGet]
         [Route("/administration/[controller]/customer-details/{customerName}")]
-        public async Task<IActionResult> CustomerDetails(string customerName) {
+        public IActionResult CustomerDetails(string customerName) {
             CustomerDetailsViewModel customerDetailsViewModel = new CustomerDetailsViewModel {
                 CountOfFinishedRepairTasks = this.repairTaskService
                                                     .GetFinishedPerCustomerAsync(customerName)

@@ -2,7 +2,9 @@
 {
     public static class IntegerConstants
     {
-        public const int ItemsPerPage = 1;
+        public const int ItemsPerPageInViewComponents = 1;
+
+        public const int ItemsPerPageInViews = 5;
 
         public const int ThresholdDefiningAvailableTechnician = 5;
 

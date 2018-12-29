@@ -1,27 +1,26 @@
 ﻿@model RepairTaskDetailsViewModel
-@inject Microsoft.AspNetCore.Identity.UserManager<Project.Models.Entities.User> userManager
-    <div class="container d-flex justify-content-center mt-5">
-        <div class="card">
-            <div class="card-header">
-                Repair Task Created by @Model.Username
+<div class="container d-flex justify-content-center mt-5">
+    <div class="card">
+        <div class="card-header">
+            Repair Task Created by @Model.Username
+        </div>
+        <div class="card-body">
+            <div class="card-text">
+                Assigned Technicians
             </div>
-            <div class="card-body">
+            @foreach (var technician in Model.TechniciansWorkingOnRepairTask) {
                 <div class="card-text">
-                    Assigned Technicians
+                    Name&#58; <strong>@technician.UserName</strong>
                 </div>
-                @foreach (var technician in Model.TechniciansWorkingOnRepairTask) {
-                    {
-                        var roles = await userManager.GetRolesAsync(technician);
-
-                        <div class="card-text">Name&#58; <strong>@technician.UserName</strong>&#59; Expertise: <strong>@roles[0]</strong></div>
-                    }
-                }
-                <div class="card-text">
-                    Required Parts
-                </div>
-                @foreach (var requiredPart in Model.PartsRequired) {
-                    <div class="card-text">Type&#58; <strong>@requiredPart.Type&#59;</strong> Required Quantity: <strong>@requiredPart.Quantity</strong></div>
-                }
+            }
+            <div class="card-text">
+                Required Parts
             </div>
+            @foreach (var requiredPart in Model.PartsRequired) {
+                <div class="card-text">
+                    Type&#58; <strong>@requiredPart.Type&#59;</strong> Required Quantity: <strong>@requiredPart.Quantity</strong>
+                </div>
+            }
         </div>
     </div>
+</div>

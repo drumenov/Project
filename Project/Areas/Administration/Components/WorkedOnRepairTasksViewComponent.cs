@@ -26,7 +26,7 @@ namespace Project.Areas.Administration.Components
                                                                 .ProjectTo<RepairTaskViewModel>(this.repairTaskService
                                                                                                     .GetAllWorkedOn())
                                                                                                     .ToArray();
-            IPagedList<RepairTaskViewModel> repairTasksWorkedOnToDisplay = allWorkedOnRepairTasks.ToPagedList(page, IntegerConstants.ItemsPerPage);
+            IPagedList<RepairTaskViewModel> repairTasksWorkedOnToDisplay = allWorkedOnRepairTasks.ToPagedList(page, IntegerConstants.ItemsPerPageInViewComponents);
             return this.View(repairTasksWorkedOnToDisplay);
         }
     }

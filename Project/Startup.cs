@@ -86,7 +86,15 @@ namespace Project
                     .ForMember(dest => dest.ReceiptId, src => src.MapFrom(s => s.ReceiptId))
                     .ForMember(dest => dest.TotalRevenue, src => src.MapFrom(s => s.Receipt.TotalPrice))
                     .ForMember(dest => dest.CustomerName, src => src.MapFrom(s => s.User.UserName))
-                    .ForMember(dest => dest.NamesOfTechniciansHavingWorkedOnTheRepairTask, src => src.MapFrom(s => s.Technicians.SelectMany(t => t.Expert.UserName)));
+                    .ForMember(dest => dest.NamesOfTechniciansHavingWorkedOnTheRepairTask, src => src.MapFrom(s => s.Technicians.Select(t => t.Expert.UserName)));
+                config.CreateMap<User, TechnicianDetailsViewModel>()
+                    .ForMember(dest => dest.Username, src => src.MapFrom(s => s.UserName))
+                    .ForMember(dest => dest.CountOfFinishedRepairTasks, src => src.MapFrom(s => s.RepairTasks.Where(repairTask => repairTask.IsFinished).Count()))
+                    .ForMember(dest => dest.CountOfWorkedOnRepairTasks, src => src.MapFrom(s => s.RepairTasks.Where(repairTak => repairTak.IsFinished == false).Count()));
+                config.CreateMap<Receipt, ReceiptViewModel>()
+                    .ForMember(dest => dest.Customer, src => src.MapFrom(s => s.User.UserName))
+                    .ForMember(dest => dest.Id, src => src.MapFrom(s => s.Id))
+                    .ForMember(dest => dest.TotalRevenue, src => src.MapFrom(s => s.TotalPrice));
             });
             services.AddAuthentication().AddCookie();
             services.AddMvc(options => {
@@ -108,6 +116,11 @@ namespace Project
             app.UseStaticFiles();
             app.UseSeedAdminMiddleware();
             app.UseMvc(routes => {
+                routes.MapRoute(
+                    name: "technicianDemotePropmote",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{technicianName}"
+                    );
+
                 routes.MapRoute(
                     name: "customerDetails",
                     template: "{area:exists}/{controller=Home}/{action=Index}/{customerName}"

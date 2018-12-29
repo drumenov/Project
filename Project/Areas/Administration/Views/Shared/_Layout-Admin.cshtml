@@ -20,11 +20,19 @@
 
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" 
-                        asp-action="@StringConstants.ActionNameIndex"
-                        asp-controller="@StringConstants.HomeControllerName"
-                        asp-area="@StringConstants.AreaNameAdministration">
-                            Home 
+                    <a class="nav-link"
+                       asp-action="@StringConstants.ActionNameIndex"
+                       asp-controller="@StringConstants.HomeControllerName"
+                       asp-area="@StringConstants.AreaNameAdministration">
+                        Home
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link"
+                       asp-action="@StringConstants.ActionNameAllReceipts"
+                       asp-controller="@StringConstants.ReceiptControllerName"
+                       asp-area="@StringConstants.AreaNameAdministration">
+                        All Receipts
                     </a>
                 </li>
                 <li class="nav-item">
@@ -52,20 +60,20 @@
                             Manager User Accounts
                         </button>
                         <div class="dropdown-menu" aria-labelledby="createUsers">
-                            <a class="dropdown-item" 
-                                asp-action="@StringConstants.CreateAdministratorViewName" 
-                                asp-controller="@StringConstants.AccountControllerName">
-                                    Create an Administrator
+                            <a class="dropdown-item"
+                               asp-action="@StringConstants.CreateAdministratorViewName"
+                               asp-controller="@StringConstants.AccountControllerName">
+                                Create an Administrator
                             </a>
-                            <a class="dropdown-item" 
-                                asp-action="@StringConstants.ActionNameCreateCustomer" 
-                                asp-controller="@StringConstants.AccountControllerName">
-                                    Create a Customer
+                            <a class="dropdown-item"
+                               asp-action="@StringConstants.ActionNameCreateCustomer"
+                               asp-controller="@StringConstants.AccountControllerName">
+                                Create a Customer
                             </a>
-                            <a class="dropdown-item" 
-                                asp-action="@StringConstants.ActionNameCreateTechnician" 
-                                asp-controller="@StringConstants.AccountControllerName">
-                                    Create a Technician
+                            <a class="dropdown-item"
+                               asp-action="@StringConstants.ActionNameCreateTechnician"
+                               asp-controller="@StringConstants.AccountControllerName">
+                                Create a Technician
                             </a>
                         </div>
                     </div>

@@ -1,0 +1,37 @@
+﻿@model  ReceiptDetailsViewModel
+
+<div class="container">
+    <div class="card mt-5">
+        <div class="card-header">
+            Receipt ID&#58; <strong>@Model.ReceiptId</strong> for Repair Task&#58; <strong><a asp-action="@StringConstants.ActionNameRepairTaskDetails" 
+                                                                                                asp-controller="@StringConstants.RepairTaskControllerName"
+                                                                                                asp-area="@StringConstants.AreaNameAdministration"
+                                                                                                asp-route-id="@Model.RepairTaskId">
+                                                                                                    @Model.RepairTaskId
+                                                                                            </a>
+                                                                                    </strong>
+        </div>
+        <div class="card-body">
+            <div class="card-text">
+                Technicians&#58;
+                @foreach (string technicianName in Model.NamesOfTechniciansHavingWorkedOnTheRepairTask) {
+                    <div>
+                        <strong><a asp-action="@StringConstants.ActionNameTechnicianDetails"
+                                    asp-controller="@StringConstants.TechnicianControllerName"
+                                    asp-area="@StringConstants.AreaNameAdministration"
+                                    asp-route-technicianName="@technicianName">
+                                         @technicianName
+                                </a>
+                        </strong>
+                    </div>
+                }
+                <div class="card-text">
+                    Total Revenue&#58;
+                    <div>
+                        <strong>@Model.TotalRevenue</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

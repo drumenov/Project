@@ -16,5 +16,9 @@ namespace Project.Services.Contracts
         Task<IEnumerable<string>> GetAllNamesOfTechniciansNotWorkingOnAGivenTask(int taskId);
 
         IQueryable<string> GetAllNamesOfTechniciansWorkingOnAGivenTask(int taskId);
+
+        Task PromoteTechnicianAsync(string technicianName);
+
+        Task DemoteTechnicianAsync(string technicianName);
     }
 }

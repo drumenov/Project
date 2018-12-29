@@ -27,7 +27,7 @@ namespace Project.Areas.Technician.Components
                                                         .GetAllFinishedRepairTaskPerTechnician(this.User.Identity.Name))
                 .ToArray();
             IPagedList<RepairTaskViewModel> finishedRepairTaskByTechnicianToDisplay = allFinishedRepairTasksByTechnician
-                                                                                        .ToPagedList(page, IntegerConstants.ItemsPerPage);
+                                                                                        .ToPagedList(page, IntegerConstants.ItemsPerPageInViewComponents);
             return this.View(finishedRepairTaskByTechnicianToDisplay);
         }
     }

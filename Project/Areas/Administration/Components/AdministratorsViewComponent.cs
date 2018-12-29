@@ -26,7 +26,7 @@ namespace Project.Areas.Administration.Components
                 AdministratorViewModel[] allAdmins = this.mapper
                     .ProjectTo<AdministratorViewModel>(await this.userService.GetAllUsersWithAGivenRoleAsync(StringConstants.AdminUserRole))
                     .ToArray();
-                IPagedList<AdministratorViewModel> adminsToDisplayOnPage = allAdmins.ToPagedList(page, IntegerConstants.ItemsPerPage);
+                IPagedList<AdministratorViewModel> adminsToDisplayOnPage = allAdmins.ToPagedList(page, IntegerConstants.ItemsPerPageInViewComponents);
                 return this.View(adminsToDisplayOnPage);
             }
             catch {

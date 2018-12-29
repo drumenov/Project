@@ -35,7 +35,7 @@ namespace Project.Areas.Administration.Controllers
             RepairTaskSimpleInfoViewModel repairTaskSimpleInfo = this.mapper.Map<RepairTaskSimpleInfoViewModel>(repairTask);
             this.partService.AllPartsForRepairTaskAreAvailable(repairTaskSimpleInfo);
             if(repairTaskSimpleInfo.CanBeAssigned == false || repairTask.Status != Models.Enums.Status.Pending) {
-                TempData[StringConstants.TempDataKeyHoldingGenericError] = StringConstants.RepairTaskGenericAssignmentFailure;
+                TempData[StringConstants.TempDataKeyHoldingGenericErrorsForRepairTaskController] = StringConstants.RepairTaskGenericAssignmentFailure;
                 return this.RedirectToAction(StringConstants.ActionNameIndex, StringConstants.HomeControllerName);
             }
             AvailableTechniciansForRepairTaskViewModel availableTechnicians = new AvailableTechniciansForRepairTaskViewModel {
@@ -67,7 +67,7 @@ namespace Project.Areas.Administration.Controllers
             RepairTaskSimpleInfoViewModel repairTaskSimpleInfo = this.mapper.Map<RepairTaskSimpleInfoViewModel>(repairTask);
             this.partService.AllPartsForRepairTaskAreAvailable(repairTaskSimpleInfo);
             if (repairTaskSimpleInfo.CanBeAssigned == false || repairTask.Status != Models.Enums.Status.Pending) {
-                TempData[StringConstants.TempDataKeyHoldingGenericError] = StringConstants.RepairTaskGenericAssignmentFailure;
+                TempData[StringConstants.TempDataKeyHoldingGenericErrorsForRepairTaskController] = StringConstants.RepairTaskGenericAssignmentFailure;
                 return this.RedirectToAction(StringConstants.ActionNameIndex, StringConstants.HomeControllerName);
             }
             await this.technicianService.AddTechniciansToRepairTaskAsync(availableTechniciansForRepairTaskViewModel.SelectedTechnicians,
@@ -116,10 +116,10 @@ namespace Project.Areas.Administration.Controllers
         }
 
         [HttpGet]
-        [Route("/administration/[controller]/ActionNameRepairTaskReceipt/{id}")]
+        [Route("/administration/[controller]/repair-task-receipt/{id}")]
         public IActionResult RepairTaskReceipt(int id) {
-
-            return this.View();
+            RepairTaskReceiptViewModel repairTaskReceiptViewModel = this.mapper.Map<RepairTaskReceiptViewModel>(this.repairTaskService.GetById(id));
+            return this.View(repairTaskReceiptViewModel);
         }
     }
 }
