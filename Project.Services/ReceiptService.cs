@@ -71,7 +71,7 @@ namespace Project.Services
             }
         }
 
-        public decimal GetTotalRevenuePerCustomer(string customerName) {
+        public decimal? GetTotalRevenuePerCustomer(string customerName) {
             string customerId = this.userManager.FindByNameAsync(customerName).GetAwaiter().GetResult().Id;
             decimal totalRevenue = this.dbContext
                 .Receipts

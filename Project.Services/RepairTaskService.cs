@@ -213,5 +213,9 @@ namespace Project.Services
                 throw new ApplicationException();
             }
         }
+
+        public IQueryable<RepairTask> GetAllPerCustomer(string customerName) {
+            return this.dbContext.RepairTasks.Where(repairTask => repairTask.User.UserName.Equals(customerName, StringComparison.OrdinalIgnoreCase));
+        }
     }
 }

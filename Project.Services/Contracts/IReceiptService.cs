@@ -9,7 +9,7 @@ namespace Project.Services.Contracts
     {
         Task GenerateReceiptAsync(ICollection<User> techniciansHavingWrokedOnRepairTask, string customerId, RepairTask repairTask);
 
-        decimal GetTotalRevenuePerCustomer(string customerName);
+        decimal? GetTotalRevenuePerCustomer(string customerName);
 
         IQueryable<Receipt> GetAll();
 

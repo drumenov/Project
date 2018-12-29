@@ -1,11 +1,25 @@
 ﻿@model RepairTaskDetailsViewModel
+<div class="container d-flex justify-content-center">
+    <div class="card mt-5">
+        <div class="card-header">
+            Repair Task Information
+        </div>
+        <div class="card-body">
+            <div class="card-text">
+                <h1>Parts&#58;</h1>
+                @foreach (var part in Model.PartsRequired) {
+                <div>
+                    Type&#58; <strong>@part.Type</strong>&#59; Quantity&#58; <strong>@part.Quantity</strong>
+                </div>
+                }
 
-<h1>Parts Required:</h1>
-@foreach (var part in Model.PartsRequired) {
-    <div>Type: @part.Type; Quantity: @part.Quantity</div>
-}
-
-<h1>Ppl working: </h1>
-@foreach(var technician in Model.Technicians) {
-    <div>Technician: @technician</div>
-}
+                <h1>Technician&#58; </h1>
+                @foreach (var technician in Model.Technicians) {
+                    <div>
+                        <strong>@technician</strong>
+                    </div>
+                }
+                </div>
+            </div>
+        </div>
+    </div>

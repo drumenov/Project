@@ -67,8 +67,8 @@ namespace Project
                 config.CreateMap<Order, OrderViewModel>()
                     .ForMember(dest => dest.Username, src => src.MapFrom(s => s.User.UserName));
                 config.CreateMap<RepairTask, Models.ViewModels.Customer.RepairTaskDetailsViewModel>()
-                    .ForMember(dest => dest.Technicians, src => src.MapFrom(s => s.Technicians.SelectMany(t => t.Expert.UserName)));
-                config.CreateMap<RepairTask, Models.ViewModels.Administration.RepairTaskSimpleInfoViewModel>()
+                    .ForMember(dest => dest.Technicians, src => src.MapFrom(s => s.Technicians.Select(t => t.Expert.UserName)));
+                config.CreateMap<RepairTask, RepairTaskSimpleInfoViewModel>()
                     .ForMember(dest => dest.Username, src => src.MapFrom(s => s.User.UserName));
                 config.CreateMap<RepairTask, Models.ViewModels.Administration.RepairTaskDetailsViewModel>()
                     .ForMember(dest => dest.Username, src => src.MapFrom(s => s.User.UserName))
@@ -95,6 +95,10 @@ namespace Project
                     .ForMember(dest => dest.Customer, src => src.MapFrom(s => s.User.UserName))
                     .ForMember(dest => dest.Id, src => src.MapFrom(s => s.Id))
                     .ForMember(dest => dest.TotalRevenue, src => src.MapFrom(s => s.TotalPrice));
+                config.CreateMap<RepairTask, RepairTaskInformationViewModel>()
+                    .ForMember(dest => dest.Id, src => src.MapFrom(s => s.Id))
+                    .ForMember(dest => dest.Status, src => src.MapFrom(s => s.Status))
+                    .ForMember(dest => dest.Cost, src => src.MapFrom(s => s.Receipt.TotalPrice));
             });
             services.AddAuthentication().AddCookie();
             services.AddMvc(options => {

@@ -7,7 +7,10 @@ using Project.Models.Entities;
 using Project.Models.InputModels.Customer;
 using Project.Models.ViewModels.Customer;
 using Project.Services.Contracts;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace Project.Areas.Customer.Controllers
 {
@@ -35,7 +38,7 @@ namespace Project.Areas.Customer.Controllers
             if (ModelState.IsValid == false) {
                 return this.View(repairTaskInputModel);
             }
-            if(repairTaskInputModel.IsCarBodyPart == false
+            if (repairTaskInputModel.IsCarBodyPart == false
                 && repairTaskInputModel.IsChassisPart == false
                 && repairTaskInputModel.IsElectronicPart == false
                 && repairTaskInputModel.IsInteriorPart == false) {
@@ -44,7 +47,7 @@ namespace Project.Areas.Customer.Controllers
             }
             User user = await this.userManager.FindByNameAsync(this.User.Identity.Name);
             int repairTaskId = await this.repairTaskService.CreateRepairTaskAsync(repairTaskInputModel, user);
-            return this.RedirectToAction("repair-task-details", new { id = repairTaskId}); //TODO: Redirect to a detailed view of the order.
+            return this.RedirectToAction("repair-task-details", new { id = repairTaskId }); //TODO: Redirect to a detailed view of the order.
         } /*TODO: Check if all types of parts exists 
                                                                                                          in DB and only then create the RepairTask 
                                                                                                          object. Otherwise, the part is created and 
@@ -53,9 +56,23 @@ namespace Project.Areas.Customer.Controllers
         [HttpGet]
         [Route("customer/[controller]/repair-task-details/{id}")]
         public IActionResult RepairTaskDetails(int id) {
-            RepairTask repairTask = this.repairTaskService.GetById(id);
+            RepairTask repairTask = this.repairTaskService?.GetById(id);
+            if (repairTask == null) {
+                throw new ArgumentNullException(String.Format(StringConstants.NoRepairTaskWithGivenIdError, id));
+            }
             RepairTaskDetailsViewModel repairTaskViewModel = this.mapper.Map<RepairTaskDetailsViewModel>(repairTask);
             return this.View(repairTaskViewModel);
+        }
+
+        [HttpGet]
+        [Route("/customer/[controller]/all-repair-tasks")]
+        public IActionResult AllRepairTasks(int? page) {
+            int currentPage = page ?? 1;
+            RepairTaskInformationViewModel[] allCustomerRepairTasks = this.repairTaskService.GetAllPerCustomer(this.User.Identity.Name) != null
+                ? this.mapper.ProjectTo<RepairTaskInformationViewModel>(this.repairTaskService.GetAllPerCustomer(this.User.Identity.Name)).ToArray()
+                : new RepairTaskInformationViewModel[0];
+            IPagedList repairTasksToDisplay = allCustomerRepairTasks.ToPagedList(currentPage, IntegerConstants.ItemsPerPageInViews);
+            return this.View(repairTasksToDisplay);
         }
     }
 }

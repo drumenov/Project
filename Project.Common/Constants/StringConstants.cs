@@ -30,13 +30,14 @@
         public const string NotEnoughPartsAvailable = "The amount of additional needed parts of type {0} is {1}";
         public const string RepairTaskGenericAssignmentFailure = "Either not enough parts are available or someone else has already assign this task.";
         public const string WrongInputWhenAddingOrRemovingTechniciansFromRepairTask = "You must remove or add at least one technician.";
-        public const string WrongInputWhenPromotingATechnician = "Technician cannot be promoted due to worng input";
+        public const string WrongInputWhenPromotingATechnician = "Technician cannot be promoted due to wrong input";
         public const string RemovingOldTechnicianLevelError = "An error occured while trying to remove the old Technician level.";
         public const string AddingNewTechnicianLevelError = "An error occured whilte trying to add the new Technician level.";
         public const string CreatingANewTechnicianLevelError = "An error occured while creating the new Technician level.";
-        public const string TryingToDemoteTechnicianThatCannotBeDemotedError = "You cannot deomte this Technician";
+        public const string TryingToDemoteTechnicianThatCannotBeDemotedError = "You cannot demote this Technician";
         public const string TryingToPromoteATechnicianThatCannotBePromotedError = "You cannot promote this Technician";
         public const string TryingToRetrieveAMissingReceiptError = "Receipt with this ID: {0} does not exists";
+        public const string NoRepairTaskWithGivenIdError = "A repair task with ID {0} does not exist";
 
         //Action names string representation
         public const string ActionNameIndex = "index";
@@ -60,6 +61,7 @@
         public const string ActionNameTechnicianDetails = "technician-details";
         public const string ActionNameAllReceipts = "all-receipts";
         public const string ActionNameReceiptDetails = "receipt-details";
+        public const string AllReparTaskPerCustomer = "all-repair-tasks";
 
         //Controller names string representation
         public const string HomeControllerName = "Home";

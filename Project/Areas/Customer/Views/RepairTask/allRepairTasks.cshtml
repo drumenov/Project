@@ -1,0 +1,39 @@
+﻿@model X.PagedList.PagedList<RepairTaskInformationViewModel>
+@inject Project.Services.Contracts.IReceiptService receiptService
+
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Repair Task ID</th>
+                <th>Status</th>
+                <th>Total Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var repairTask in Model) {
+                <tr>
+                    <td><a>@repairTask.Id</a></td>
+                    <td>@repairTask.Status</td>
+                    @if (repairTask.Cost != null) {
+                        <td>@repairTask.Cost</td>
+                    } else {
+                        <td></td>
+                    }
+                </tr>
+            }
+            <tr>
+                <td></td>
+                <td></td>
+                <td>@(receiptService.GetTotalRevenuePerCustomer(User.Identity.Name) ?? 0)</td>
+            </tr>
+        </tbody>
+    </table>
+    @if (Model.Count != 0) {
+        @Html.PagedListPager(Model, page => Url.Action(StringConstants.AllReparTaskPerCustomer, StringConstants.RepairTaskControllerName, new { page }),
+       new X.PagedList.Mvc.Common.PagedListRenderOptions {
+           LiElementClasses = new string[] {"page-item"},
+           PageClasses = new string[] {"page-link"}
+       })
+    }
+</div>

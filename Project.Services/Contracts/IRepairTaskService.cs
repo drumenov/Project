@@ -32,5 +32,7 @@ namespace Project.Services.Contracts
         Task RemoveTechnicianFromRepairTaskAsync(string nameOfTechnicianToRemove, int id);
 
         Task AddTechnicianToRepairTaskAsync(string nameOfTechnicianToAdd, int id);
+
+        IQueryable<RepairTask> GetAllPerCustomer(string customerName);
     }
 }

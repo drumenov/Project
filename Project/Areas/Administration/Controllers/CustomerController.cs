@@ -38,7 +38,9 @@ namespace Project.Areas.Administration.Controllers
                                                     .GetResult()
                                                     .Count(),
                 CustomerName = customerName,
-                TotalRevenue = this.receiptService.GetTotalRevenuePerCustomer(customerName)
+                TotalRevenue = this.receiptService.GetTotalRevenuePerCustomer(customerName).HasValue 
+                ? this.receiptService.GetTotalRevenuePerCustomer(customerName).Value 
+                : 0
             };
             return this.View(customerDetailsViewModel);
         }
