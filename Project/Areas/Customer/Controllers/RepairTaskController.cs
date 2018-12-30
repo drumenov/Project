@@ -74,5 +74,16 @@ namespace Project.Areas.Customer.Controllers
             IPagedList repairTasksToDisplay = allCustomerRepairTasks.ToPagedList(currentPage, IntegerConstants.ItemsPerPageInViews);
             return this.View(repairTasksToDisplay);
         }
+
+        [HttpGet]
+        [Route("/customer/[controller]/repair-task-receipt/{id}")]
+        public IActionResult RepairTaskReceipt(int id) {
+            RepairTaskReceiptViewModel repairTaskReceiptViewModel = this.mapper.Map<RepairTaskReceiptViewModel>(this.repairTaskService.GetById(id));
+            repairTaskReceiptViewModel.CustomerName = "lol";
+            if(repairTaskReceiptViewModel.CustomerName != this.User.Identity.Name) {
+                return this.Unauthorized();
+            }
+            return this.View(repairTaskReceiptViewModel);
+        }
     }
 }

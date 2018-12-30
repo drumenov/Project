@@ -82,7 +82,7 @@ namespace Project
                     .ForMember(dest => dest.Username, src => src.MapFrom(s => s.User.UserName))
                     .ForMember(dest => dest.CountOfTechniciansCurrentlyWorkingOnTheRepairTask, src => src.MapFrom(s => s.Technicians.Where(t => t.IsFinished == false).Count()))
                     .ForMember(dest => dest.CountOfTechniciansHavingFinishedWorkingOnTheRepairTask, src => src.MapFrom(s => s.Technicians.Where(t => t.IsFinished).Count()));
-                config.CreateMap<RepairTask, RepairTaskReceiptViewModel>()
+                config.CreateMap<RepairTask, Models.ViewModels.Administration.RepairTaskReceiptViewModel>()
                     .ForMember(dest => dest.ReceiptId, src => src.MapFrom(s => s.ReceiptId))
                     .ForMember(dest => dest.TotalRevenue, src => src.MapFrom(s => s.Receipt.TotalPrice))
                     .ForMember(dest => dest.CustomerName, src => src.MapFrom(s => s.User.UserName))
@@ -99,6 +99,11 @@ namespace Project
                     .ForMember(dest => dest.Id, src => src.MapFrom(s => s.Id))
                     .ForMember(dest => dest.Status, src => src.MapFrom(s => s.Status))
                     .ForMember(dest => dest.Cost, src => src.MapFrom(s => s.Receipt.TotalPrice));
+                config.CreateMap<RepairTask, Models.ViewModels.Customer.RepairTaskReceiptViewModel>()
+                    .ForMember(dest => dest.ReceiptId, src => src.MapFrom(s => s.ReceiptId))
+                    .ForMember(dest => dest.TotalRevenue, src => src.MapFrom(s => s.Receipt.TotalPrice))
+                    .ForMember(dest => dest.CustomerName, src => src.MapFrom(s => s.User.UserName))
+                    .ForMember(dest => dest.NamesOfTechniciansHavingWorkedOnTheRepairTask, src => src.MapFrom(s => s.Technicians.Select(t => t.Expert.UserName)));
             });
             services.AddAuthentication().AddCookie();
             services.AddMvc(options => {
