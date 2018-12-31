@@ -1,0 +1,60 @@
+﻿@model RepairTaskEditInputModel
+<section class="d-flex justify-content-center">
+    <div class="jumbotron w-75 mt-3 d-flex justify-content-center">
+        <form method="post"
+              asp-action="@StringConstants.ActionNameCreateRepairTask"
+              asp-controller="@StringConstants.RepairTaskControllerName"
+              asp-area="@StringConstants.AreaNameCustomer">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" value="@Model.Id" />
+            <div class="form-inline">
+                <label asp-for="@Model.IsCarBodyPart" class="form-check-label"></label>
+                <input type="checkbox" asp-for="@Model.IsCarBodyPart" class="ml-2" />
+            </div>
+            <div class="form-inline mt-2">
+                <label asp-for="@Model.CarBodyPartAmount"></label>
+                <input asp-for="@Model.CarBodyPartAmount" class="form-control ml-2" value="@(Model != null ? Model.CarBodyPartAmount : 0)" />
+            </div>
+            <span asp-validation-for="@Model.IsCarBodyPart" class="text-danger"></span>
+            <hr />
+            <div class="form-inline">
+                <label asp-for="@Model.IsElectronicPart"></label>
+                <input type="checkbox" asp-for="@Model.IsElectronicPart" class="ml-2" />
+            </div>
+            <div class="form-inline mt-2">
+                <label asp-for="@Model.ElectronicPartAmount"></label>
+                <input asp-for="@Model.ElectronicPartAmount" class="form-control ml-2" value="@(Model != null ? Model.ElectronicPartAmount : 0)" />
+            </div>
+            <span asp-validation-for="@Model.IsElectronicPart" class="text-danger"></span>
+            <hr />
+            <div class="form-inline">
+                <label asp-for="@Model.IsInteriorPart"></label>
+                <input type="checkbox" asp-for="@Model.IsInteriorPart" class="ml-2" />
+            </div>
+            <div class="form-inline mt-2">
+                <label asp-for="@Model.InteriorPartAmount"></label>
+                <input asp-for="@Model.InteriorPartAmount" class="form-control ml-2" value="@(Model != null ? Model.InteriorPartAmount : 0)" />
+            </div>
+            <span asp-validation-for="@Model.IsInteriorPart" class="text-danger"></span>
+            <hr />
+            <div class="form-inline">
+                <label asp-for="@Model.IsChassisPart"></label>
+                <input type="checkbox" asp-for="@Model.IsChassisPart" class="ml-2" />
+            </div>
+            <div class="form-inline mt-2">
+                <label asp-for="@Model.ChassisPartAmount"></label>
+                <input asp-for="@Model.ChassisPartAmount" class="form-control ml-2" value="@(Model != null ? Model.ChassisPartAmount : 0)" />
+            </div>
+            <span asp-validation-for="@Model.IsChassisPart" class="text-danger"></span>
+            <div class="d-flex justify-content-between mt-4">
+                <div>
+                    <a class="btn btn-info text-white" id="back">Go Back</a>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <input type="reset" class="btn btn-danger" value="Clear" />
+                    <input type="submit" class="btn btn-primary mx-1" value="Make the Order" />
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

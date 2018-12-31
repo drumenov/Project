@@ -217,5 +217,54 @@ namespace Project.Services
         public IQueryable<RepairTask> GetAllPerCustomer(string customerName) {
             return this.dbContext.RepairTasks.Where(repairTask => repairTask.User.UserName.Equals(customerName, StringComparison.OrdinalIgnoreCase));
         }
+
+        public async Task UpdateRepairTaskAsync(RepairTaskEditInputModel repairTaskEditInputModel) {
+            RepairTask repairTask = this.GetById(repairTaskEditInputModel.Id);
+            repairTask.PartsRequired.Clear();
+            if (repairTaskEditInputModel.IsCarBodyPart) {
+                if (this.partService.PartTypeExists(Models.Enums.PartType.CarBody) == false) {
+                    throw new ArgumentNullException();
+                }
+                Part part = new Part {
+                    Quantity = repairTaskEditInputModel.CarBodyPartAmount,
+                    Type = Models.Enums.PartType.CarBody
+                };
+                repairTask.PartsRequired.Add(part);
+            }
+            if (repairTaskEditInputModel.IsChassisPart) {
+                if (this.partService.PartTypeExists(Models.Enums.PartType.Chassis) == false) {
+                    throw new ArgumentNullException();
+                }
+                Part part = new Part {
+                    Type = Models.Enums.PartType.Chassis,
+                    Quantity = repairTaskEditInputModel.ChassisPartAmount
+                };
+                repairTask.PartsRequired.Add(part);
+            }
+            if (repairTaskEditInputModel.IsElectronicPart) {
+                if (this.partService.PartTypeExists(Models.Enums.PartType.Electronic) == false) {
+                    throw new ArgumentNullException();
+                }
+                Part part = new Part {
+                    Type = Models.Enums.PartType.Electronic,
+                    Quantity = repairTaskEditInputModel.ElectronicPartAmount
+                };
+                repairTask.PartsRequired.Add(part);
+            }
+            if (repairTaskEditInputModel.IsInteriorPart) {
+                if (this.partService.PartTypeExists(Models.Enums.PartType.Interior) == false) {
+                    throw new ArgumentNullException();
+                }
+                Part part = new Part {
+                    Type = Models.Enums.PartType.Interior,
+                    Quantity = repairTaskEditInputModel.InteriorPartAmount
+                };
+            }
+
+            this.dbContext.RepairTasks.Update(repairTask);
+            if(await this.dbContext.SaveChangesAsync() == 0) {
+                throw new ApplicationException();
+            }
+        }
     }
 }

@@ -61,7 +61,9 @@
         public const string ActionNameTechnicianDetails = "technician-details";
         public const string ActionNameAllReceipts = "all-receipts";
         public const string ActionNameReceiptDetails = "receipt-details";
-        public const string AllReparTaskPerCustomer = "all-repair-tasks";
+        public const string ActionNameAllReparTaskPerCustomer = "all-repair-tasks";
+        public const string ActionNameEditRepairTask = "edit-repair-task";
+        public const string ActionNameDeleteRepairTask = "delete-repair-task";
 
         //Controller names string representation
         public const string HomeControllerName = "Home";

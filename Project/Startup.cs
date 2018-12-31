@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Project.Data;
 using Project.Models.Entities;
 using Project.Models.InputModels.Administration;
+using Project.Models.InputModels.Customer;
 using Project.Models.ViewModels.Administration;
 using Project.Models.ViewModels.Customer;
 using Project.Plumbing.Middlewares.SeedAdmin;
@@ -104,6 +105,24 @@ namespace Project
                     .ForMember(dest => dest.TotalRevenue, src => src.MapFrom(s => s.Receipt.TotalPrice))
                     .ForMember(dest => dest.CustomerName, src => src.MapFrom(s => s.User.UserName))
                     .ForMember(dest => dest.NamesOfTechniciansHavingWorkedOnTheRepairTask, src => src.MapFrom(s => s.Technicians.Select(t => t.Expert.UserName)));
+                config.CreateMap<RepairTask, RepairTaskEditInputModel>()
+                    .ForMember(dest => dest.Id, src => src.MapFrom(s => s.Id))
+                    .ForMember(dest => dest.InteriorPartAmount, src => src.MapFrom(s => s.PartsRequired
+                                                                                            .Where(partRequired => partRequired.Type == Models.Enums.PartType.Interior)
+                                                                                            .FirstOrDefault()
+                                                                                            .Quantity))
+                    .ForMember(dest => dest.ElectronicPartAmount, src => src.MapFrom(s => s.PartsRequired
+                                                                                            .Where(partRequired => partRequired.Type == Models.Enums.PartType.Electronic)
+                                                                                            .FirstOrDefault()
+                                                                                            .Quantity))
+                    .ForMember(dest => dest.ChassisPartAmount, src => src.MapFrom(s => s.PartsRequired
+                                                                                        .Where(partRequired => partRequired.Type == Models.Enums.PartType.Chassis)
+                                                                                        .FirstOrDefault()
+                                                                                        .Quantity))
+                    .ForMember(dest => dest.CarBodyPartAmount, src => src.MapFrom(s => s.PartsRequired
+                                                                                        .Where(partRequired => partRequired.Type == Models.Enums.PartType.CarBody)
+                                                                                        .FirstOrDefault()
+                                                                                        .Quantity));
             });
             services.AddAuthentication().AddCookie();
             services.AddMvc(options => {

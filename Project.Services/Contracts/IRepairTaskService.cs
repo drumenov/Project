@@ -34,5 +34,7 @@ namespace Project.Services.Contracts
         Task AddTechnicianToRepairTaskAsync(string nameOfTechnicianToAdd, int id);
 
         IQueryable<RepairTask> GetAllPerCustomer(string customerName);
+
+        Task UpdateRepairTaskAsync(RepairTaskEditInputModel repairTaskEditInputModel);
     }
 }

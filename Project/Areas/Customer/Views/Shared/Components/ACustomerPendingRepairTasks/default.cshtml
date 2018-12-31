@@ -4,16 +4,32 @@
     <div class="card-header">
         @User.Identity.Name&#39;s Pending Repair Tasks
     </div>
-    <div class="card-body">
+    <div class="card-body d-flex justify-content-between">
         @foreach (var pendingRepairTask in Model) {
-        <p class="card-text">
-            <a asp-action="@StringConstants.ActionNameRepairTaskDetails"
-               asp-controller="@StringConstants.RepairTaskControllerName"
-               asp-area="@StringConstants.AreaNameCustomer"
-               asp-route-id="@pendingRepairTask.Id">
-                @pendingRepairTask.Id
-            </a>
-        </p>
+            <p class="card-text">
+                <a asp-action="@StringConstants.ActionNameRepairTaskDetails"
+                   asp-controller="@StringConstants.RepairTaskControllerName"
+                   asp-area="@StringConstants.AreaNameCustomer"
+                   asp-route-id="@pendingRepairTask.Id">
+                    @pendingRepairTask.Id
+                </a>
+            </p>
+            <div>
+                <a asp-action="@StringConstants.ActionNameEditRepairTask"
+                   asp-controller="@StringConstants.RepairTaskControllerName"
+                   asp-area="@StringConstants.AreaNameCustomer"
+                   asp-route-id="@pendingRepairTask.Id"
+                    class="btn btn-outline-info">
+                    Edit
+                </a>
+                <a asp-action="@StringConstants.ActionNameDeleteRepairTask"
+                    asp-controller="StringConstants.RepairTaskControllerName"
+                    asp-area="@StringConstants.AreaNameCustomer"
+                    asp-route-id="@pendingRepairTask.Id"
+                    class="btn btn-outline-danger">
+                    Delete
+                </a>
+            </div>
         }
     </div>
     <div class="container">

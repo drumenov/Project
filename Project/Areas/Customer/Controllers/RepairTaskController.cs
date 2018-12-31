@@ -79,11 +79,28 @@ namespace Project.Areas.Customer.Controllers
         [Route("/customer/[controller]/repair-task-receipt/{id}")]
         public IActionResult RepairTaskReceipt(int id) {
             RepairTaskReceiptViewModel repairTaskReceiptViewModel = this.mapper.Map<RepairTaskReceiptViewModel>(this.repairTaskService.GetById(id));
-            repairTaskReceiptViewModel.CustomerName = "lol";
             if(repairTaskReceiptViewModel.CustomerName != this.User.Identity.Name) {
                 return this.Unauthorized();
             }
             return this.View(repairTaskReceiptViewModel);
+        }
+
+        [HttpGet]
+        [Route("/customer/[controller]/edit-repair-task/{id}")]
+        public IActionResult EditRepairTask(int id) {
+            RepairTask repairTask = this.repairTaskService.GetById(id);
+            if(repairTask.User.UserName != this.User.Identity.Name) {
+                return this.Unauthorized();
+            }
+            RepairTaskEditInputModel repairTaskEditInputModel = this.mapper.Map<RepairTaskEditInputModel>(repairTask);
+            return this.View(repairTaskEditInputModel);
+        }
+
+        [HttpPost]
+        [Route("/customer/[controller]/edit-repair-task/{id}")]
+        public async Task<IActionResult> EditRepairTask(RepairTaskEditInputModel repairTaskEditInputModel) {
+            await this.repairTaskService.UpdateRepairTaskAsync(repairTaskEditInputModel);
+            return this.RedirectToAction(StringConstants.ActionNameRepairTaskDetails, new { repairTaskEditInputModel.Id}); 
         }
     }
 }
