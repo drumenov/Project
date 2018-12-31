@@ -23,7 +23,7 @@
                     Edit
                 </a>
                 <a asp-action="@StringConstants.ActionNameDeleteRepairTask"
-                    asp-controller="StringConstants.RepairTaskControllerName"
+                    asp-controller="@StringConstants.RepairTaskControllerName"
                     asp-area="@StringConstants.AreaNameCustomer"
                     asp-route-id="@pendingRepairTask.Id"
                     class="btn btn-outline-danger">

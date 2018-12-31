@@ -339,5 +339,22 @@ namespace Project.Services
             }
             return false;
         }
+
+        public async Task DeleteRepairTaskAsync(int id) {
+            RepairTask repairTask = this.GetById(id);
+            if(repairTask.Status != Status.Pending) {
+                throw new ApplicationException();
+            }
+            Part[] partsToRemove = repairTask.PartsRequired.ToArray();
+            this.dbContext
+                .Parts.RemoveRange(partsToRemove);
+            this.dbContext
+                .RepairTasks
+                .Remove(repairTask);
+
+            if (await this.dbContext.SaveChangesAsync() == 0) {
+                throw new ApplicationException();
+            }
+        }
     }
 }

@@ -58,6 +58,7 @@ namespace Project
             services.AddScoped<IRepairTaskService, RepairTaskService>();
             services.AddScoped<ITechnicianService, TechnicianService>();
             services.AddScoped<IReceiptService, ReceiptService>();
+            services.AddScoped<IFeedbackService, FeedbackService>();
 
             services.AddAutoMapper(config => {
                 config.CreateMap<CreateAdministratorInputModel, User>();
@@ -135,6 +136,10 @@ namespace Project
                                                                                         .Where(partRequired => partRequired.Type == Models.Enums.PartType.CarBody)
                                                                                         .FirstOrDefault()
                                                                                         .Quantity));
+                config.CreateMap<RepairTask, Models.ViewModels.Customer.RepairTaskViewModel>()
+                    .ForMember(dest => dest.Id, src => src.MapFrom(s => s.Id))
+                    .ForMember(dest => dest.CanCreateFeedback, src => src.MapFrom(s => s.Feedback == null))
+                    .ForMember(dest => dest.CanEditFeedback, src => src.MapFrom(s => s.Feedback != null));
             });
             services.AddAuthentication().AddCookie();
             services.AddMvc(options => {

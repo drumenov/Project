@@ -46,7 +46,7 @@ namespace Project.Areas.Administration.Controllers
             OrderViewModel[] allOrders = this.mapper
                 .ProjectTo<OrderViewModel>(this.orderService.GetAll())
                 .ToArray();
-            IPagedList ordersToDisplay = allOrders.ToPagedList(currentPage, IntegerConstants.ItemsPerPageInViewComponents);
+            IPagedList ordersToDisplay = allOrders.ToPagedList(currentPage, IntegerConstants.ItemsPerPageInViews);
             return this.View(ordersToDisplay);
         }
     }

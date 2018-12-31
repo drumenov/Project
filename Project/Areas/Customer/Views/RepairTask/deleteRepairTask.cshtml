@@ -1,0 +1,13 @@
+﻿@model  int
+
+<div class="container">
+    <h1 class="text-center mt-5">Do you want to delete Repair Task wirh ID: @Model?</h1>
+    <form method="post" 
+        asp-action="@StringConstants.ActionNameDeleteRepairTask"
+        asp-controller="@StringConstants.RepairTaskControllerName"
+        asp-area="@StringConstants.AreaNameCustomer"
+        asp-route-id="@Model"
+        class="d-flex justify-content-end">
+            <input type="submit" class="btn btn-danger" value="Delete" />
+    </form>
+</div>

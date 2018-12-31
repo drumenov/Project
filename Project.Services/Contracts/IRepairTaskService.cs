@@ -38,5 +38,7 @@ namespace Project.Services.Contracts
         Task<bool> TryUpdateRepairTaskAsync(RepairTaskEditInputModel repairTaskEditInputModel);
 
         bool RepairTaskIsChanged(RepairTaskEditInputModel repairTaskEditInputModel);
+
+        Task DeleteRepairTaskAsync(int id);
     }
 }

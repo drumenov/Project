@@ -69,6 +69,7 @@
         public const string ActionNameAllReparTaskPerCustomer = "all-repair-tasks";
         public const string ActionNameEditRepairTask = "edit-repair-task";
         public const string ActionNameDeleteRepairTask = "delete-repair-task";
+        public const string ActionNameGiveFeedbackForARepairTask = "repair-task-feedback";
 
         //Controller names string representation
         public const string HomeControllerName = "Home";
@@ -80,6 +81,7 @@
         public const string CustomerControllerName = "Customer";
         public const string TechnicianControllerName = "Technician";
         public const string ReceiptControllerName = "Receipt";
+        public const string FeedbackControllerName = "Feedback";
 
         //Areas names stirng representation
         public const string AreaNameAdministration = "Administration";

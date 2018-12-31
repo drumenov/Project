@@ -116,5 +116,22 @@ namespace Project.Areas.Customer.Controllers
             }
             return this.RedirectToAction(StringConstants.ActionNameRepairTaskDetails, new { repairTaskEditInputModel.Id}); 
         }
+
+        [HttpGet]
+        [Route("/customer/[controller]/delete-repair-task/{id}")]
+        public IActionResult DeleteRepairTask(int id) {
+            RepairTask repairTask = this.repairTaskService.GetById(id);
+            if(repairTask.User.UserName != this.User.Identity.Name) {
+                return this.Unauthorized();
+            }
+            return this.View(id);
+        }
+
+        [HttpPost]
+        [Route("/customer/[controller]/delete-repair-task/{id}")]
+        public async Task<IActionResult> DeleteRepairTaskPost(int id) {
+            await this.repairTaskService.DeleteRepairTaskAsync(id);
+            return this.RedirectToAction(StringConstants.ActionNameIndex, StringConstants.HomeControllerName);
+        }
     }
 }

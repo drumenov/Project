@@ -21,6 +21,22 @@
                asp-route-id="@finishedRepairTask.Id">
                 View Receipt
             </a>
+
+            @if (finishedRepairTask.CanCreateFeedback) {
+                <a class="btn btn-warning"
+                   asp-action="@StringConstants.ActionNameGiveFeedbackForARepairTask"
+                   asp-controller="@StringConstants.FeedbackControllerName"
+                   asp-area="@StringConstants.AreaNameCustomer"
+                   asp-route-id="@finishedRepairTask.Id">
+                    Give Feedback
+                </a>
+            }
+            @if (finishedRepairTask.CanEditFeedback) {
+                <a class="btn btn-warning">
+                    Edit Feedback
+                </a>
+            }
+
         }
     </div>
     <div class="container">
