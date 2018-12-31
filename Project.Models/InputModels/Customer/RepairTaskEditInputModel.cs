@@ -1,4 +1,5 @@
-﻿using Project.Models.InputModels.BaseInputModels;
+﻿using Project.Models.Attributes.ValidationAttributes;
+using Project.Models.InputModels.BaseInputModels;
 
 namespace Project.Models.InputModels.Customer
 {
@@ -6,12 +7,16 @@ namespace Project.Models.InputModels.Customer
     {
         public int Id { get; set; }
 
-        public override bool IsCarBodyPart => base.CarBodyPartAmount > 0;
+        [CheckThatChangedAmountIsAtleastZero(nameof(CarBodyPartAmount))]
+        public override bool IsCarBodyPart { get => base.IsCarBodyPart; set => base.IsCarBodyPart = value; }
 
-        public override bool IsChassisPart => base.ChassisPartAmount > 0;
+        [CheckThatChangedAmountIsAtleastZero(nameof(InteriorPartAmount))]
+        public override bool IsInteriorPart { get => base.IsInteriorPart; set => base.IsInteriorPart = value; }
 
-        public override bool IsElectronicPart => base.ElectronicPartAmount > 0;
+        [CheckThatChangedAmountIsAtleastZero(nameof(ElectronicPartAmount))]
+        public override bool IsElectronicPart { get => base.IsElectronicPart; set => base.IsElectronicPart = value; }
 
-        public override bool IsInteriorPart => base.InteriorPartAmount > 0;
+        [CheckThatChangedAmountIsAtleastZero(nameof(ChassisPartAmount))]
+        public override bool IsChassisPart { get => base.IsChassisPart; set => base.IsChassisPart = value; }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Project.Data;
 using Project.Models.Entities;
+using Project.Models.Enums;
 using Project.Models.InputModels.Customer;
 using Project.Services.Contracts;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,16 +31,16 @@ namespace Project.Services
         public async Task<int> CreateRepairTaskAsync(RepairTaskInputModel repairTaskInputModel, User user) {
 
             RepairTask repairTask = new RepairTask {
-                Status = Models.Enums.Status.Pending,
+                Status = Status.Pending,
                 User = user
             };
             if (repairTaskInputModel.IsCarBodyPart) {
-                if(this.partService.PartTypeExists(Models.Enums.PartType.CarBody) == false) {
+                if (this.partService.PartTypeExists(Models.Enums.PartType.CarBody) == false) {
                     throw new ArgumentNullException();
                 }
                 Part part = new Part {
                     Quantity = repairTaskInputModel.CarBodyPartAmount,
-                    Type = Models.Enums.PartType.CarBody
+                    Type = PartType.CarBody
                 };
                 repairTask.PartsRequired.Add(part);
             }
@@ -47,7 +49,7 @@ namespace Project.Services
                     throw new ArgumentNullException();
                 }
                 Part part = new Part {
-                    Type = Models.Enums.PartType.Chassis,
+                    Type = PartType.Chassis,
                     Quantity = repairTaskInputModel.ChassisPartAmount
                 };
                 repairTask.PartsRequired.Add(part);
@@ -57,7 +59,7 @@ namespace Project.Services
                     throw new ArgumentNullException();
                 }
                 Part part = new Part {
-                    Type = Models.Enums.PartType.Electronic,
+                    Type = PartType.Electronic,
                     Quantity = repairTaskInputModel.ElectronicPartAmount
                 };
                 repairTask.PartsRequired.Add(part);
@@ -67,12 +69,12 @@ namespace Project.Services
                     throw new ArgumentNullException();
                 }
                 Part part = new Part {
-                    Type = Models.Enums.PartType.Interior,
+                    Type = PartType.Interior,
                     Quantity = repairTaskInputModel.InteriorPartAmount
                 };
             }
             this.dbContext.RepairTasks.Add(repairTask);
-            if(await this.dbContext.SaveChangesAsync() == 0) {
+            if (await this.dbContext.SaveChangesAsync() == 0) {
                 throw new ApplicationException();
             }
             return repairTask.Id;
@@ -144,22 +146,22 @@ namespace Project.Services
                 .UsersRepairsTasks
                 .Where(userRepairTask => userRepairTask.UserId == technicianId && userRepairTask.RepairTaskId == repairTaskId)
                 .FirstOrDefault().IsFinished = true;
-            
-            if(await this.dbContext.SaveChangesAsync() == 0) {
+
+            if (await this.dbContext.SaveChangesAsync() == 0) {
                 throw new ApplicationException();
             }
             await TryCompoleteRepairTaskAsync(repairTaskId);
         }
 
         private async Task TryCompoleteRepairTaskAsync(int repairTaskId) {
-            if(this.dbContext
+            if (this.dbContext
                 .UsersRepairsTasks
                 .All(userRepairTask => userRepairTask.IsFinished)) {
                 RepairTask currentRepairTask = this.dbContext
                     .RepairTasks
                     .FirstOrDefault(repairTask => repairTask.Id == repairTaskId);
                 currentRepairTask.Status = Models.Enums.Status.Finished;
-                if(await this.dbContext.SaveChangesAsync() == 0) {
+                if (await this.dbContext.SaveChangesAsync() == 0) {
                     throw new ApplicationException();
                 }
                 string customerId = currentRepairTask.UserId;
@@ -174,13 +176,13 @@ namespace Project.Services
                                                 .UsersRepairsTasks
                                                 .Where(usersRepairTasks => usersRepairTasks.Expert.Id == technicianId && usersRepairTasks.RepairTaskId == id)
                                                 .FirstOrDefault();
-            if(repairTaskToRemove == null) {
+            if (repairTaskToRemove == null) {
                 throw new ArgumentNullException();
             }
             this.dbContext
                 .UsersRepairsTasks
                 .Remove(repairTaskToRemove);
-            if(await this.dbContext.SaveChangesAsync() == 0) {
+            if (await this.dbContext.SaveChangesAsync() == 0) {
                 throw new ApplicationException();
             }
             await this.CheckWhetherThereAreAnyTechnicianStillAssignedToTheTaskAsync(id);
@@ -209,7 +211,7 @@ namespace Project.Services
             await this.dbContext
                 .UsersRepairsTasks
                 .AddAsync(userRepairTask);
-            if(await this.dbContext.SaveChangesAsync() == 0) {
+            if (await this.dbContext.SaveChangesAsync() == 0) {
                 throw new ApplicationException();
             }
         }
@@ -218,53 +220,124 @@ namespace Project.Services
             return this.dbContext.RepairTasks.Where(repairTask => repairTask.User.UserName.Equals(customerName, StringComparison.OrdinalIgnoreCase));
         }
 
-        public async Task UpdateRepairTaskAsync(RepairTaskEditInputModel repairTaskEditInputModel) {
+        public async Task<bool> TryUpdateRepairTaskAsync(RepairTaskEditInputModel repairTaskEditInputModel) {
             RepairTask repairTask = this.GetById(repairTaskEditInputModel.Id);
-            repairTask.PartsRequired.Clear();
             if (repairTaskEditInputModel.IsCarBodyPart) {
-                if (this.partService.PartTypeExists(Models.Enums.PartType.CarBody) == false) {
-                    throw new ArgumentNullException();
+                if (this.partService.PartTypeExists(PartType.CarBody) == false) {
+                    throw new ApplicationException();
                 }
-                Part part = new Part {
-                    Quantity = repairTaskEditInputModel.CarBodyPartAmount,
-                    Type = Models.Enums.PartType.CarBody
-                };
-                repairTask.PartsRequired.Add(part);
+                Part part = this.GetPartByPartTypeAndRepairTaskId(PartType.CarBody, repairTask.Id);
+                if (part == null) {
+                    part = new Part {
+                        Type = PartType.CarBody,
+                    };
+                    repairTask.PartsRequired.Add(part);
+                }
+                part.Quantity = repairTaskEditInputModel.CarBodyPartAmount; 
             }
             if (repairTaskEditInputModel.IsChassisPart) {
-                if (this.partService.PartTypeExists(Models.Enums.PartType.Chassis) == false) {
+                if (this.partService.PartTypeExists(PartType.Chassis) == false) {
                     throw new ArgumentNullException();
                 }
-                Part part = new Part {
-                    Type = Models.Enums.PartType.Chassis,
-                    Quantity = repairTaskEditInputModel.ChassisPartAmount
-                };
-                repairTask.PartsRequired.Add(part);
+                Part part = this.GetPartByPartTypeAndRepairTaskId(PartType.Chassis, repairTask.Id);
+                if(part == null) {
+                    part = new Part {
+                        Type = PartType.Chassis,
+                    };
+                    repairTask.PartsRequired.Add(part);
+                }
+                part.Quantity = repairTaskEditInputModel.ChassisPartAmount;                
             }
             if (repairTaskEditInputModel.IsElectronicPart) {
-                if (this.partService.PartTypeExists(Models.Enums.PartType.Electronic) == false) {
+                if (this.partService.PartTypeExists(PartType.Electronic) == false) {
                     throw new ArgumentNullException();
                 }
-                Part part = new Part {
-                    Type = Models.Enums.PartType.Electronic,
-                    Quantity = repairTaskEditInputModel.ElectronicPartAmount
+                Part part = this.GetPartByPartTypeAndRepairTaskId(PartType.Electronic, repairTask.Id);
+                if(part == null) {
+                    part = new Part {
+                        Type = PartType.Electronic,
+                    };
+                    repairTask.PartsRequired.Add(part);
                 };
-                repairTask.PartsRequired.Add(part);
+                part.Quantity = repairTaskEditInputModel.ElectronicPartAmount;
             }
             if (repairTaskEditInputModel.IsInteriorPart) {
-                if (this.partService.PartTypeExists(Models.Enums.PartType.Interior) == false) {
+                if (this.partService.PartTypeExists(PartType.Interior) == false) {
                     throw new ArgumentNullException();
                 }
-                Part part = new Part {
-                    Type = Models.Enums.PartType.Interior,
-                    Quantity = repairTaskEditInputModel.InteriorPartAmount
+                Part part = this.GetPartByPartTypeAndRepairTaskId(PartType.Interior, repairTask.Id);
+                if(part == null) {
+                    part = new Part {
+                        Type = PartType.Interior,
+                    };
+                    repairTask.PartsRequired.Add(part);
                 };
+                part.Quantity = repairTaskEditInputModel.InteriorPartAmount;
+            }
+            foreach (Part part in repairTask.PartsRequired.ToList()) {
+                if (part.Quantity == 0) {
+                    repairTask.PartsRequired.Remove(part);
+                }
             }
 
-            this.dbContext.RepairTasks.Update(repairTask);
-            if(await this.dbContext.SaveChangesAsync() == 0) {
+            if(repairTask.PartsRequired.Count == 0) {
+                return false;
+            }
+            if (await this.dbContext.SaveChangesAsync() == 0) {
                 throw new ApplicationException();
             }
+            return true;
+        }
+
+        private Part GetPartByPartTypeAndRepairTaskId(PartType partType, int id) {
+            return this.dbContext
+                    .RepairTasks
+                    .Where(rt => rt.Id == id)
+                    .SelectMany(filtered => filtered.PartsRequired)
+                    .Where(p => p.Type == partType)
+                    .FirstOrDefault();
+        }
+
+        public bool RepairTaskIsChanged(RepairTaskEditInputModel repairTaskEditInputModel) {
+            RepairTask repairTask = this.GetById(repairTaskEditInputModel.Id);
+            List<Part> repairTaskOldRequiredParts = new List<Part>(repairTask.PartsRequired).OrderBy(x => x.Type).ToList();
+            List<Part> repairTaskNewRequiredParts = new List<Part>();
+            if (repairTaskEditInputModel.IsCarBodyPart) {
+                repairTaskNewRequiredParts.Add(new Part {
+                    Type = PartType.CarBody,
+                    Quantity = repairTaskEditInputModel.CarBodyPartAmount
+                });
+            }
+            if (repairTaskEditInputModel.IsChassisPart) {
+                repairTaskNewRequiredParts.Add(new Part {
+                    Type = PartType.Chassis,
+                    Quantity = repairTaskEditInputModel.ChassisPartAmount
+                });
+            }
+            if (repairTaskEditInputModel.IsElectronicPart) {
+                repairTaskNewRequiredParts.Add(new Part {
+                    Type = PartType.Electronic,
+                    Quantity = repairTaskEditInputModel.ElectronicPartAmount
+                });
+            }
+            if (repairTaskEditInputModel.IsInteriorPart) {
+                repairTaskNewRequiredParts.Add(new Part {
+                    Type = PartType.Interior,
+                    Quantity = repairTaskEditInputModel.InteriorPartAmount
+                });
+            }
+            repairTaskNewRequiredParts = repairTaskNewRequiredParts.OrderBy(x => x.Type).ToList();
+            if (repairTaskOldRequiredParts.Count != repairTaskNewRequiredParts.Count) {
+                return true;
+            }
+            else {
+                for (int i = 0; i < repairTaskOldRequiredParts.Count; i++) {
+                    if (repairTaskOldRequiredParts[i].Quantity != repairTaskNewRequiredParts[i].Quantity) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }

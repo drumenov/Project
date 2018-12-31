@@ -2,11 +2,11 @@
 <section class="d-flex justify-content-center">
     <div class="jumbotron w-75 mt-3 d-flex justify-content-center">
         <form method="post"
-              asp-action="@StringConstants.ActionNameCreateRepairTask"
+              asp-action="@StringConstants.ActionNameEditRepairTask"
               asp-controller="@StringConstants.RepairTaskControllerName"
-              asp-area="@StringConstants.AreaNameCustomer">
+              asp-area="@StringConstants.AreaNameCustomer"
+              asp-route-id="@Model.Id">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" value="@Model.Id" />
             <div class="form-inline">
                 <label asp-for="@Model.IsCarBodyPart" class="form-check-label"></label>
                 <input type="checkbox" asp-for="@Model.IsCarBodyPart" class="ml-2" />
@@ -52,7 +52,7 @@
                 </div>
                 <div class="d-flex justify-content-between">
                     <input type="reset" class="btn btn-danger" value="Clear" />
-                    <input type="submit" class="btn btn-primary mx-1" value="Make the Order" />
+                    <input type="submit" class="btn btn-primary mx-1" value="Update the Repair Task" />
                 </div>
             </div>
         </form>

@@ -92,6 +92,9 @@ namespace Project.Areas.Customer.Controllers
             if(repairTask.User.UserName != this.User.Identity.Name) {
                 return this.Unauthorized();
             }
+            //RepairTaskEditInputModel v = new RepairTaskEditInputModel {
+            //    IsCarBodyPart = repairTask.PartsRequired.Where(x => x.Type == Models.Enums.PartType.CarBody).Any(y => y.Quantity > 0)
+            //}
             RepairTaskEditInputModel repairTaskEditInputModel = this.mapper.Map<RepairTaskEditInputModel>(repairTask);
             return this.View(repairTaskEditInputModel);
         }
@@ -99,7 +102,18 @@ namespace Project.Areas.Customer.Controllers
         [HttpPost]
         [Route("/customer/[controller]/edit-repair-task/{id}")]
         public async Task<IActionResult> EditRepairTask(RepairTaskEditInputModel repairTaskEditInputModel) {
-            await this.repairTaskService.UpdateRepairTaskAsync(repairTaskEditInputModel);
+            if(this.ModelState.IsValid == false) {
+                return this.View(repairTaskEditInputModel);
+            }
+            if (this.repairTaskService.RepairTaskIsChanged(repairTaskEditInputModel) == false) {
+                this.ModelState.AddModelError("", StringConstants.NoChangedInRepairTaskError);
+                return this.View(repairTaskEditInputModel);
+            }
+            bool success = await this.repairTaskService.TryUpdateRepairTaskAsync(repairTaskEditInputModel);
+            if(success == false) {
+                this.ModelState.AddModelError("", StringConstants.RepairTaskChangesNotPossibleError);
+                return this.View(repairTaskEditInputModel);
+            }
             return this.RedirectToAction(StringConstants.ActionNameRepairTaskDetails, new { repairTaskEditInputModel.Id}); 
         }
     }

@@ -35,6 +35,8 @@ namespace Project.Services.Contracts
 
         IQueryable<RepairTask> GetAllPerCustomer(string customerName);
 
-        Task UpdateRepairTaskAsync(RepairTaskEditInputModel repairTaskEditInputModel);
+        Task<bool> TryUpdateRepairTaskAsync(RepairTaskEditInputModel repairTaskEditInputModel);
+
+        bool RepairTaskIsChanged(RepairTaskEditInputModel repairTaskEditInputModel);
     }
 }

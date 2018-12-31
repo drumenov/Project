@@ -38,6 +38,11 @@
         public const string TryingToPromoteATechnicianThatCannotBePromotedError = "You cannot promote this Technician";
         public const string TryingToRetrieveAMissingReceiptError = "Receipt with this ID: {0} does not exists";
         public const string NoRepairTaskWithGivenIdError = "A repair task with ID {0} does not exist";
+        public const string NoChangedInRepairTaskError = "Nothing was changed in the Repair Task";
+        public const string RepairTaskChangesNotPossibleError = "You cannot make these changes.";
+        public const string WrongAmountOfPartTypeToUpdate = "You have selected a Part Type to update but the amount must be at least zero (to delete this Part from the Repair Task).";
+        public const string AmountForNotSelectedPartTypeToUpdateError = "You have not selected the appropriate Part Type.";
+
 
         //Action names string representation
         public const string ActionNameIndex = "index";

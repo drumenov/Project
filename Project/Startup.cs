@@ -107,18 +107,30 @@ namespace Project
                     .ForMember(dest => dest.NamesOfTechniciansHavingWorkedOnTheRepairTask, src => src.MapFrom(s => s.Technicians.Select(t => t.Expert.UserName)));
                 config.CreateMap<RepairTask, RepairTaskEditInputModel>()
                     .ForMember(dest => dest.Id, src => src.MapFrom(s => s.Id))
+                    .ForMember(dest => dest.IsInteriorPart, src => src.MapFrom(s => s.PartsRequired
+                                                                                        .Where(partRequired => partRequired.Type == Models.Enums.PartType.Interior)
+                                                                                        .Any(filteredPartRequired => filteredPartRequired.Quantity > 0)))
                     .ForMember(dest => dest.InteriorPartAmount, src => src.MapFrom(s => s.PartsRequired
                                                                                             .Where(partRequired => partRequired.Type == Models.Enums.PartType.Interior)
                                                                                             .FirstOrDefault()
                                                                                             .Quantity))
+                    .ForMember(dest => dest.IsElectronicPart, src => src.MapFrom(s => s.PartsRequired
+                                                                                       .Where(partRequired => partRequired.Type == Models.Enums.PartType.Electronic)
+                                                                                        .Any(filteredPartRequired => filteredPartRequired.Quantity > 0)))
                     .ForMember(dest => dest.ElectronicPartAmount, src => src.MapFrom(s => s.PartsRequired
                                                                                             .Where(partRequired => partRequired.Type == Models.Enums.PartType.Electronic)
                                                                                             .FirstOrDefault()
                                                                                             .Quantity))
+                    .ForMember(dest => dest.IsChassisPart, src => src.MapFrom(s => s.PartsRequired
+                                                                                            .Where(partRequired => partRequired.Type == Models.Enums.PartType.Chassis)
+                                                                                            .Any(filteredPartRequired => filteredPartRequired.Quantity > 0)))
                     .ForMember(dest => dest.ChassisPartAmount, src => src.MapFrom(s => s.PartsRequired
                                                                                         .Where(partRequired => partRequired.Type == Models.Enums.PartType.Chassis)
                                                                                         .FirstOrDefault()
                                                                                         .Quantity))
+                    .ForMember(dest => dest.IsCarBodyPart, src => src.MapFrom(s => s.PartsRequired
+                                                                                            .Where(partRequired => partRequired.Type == Models.Enums.PartType.CarBody)
+                                                                                            .Any(filteredPartRequired => filteredPartRequired.Quantity > 0)))
                     .ForMember(dest => dest.CarBodyPartAmount, src => src.MapFrom(s => s.PartsRequired
                                                                                         .Where(partRequired => partRequired.Type == Models.Enums.PartType.CarBody)
                                                                                         .FirstOrDefault()

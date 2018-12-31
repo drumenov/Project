@@ -1,8 +1,10 @@
 ﻿using Project.Common.Constants;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Project.Models.Attributes.ValidationAttributes
 {
+    [AttributeUsage(AttributeTargets.Property, Inherited = false)]
     public class CheckThatOrderedAmountIsPositiveNumber : ValidationAttribute /*The role of this attribute is to check whether a type of part is ordered
                                                                       and if TRUE checks that the ordered amount is greater that zero.*/
     {
