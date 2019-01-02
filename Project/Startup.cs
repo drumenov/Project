@@ -140,7 +140,14 @@ namespace Project
                     .ForMember(dest => dest.Id, src => src.MapFrom(s => s.Id))
                     .ForMember(dest => dest.CanCreateFeedback, src => src.MapFrom(s => s.Feedback == null))
                     .ForMember(dest => dest.CanEditFeedback, src => src.MapFrom(s => s.Feedback != null));
+
+                config.CreateMap<FeedbackInputModel, Feedback>()
+                    .ForMember(dest => dest.Content, src => src.MapFrom(s => s.Content))
+                    .ForMember(dest => dest.RepairTask.Id, src => src.MapFrom(s => s.RepairTaskId))
+                    .ForMember(dest => dest.UserId, src => src.MapFrom(s => s.UserId));
             });
+
+
             services.AddAuthentication().AddCookie();
             services.AddMvc(options => {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());

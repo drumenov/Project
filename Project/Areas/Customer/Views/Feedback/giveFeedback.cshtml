@@ -1,6 +1,18 @@
 ﻿@model FeedbackInputModel
+@inject Microsoft.AspNetCore.Identity.UserManager<Project.Models.Entities.User> userManager
 
-<div class="container">
+<div class="container text-center">
     <h1>Your Feedback</h1>
-    <textarea>@Model.Content</textarea>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <label asp-for="@Model.Content"></label>
+    <form method="post" 
+            asp-action="@StringConstants.ActionNameGiveFeedbackForARepairTask" 
+            asp-controller="@StringConstants.FeedbackControllerName" 
+            asp-area="@StringConstants.AreaNameCustomer" 
+            asp-route-id="@Model.RepairTaskId">
+        <input type="hidden" asp-for="@Model.RepairTaskId" value="@Model.RepairTaskId"/>
+        <input type="hidden" asp-for="@Model.UserId" value="@(await userManager.FindByNameAsync(User.Identity.Name))" />
+        <textarea asp-for="@Model.Content" cols="40">@Model.Content</textarea>
+        <input type="submit" value="Give Feedback" class="btn btn-primary" />
+    </form>
 </div>

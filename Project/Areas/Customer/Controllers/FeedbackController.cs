@@ -5,6 +5,7 @@ using Project.Common.Constants;
 using Project.Models.Entities;
 using Project.Models.InputModels.Customer;
 using Project.Services.Contracts;
+using System.Threading.Tasks;
 
 namespace Project.Areas.Customer.Controllers
 {
@@ -37,12 +38,32 @@ namespace Project.Areas.Customer.Controllers
 
         [HttpPost]
         [Route("/customer/[controller]/repair-task-feedback/{id}")]
-        public IActionResult GiveFeedback(FeedbackInputModel feedbackInputModel) {
-            if(ModelState.IsValid == false) {
+        public async Task<IActionResult> GiveFeedbackAsync(FeedbackInputModel feedbackInputModel) {
+            if (ModelState.IsValid == false) {
                 return this.View(feedbackInputModel);
             }
             Feedback feedback = this.mapper.Map<Feedback>(feedbackInputModel);
-            this.feedbackService.CreateFeedback(feedback);
+            await this.feedbackService.CreateFeedbackAsync(feedback);
+            return this.RedirectToAction(StringConstants.ActionNameIndex, StringConstants.HomeControllerName);
+        }
+
+        [HttpGet]
+        [Route("/customer/[controller]/repair-task-edit-feedback/{id}")]
+        public IActionResult EditFeedback(int id) {
+            FeedbackInputModel feedbackInputModel = this.mapper.Map<FeedbackInputModel>(this.feedbackService.GetByRepairTaskId(id));
+            return this.View(feedbackInputModel);
+        }
+
+        [HttpPost]
+        [Route("/customer/[controller]/repair-task-edit-feedback/{id}")]
+        public async Task<IActionResult> EditFeedbackAsync(FeedbackInputModel feedbackInputModel) {
+            Feedback feedback = this.feedbackService.GetByRepairTaskId(feedbackInputModel.RepairTaskId);
+            if (feedback.Content.Equals(feedbackInputModel.Content) == false) {
+                ModelState.AddModelError("", StringConstants.NoChangesWhenEditingFeedbackError);
+                return this.View(feedbackInputModel);
+            }
+            feedback = this.mapper.Map<Feedback>(feedbackInputModel);
+            await this.feedbackService.UpdateFeedbackAsync(feedback);
             return this.RedirectToAction(StringConstants.ActionNameIndex, StringConstants.HomeControllerName);
         }
     }

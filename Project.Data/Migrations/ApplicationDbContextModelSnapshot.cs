@@ -150,13 +150,9 @@ namespace Project.Data.Migrations
 
                     b.Property<string>("Content");
 
-                    b.Property<int>("RepairTaskId");
-
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RepairTaskId");
 
                     b.HasIndex("UserId");
 
@@ -234,7 +230,9 @@ namespace Project.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FeedbackId");
+                    b.HasIndex("FeedbackId")
+                        .IsUnique()
+                        .HasFilter("[FeedbackId] IS NOT NULL");
 
                     b.HasIndex("ReceiptId")
                         .IsUnique()
@@ -371,11 +369,6 @@ namespace Project.Data.Migrations
 
             modelBuilder.Entity("Project.Models.Entities.Feedback", b =>
                 {
-                    b.HasOne("Project.Models.Entities.RepairTask", "RepairTask")
-                        .WithMany()
-                        .HasForeignKey("RepairTaskId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Project.Models.Entities.User", "Customer")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -409,8 +402,9 @@ namespace Project.Data.Migrations
             modelBuilder.Entity("Project.Models.Entities.RepairTask", b =>
                 {
                     b.HasOne("Project.Models.Entities.Feedback", "Feedback")
-                        .WithMany()
-                        .HasForeignKey("FeedbackId");
+                        .WithOne("RepairTask")
+                        .HasForeignKey("Project.Models.Entities.RepairTask", "FeedbackId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Project.Models.Entities.Receipt", "Receipt")
                         .WithOne("RepairTask")

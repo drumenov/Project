@@ -42,6 +42,7 @@
         public const string RepairTaskChangesNotPossibleError = "You cannot make these changes.";
         public const string WrongAmountOfPartTypeToUpdate = "You have selected a Part Type to update but the amount must be at least zero (to delete this Part from the Repair Task).";
         public const string AmountForNotSelectedPartTypeToUpdateError = "You have not selected the appropriate Part Type.";
+        public const string NoChangesWhenEditingFeedbackError = "You have not changed anything in the feedback.";
 
 
         //Action names string representation
@@ -70,6 +71,7 @@
         public const string ActionNameEditRepairTask = "edit-repair-task";
         public const string ActionNameDeleteRepairTask = "delete-repair-task";
         public const string ActionNameGiveFeedbackForARepairTask = "repair-task-feedback";
+        public const string ActionNameEditFeedbackForARepairTask = "repair-task-edit-feedback";
 
         //Controller names string representation
         public const string HomeControllerName = "Home";

@@ -2,7 +2,7 @@
 
 namespace Project.Data.Migrations
 {
-    public partial class AddedALinkBetweenRepairTaskAndItsFeedback : Migration
+    public partial class TryingToImplementTheLinkBetweenARepairTaskAndItsFeedback : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,12 +41,6 @@ namespace Project.Data.Migrations
                 newName: "IX_RepairTasks_ReceiptId");
 
             migrationBuilder.AddColumn<int>(
-                name: "RepairTaskId",
-                table: "Feedbacks",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
                 name: "FeedbackId",
                 table: "RepairTasks",
                 nullable: true);
@@ -57,22 +51,11 @@ namespace Project.Data.Migrations
                 column: "Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Feedbacks_RepairTaskId",
-                table: "Feedbacks",
-                column: "RepairTaskId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_RepairTasks_FeedbackId",
                 table: "RepairTasks",
-                column: "FeedbackId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Feedbacks_RepairTasks_RepairTaskId",
-                table: "Feedbacks",
-                column: "RepairTaskId",
-                principalTable: "RepairTasks",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                column: "FeedbackId",
+                unique: true,
+                filter: "[FeedbackId] IS NOT NULL");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Parts_RepairTasks_RepairTaskId",
@@ -88,7 +71,7 @@ namespace Project.Data.Migrations
                 column: "FeedbackId",
                 principalTable: "Feedbacks",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.SetNull);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_RepairTasks_Receipts_ReceiptId",
@@ -118,10 +101,6 @@ namespace Project.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Feedbacks_RepairTasks_RepairTaskId",
-                table: "Feedbacks");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_Parts_RepairTasks_RepairTaskId",
                 table: "Parts");
 
@@ -141,10 +120,6 @@ namespace Project.Data.Migrations
                 name: "FK_UsersRepairsTasks_RepairTasks_RepairTaskId",
                 table: "UsersRepairsTasks");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Feedbacks_RepairTaskId",
-                table: "Feedbacks");
-
             migrationBuilder.DropPrimaryKey(
                 name: "PK_RepairTasks",
                 table: "RepairTasks");
@@ -152,10 +127,6 @@ namespace Project.Data.Migrations
             migrationBuilder.DropIndex(
                 name: "IX_RepairTasks_FeedbackId",
                 table: "RepairTasks");
-
-            migrationBuilder.DropColumn(
-                name: "RepairTaskId",
-                table: "Feedbacks");
 
             migrationBuilder.DropColumn(
                 name: "FeedbackId",

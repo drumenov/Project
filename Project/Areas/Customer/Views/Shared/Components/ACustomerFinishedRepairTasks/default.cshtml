@@ -32,7 +32,11 @@
                 </a>
             }
             @if (finishedRepairTask.CanEditFeedback) {
-                <a class="btn btn-warning">
+                <a class="btn btn-warning"
+                    asp-action="@StringConstants.ActionNameEditFeedbackForARepairTask"
+                    asp-controller="@StringConstants.FeedbackControllerName"
+                    asp-area="@StringConstants.AreaNameCustomer"
+                    asp-route-id="@finishedRepairTask.Id">
                     Edit Feedback
                 </a>
             }

@@ -26,7 +26,6 @@ namespace Project.Models.Entities
         public int? ReceiptId { get; set; }
         public virtual Receipt Receipt { get; set; }
 
-        [ForeignKey(nameof(Feedback))]
         public int? FeedbackId { get; set; }
         public virtual Feedback Feedback { get; set; }
     }
