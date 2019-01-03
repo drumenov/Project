@@ -6,7 +6,7 @@
         </div>
         <div class="card-body">
             <div class="card-text">
-                Assigned Technicians
+                <h4>Assigned Technicians</h4>
             </div>
             @foreach (var technician in Model.TechniciansWorkingOnRepairTask) {
                 <div class="card-text">
@@ -14,12 +14,18 @@
                 </div>
             }
             <div class="card-text">
-                Required Parts
+                <h4>Required Parts</h4>
             </div>
             @foreach (var requiredPart in Model.PartsRequired) {
                 <div class="card-text">
                     Type&#58; <strong>@requiredPart.Type&#59;</strong> Required Quantity: <strong>@requiredPart.Quantity</strong>
                 </div>
+            }
+            @if(String.IsNullOrEmpty(Model.Feedback) == false) {
+                <div>
+                    <h4>Feedback:</h4>
+                </div>
+                <p>@Model.Feedback</p>
             }
         </div>
     </div>

@@ -49,5 +49,20 @@ namespace Project.Services
                 throw new ApplicationException();
             }
         }
+
+        public async Task EditFeedbackAsync(Feedback feedback) {
+            Feedback feedbackToEdit = this.GetByRepairTaskId(feedback.RepairTask.Id);
+            feedbackToEdit.Content = feedback.Content;
+            if(await this.dbContext.SaveChangesAsync() == 0) {
+                throw new ApplicationException();
+            }
+        }
+
+        public IQueryable<Feedback> GetAllPerCustomer(string username) {
+            string userId = this.userManager.FindByNameAsync(username).GetAwaiter().GetResult().Id;
+            return this.dbContext
+                        .Feedbacks
+                        .Where(x => x.UserId == userId);
+        }
     }
 }

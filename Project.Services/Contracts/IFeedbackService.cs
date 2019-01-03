@@ -11,5 +11,9 @@ namespace Project.Services.Contracts
         Feedback GetByRepairTaskId(int id);
 
         Task UpdateFeedbackAsync(Feedback feedback);
+
+        Task EditFeedbackAsync(Feedback feedback);
+
+        IQueryable<Feedback> GetAllPerCustomer(string username);
     }
 }

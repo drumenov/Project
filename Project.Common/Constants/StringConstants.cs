@@ -72,6 +72,7 @@
         public const string ActionNameDeleteRepairTask = "delete-repair-task";
         public const string ActionNameGiveFeedbackForARepairTask = "repair-task-feedback";
         public const string ActionNameEditFeedbackForARepairTask = "repair-task-edit-feedback";
+        public const string ActionNameAllFeedbacks = "all-feedbacks";
 
         //Controller names string representation
         public const string HomeControllerName = "Home";
@@ -121,5 +122,8 @@
         public const string ViewComponentCustomerPendingRepairTasks = "ACustomerPendingRepairTasks";
         public const string ViewComponentCustomerWorkedOnRepairTasks = "ACustomerWorkedOnRepairTasks";
         public const string ViewComponentCustomerFinishedRepairTasks = "ACustomerFinishedRepairTasks";
+
+        //View names
+        public const string ViewForGivingAndEditingFeedback = "giveFeedback";
     }
 }

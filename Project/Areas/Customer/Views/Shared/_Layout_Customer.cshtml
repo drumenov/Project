@@ -23,7 +23,7 @@
                     <a class="nav-link"
                        asp-action="@StringConstants.ActionNameIndex"
                        asp-controller="@StringConstants.HomeControllerName"
-                        asp-area="@StringConstants.AreaNameCustomer">
+                       asp-area="@StringConstants.AreaNameCustomer">
                         Home
                     </a>
                 </li>
@@ -41,6 +41,14 @@
                        asp-controller="@StringConstants.RepairTaskControllerName"
                        asp-area="@StringConstants.AreaNameCustomer">
                         All Repair Tasks
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       asp-action="@StringConstants.ActionNameAllFeedbacks"
+                       asp-controller="@StringConstants.FeedbackControllerName"
+                       asp-area="@StringConstants.AreaNameCustomer">
+                        All Feedbacks
                     </a>
                 </li>
                 @*<li class="nav-item">

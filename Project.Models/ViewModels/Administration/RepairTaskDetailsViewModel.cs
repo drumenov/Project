@@ -10,5 +10,7 @@ namespace Project.Models.ViewModels.Administration
         public ICollection<Part> PartsRequired { get; set; }
 
         public ICollection<User> TechniciansWorkingOnRepairTask { get; set; }
+
+        public string Feedback { get; set; }
     }
 }

@@ -4,7 +4,6 @@ namespace Project.Models.InputModels.Customer
 {
     public class FeedbackInputModel
     {
-
         [Required]
         public int RepairTaskId { get; set; }
 

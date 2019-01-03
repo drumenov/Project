@@ -143,7 +143,7 @@ namespace Project
 
                 config.CreateMap<FeedbackInputModel, Feedback>()
                     .ForMember(dest => dest.Content, src => src.MapFrom(s => s.Content))
-                    .ForMember(dest => dest.RepairTask.Id, src => src.MapFrom(s => s.RepairTaskId))
+                    //.ForMember(dest => dest.RepairTask.Id, src => src.MapFrom(s => s.RepairTaskId))
                     .ForMember(dest => dest.UserId, src => src.MapFrom(s => s.UserId));
             });
 

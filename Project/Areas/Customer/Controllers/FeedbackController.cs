@@ -4,8 +4,11 @@ using Project.Areas.Customer.Controllers.Base;
 using Project.Common.Constants;
 using Project.Models.Entities;
 using Project.Models.InputModels.Customer;
+using Project.Models.ViewModels.Customer;
 using Project.Services.Contracts;
+using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace Project.Areas.Customer.Controllers
 {
@@ -43,28 +46,36 @@ namespace Project.Areas.Customer.Controllers
                 return this.View(feedbackInputModel);
             }
             Feedback feedback = this.mapper.Map<Feedback>(feedbackInputModel);
+            feedback.RepairTask = this.repairTaskService.GetById(feedbackInputModel.RepairTaskId);
             await this.feedbackService.CreateFeedbackAsync(feedback);
-            return this.RedirectToAction(StringConstants.ActionNameIndex, StringConstants.HomeControllerName);
+            return this.RedirectToAction(StringConstants.ActionNameAllFeedbacks);
         }
 
         [HttpGet]
         [Route("/customer/[controller]/repair-task-edit-feedback/{id}")]
         public IActionResult EditFeedback(int id) {
             FeedbackInputModel feedbackInputModel = this.mapper.Map<FeedbackInputModel>(this.feedbackService.GetByRepairTaskId(id));
-            return this.View(feedbackInputModel);
+            return this.View(StringConstants.ViewForGivingAndEditingFeedback, feedbackInputModel);
         }
 
         [HttpPost]
         [Route("/customer/[controller]/repair-task-edit-feedback/{id}")]
-        public async Task<IActionResult> EditFeedbackAsync(FeedbackInputModel feedbackInputModel) {
-            Feedback feedback = this.feedbackService.GetByRepairTaskId(feedbackInputModel.RepairTaskId);
-            if (feedback.Content.Equals(feedbackInputModel.Content) == false) {
-                ModelState.AddModelError("", StringConstants.NoChangesWhenEditingFeedbackError);
-                return this.View(feedbackInputModel);
-            }
-            feedback = this.mapper.Map<Feedback>(feedbackInputModel);
-            await this.feedbackService.UpdateFeedbackAsync(feedback);
-            return this.RedirectToAction(StringConstants.ActionNameIndex, StringConstants.HomeControllerName);
+        public async Task<IActionResult> EditReprTaskFeedbackAsync(FeedbackInputModel feedbackInputModel) {
+            Feedback feedback = this.mapper.Map<Feedback>(feedbackInputModel);
+            feedback.RepairTask = this.repairTaskService.GetById(feedbackInputModel.RepairTaskId);
+            await this.feedbackService.EditFeedbackAsync(feedback);
+            return this.RedirectToAction(StringConstants.ActionNameAllFeedbacks);
+        }
+
+        [HttpGet]
+        [Route("/customer/[controller]/all-feedbacks")]
+        public IActionResult AllFeedbacks(int? page) {
+            int currentPage = page ?? 1;
+            FeedbackViewModel[] feedbackViewModels = this.mapper
+                                                            .ProjectTo<FeedbackViewModel>(this.feedbackService.GetAllPerCustomer(this.User.Identity.Name))
+                                                            .ToArray();
+            IPagedList feedbacksToDisplay = feedbackViewModels.ToPagedList(currentPage, IntegerConstants.ItemsPerPageInViews);
+            return this.View(feedbacksToDisplay);
         }
     }
 }

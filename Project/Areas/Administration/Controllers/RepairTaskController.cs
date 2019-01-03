@@ -16,15 +16,18 @@ namespace Project.Areas.Administration.Controllers
         private readonly ITechnicianService technicianService;
         private readonly IRepairTaskService repairTaskService;
         private readonly IPartService partService;
+        private readonly IFeedbackService feedbackService;
         private readonly IMapper mapper;
 
         public RepairTaskController(ITechnicianService technicianService,
             IRepairTaskService repairTaskService,
             IPartService partService,
+            IFeedbackService feedbackService,
             IMapper mapper) {
             this.technicianService = technicianService;
             this.repairTaskService = repairTaskService;
             this.partService = partService;
+            this.feedbackService = feedbackService;
             this.mapper = mapper;
         }
 
@@ -80,6 +83,7 @@ namespace Project.Areas.Administration.Controllers
         public IActionResult RepairTaskDetails(int id) {
             RepairTask repairTask = this.repairTaskService.GetById(id);
             RepairTaskDetailsViewModel repairTaskDetailsViewModel = this.mapper.Map<RepairTaskDetailsViewModel>(repairTask);
+            repairTaskDetailsViewModel.Feedback = this.feedbackService.GetByRepairTaskId(id).Content;
             return this.View(repairTaskDetailsViewModel);
         }
         [HttpGet]
