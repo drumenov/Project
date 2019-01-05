@@ -59,6 +59,9 @@ namespace Project.Services.Tests
             this.OrderService = new OrderService(provider.GetService<ApplicationDbContext>());
 
             this.PartService = new PartService(provider.GetService<ApplicationDbContext>());
+
+            this.ReceiptService = new ReceiptService(provider.GetService<ApplicationDbContext>(), 
+                                                        provider.GetService<UserManager<User>>());
         }
 
         public ApplicationDbContext dbContext { get; set; }
@@ -78,5 +81,7 @@ namespace Project.Services.Tests
         public IPartService PartService { get; set; }
 
         public IOrderService OrderService { get; }
+
+        public IReceiptService ReceiptService { get; }
     }
 }
