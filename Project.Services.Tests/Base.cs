@@ -25,14 +25,38 @@ namespace Project.Services.Tests
                 identityOptions.Password.RequireUppercase = false;
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddScoped<IPartService, PartService>();
+            services.AddScoped<IReceiptService, ReceiptService>();
+            services.AddScoped<IRepairTaskService, RepairTaskService>();
+
+
             IServiceProvider provider = services.BuildServiceProvider();
 
             this.UserService = new UserService(provider.GetService<UserManager<User>>(), 
                 provider.GetService<RoleManager<AppRole>>(), 
                 provider.GetService<SignInManager<User>>(), 
                 provider.GetService<ApplicationDbContext>());
+
+            this.TechnicianService = new TechnicianService(provider.GetService<ApplicationDbContext>(),
+                                                            provider.GetService<UserManager<User>>(),
+                                                            provider.GetService<IRepairTaskService>(),
+                                                            provider.GetService<RoleManager<AppRole>>());
+
+            this.dbContext = provider.GetService<ApplicationDbContext>();
+
+            this.UserManager = provider.GetService<UserManager<User>>();
+
+            this.RoleManager = provider.GetService<RoleManager<AppRole>>();
         }
 
+        public ApplicationDbContext dbContext { get; set; }
+
+        public UserManager<User> UserManager { get; }
+
+        public RoleManager<AppRole> RoleManager { get; }
+
         public IUserService UserService { get; }
+
+        public ITechnicianService TechnicianService { get; }
     }
 }

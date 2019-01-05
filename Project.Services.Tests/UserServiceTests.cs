@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using Project.Models.Entities;
+﻿using Project.Models.Entities;
 using System.Threading.Tasks;
 using Xunit;
 

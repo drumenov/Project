@@ -40,7 +40,7 @@ namespace Project.Services
                     });
             }
             RepairTask repairTask = this.repairTaskService.GetById(taskId);
-            repairTask.Status = Models.Enums.Status.WorkedOn;
+            repairTask.Status = Status.WorkedOn;
             if (await this.dbContext.SaveChangesAsync() == 0) {
                 throw new ApplicationException();
             }
