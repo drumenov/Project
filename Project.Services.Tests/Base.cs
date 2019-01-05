@@ -42,11 +42,23 @@ namespace Project.Services.Tests
                                                             provider.GetService<IRepairTaskService>(),
                                                             provider.GetService<RoleManager<AppRole>>());
 
+            this.RepairTaskService = new RepairTaskService(provider.GetService<ApplicationDbContext>(),
+                                                            provider.GetService<UserManager<User>>(),
+                                                            provider.GetService<IPartService>(),
+                                                            provider.GetService<IReceiptService>());
+
             this.dbContext = provider.GetService<ApplicationDbContext>();
 
             this.UserManager = provider.GetService<UserManager<User>>();
 
             this.RoleManager = provider.GetService<RoleManager<AppRole>>();
+
+            this.FeedbackService = new FeedbackService(provider.GetService<ApplicationDbContext>(),
+                                                        provider.GetService<UserManager<User>>());
+
+            this.OrderService = new OrderService(provider.GetService<ApplicationDbContext>());
+
+            this.PartService = new PartService(provider.GetService<ApplicationDbContext>());
         }
 
         public ApplicationDbContext dbContext { get; set; }
@@ -55,8 +67,16 @@ namespace Project.Services.Tests
 
         public RoleManager<AppRole> RoleManager { get; }
 
+        public IRepairTaskService RepairTaskService { get; set; }
+
         public IUserService UserService { get; }
 
         public ITechnicianService TechnicianService { get; }
+
+        public IFeedbackService FeedbackService { get; }
+
+        public IPartService PartService { get; set; }
+
+        public IOrderService OrderService { get; }
     }
 }

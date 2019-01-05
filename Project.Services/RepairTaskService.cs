@@ -102,7 +102,7 @@ namespace Project.Services
         public IQueryable<RepairTask> GetAllWorkedOn() {
             return this.dbContext
                 .RepairTasks
-                .Where(repairTask => repairTask.Status == Models.Enums.Status.WorkedOn);
+                .Where(repairTask => repairTask.Status == Status.WorkedOn);
         }
 
         public IQueryable<RepairTask> GetAllFinished() {
@@ -195,7 +195,7 @@ namespace Project.Services
                     .SelectMany(filteredRepairTasks => filteredRepairTasks.Technicians)
                     .Count() == 0) { //This check whether there are any technicians working on the repair task. If all have been removed, the status of the repair task must be changed back to pending
                 RepairTask currentRepairTask = this.dbContext.RepairTasks.First(repairTask => repairTask.Id == id);
-                currentRepairTask.Status = Models.Enums.Status.Pending;
+                currentRepairTask.Status = Status.Pending;
                 if (await this.dbContext.SaveChangesAsync() == 0) {
                     throw new ApplicationException();
                 }
@@ -274,15 +274,25 @@ namespace Project.Services
                 };
                 part.Quantity = repairTaskEditInputModel.InteriorPartAmount;
             }
-            foreach (Part part in repairTask.PartsRequired.ToList()) {
-                if (part.Quantity == 0) {
-                    repairTask.PartsRequired.Remove(part);
-                }
+
+            //for(int i = 0; i < repairTask.PartsRequired.ToList().Count; i++) {
+            //    Part part = repairTask.PartsRequired.ToList()[i];
+            //    if (part.Quantity == 0) {
+            //        repairTask.PartsRequired.Remove(part);
+            //    }
+            //}
+            //foreach (Part part in repairTask.PartsRequired.ToList()) {
+            //    if (part.Quantity == 0) {
+            //        repairTask.PartsRequired.Remove(part);
+            //    }
+            //}
+
+            if (repairTask.PartsRequired.All(x => x.Quantity == 0)) {
+                return false;
+            } else {
+                this.dbContext.Parts.RemoveRange(repairTask.PartsRequired.Where(x => x.Quantity == 0));
             }
 
-            if(repairTask.PartsRequired.Count == 0) {
-                return false;
-            }
             if (await this.dbContext.SaveChangesAsync() == 0) {
                 throw new ApplicationException();
             }

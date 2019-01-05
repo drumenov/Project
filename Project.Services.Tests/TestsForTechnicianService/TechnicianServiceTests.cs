@@ -1,12 +1,11 @@
 ﻿using Project.Common.Constants;
 using Project.Models.Entities;
 using Project.Models.Enums;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Project.Services.Tests
+namespace Project.Services.Tests.TestsForTechnicianService
 {
     public class TechnicianServiceTests : Base
     {

@@ -20,10 +20,6 @@ namespace Project.Services
             this.userManager = userManager;
         }
 
-        public FeedbackService(ApplicationDbContext dbContext) {
-            this.dbContext = dbContext;
-        }
-
         public async Task CreateFeedbackAsync(Feedback feedback) {
             this.dbContext
                 .Feedbacks
