@@ -35,7 +35,7 @@ namespace Project.Services
                 User = user
             };
             if (repairTaskInputModel.IsCarBodyPart) {
-                if (this.partService.PartTypeExists(Models.Enums.PartType.CarBody) == false) {
+                if (this.partService.PartTypeExists(PartType.CarBody) == false) {
                     throw new ArgumentNullException();
                 }
                 Part part = new Part {
@@ -45,7 +45,7 @@ namespace Project.Services
                 repairTask.PartsRequired.Add(part);
             }
             if (repairTaskInputModel.IsChassisPart) {
-                if (this.partService.PartTypeExists(Models.Enums.PartType.Chassis) == false) {
+                if (this.partService.PartTypeExists(PartType.Chassis) == false) {
                     throw new ArgumentNullException();
                 }
                 Part part = new Part {
@@ -55,7 +55,7 @@ namespace Project.Services
                 repairTask.PartsRequired.Add(part);
             }
             if (repairTaskInputModel.IsElectronicPart) {
-                if (this.partService.PartTypeExists(Models.Enums.PartType.Electronic) == false) {
+                if (this.partService.PartTypeExists(PartType.Electronic) == false) {
                     throw new ArgumentNullException();
                 }
                 Part part = new Part {
@@ -65,13 +65,14 @@ namespace Project.Services
                 repairTask.PartsRequired.Add(part);
             }
             if (repairTaskInputModel.IsInteriorPart) {
-                if (this.partService.PartTypeExists(Models.Enums.PartType.Interior) == false) {
+                if (this.partService.PartTypeExists(PartType.Interior) == false) {
                     throw new ArgumentNullException();
                 }
                 Part part = new Part {
                     Type = PartType.Interior,
                     Quantity = repairTaskInputModel.InteriorPartAmount
                 };
+                repairTask.PartsRequired.Add(part);
             }
             this.dbContext.RepairTasks.Add(repairTask);
             if (await this.dbContext.SaveChangesAsync() == 0) {
@@ -156,6 +157,7 @@ namespace Project.Services
         private async Task TryCompoleteRepairTaskAsync(int repairTaskId) {
             if (this.dbContext
                 .UsersRepairsTasks
+                .Where(userRepairTask => userRepairTask.RepairTaskId == repairTaskId)
                 .All(userRepairTask => userRepairTask.IsFinished)) {
                 RepairTask currentRepairTask = this.dbContext
                     .RepairTasks

@@ -83,9 +83,10 @@ namespace Project.Areas.Administration.Controllers
         public IActionResult RepairTaskDetails(int id) {
             RepairTask repairTask = this.repairTaskService.GetById(id);
             RepairTaskDetailsViewModel repairTaskDetailsViewModel = this.mapper.Map<RepairTaskDetailsViewModel>(repairTask);
-            repairTaskDetailsViewModel.Feedback = this.feedbackService.GetByRepairTaskId(id).Content;
+            repairTaskDetailsViewModel.Feedback = this.feedbackService.GetByRepairTaskId(id)?.Content;
             return this.View(repairTaskDetailsViewModel);
         }
+
         [HttpGet]
         [Route("/administration/[controller]/add-or-remove-technicians/{id}")]
         public IActionResult AddRemoveTechnicians(int id) {

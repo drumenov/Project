@@ -92,10 +92,21 @@ namespace Project.Services
                  .Users
                  .Where(user => user.RepairTasks.Count < IntegerConstants.ThresholdDefiningAvailableTechnician)
                  .SelectMany(user => user.RepairTasks)
-                 .Where(filteredUsers => filteredUsers.RepairTaskId != taskId)
+                 .Where(filteredUsers => filteredUsers.RepairTaskId != taskId && filteredUsers.IsFinished == false)
                  .Select(filteredRepairTasks => filteredRepairTasks.Expert.UserName);
-            var techniciansThatCanBeAssigned = namesOfTechniciansWithoutAnyRepairTasks.Union(techniciansWorkingOnSomeTasks);
-            return techniciansThatCanBeAssigned;
+            var techniciansThatCanPossiblyBeAssigned = namesOfTechniciansWithoutAnyRepairTasks.Union(techniciansWorkingOnSomeTasks).ToList();
+            var techniciansAlreadyWorkingOnTheRepairTask = this.dbContext
+                                                                .RepairTasks
+                                                                .Where(repairTask => repairTask.Id == taskId)
+                                                                .SelectMany(filteredRepairTask => filteredRepairTask.Technicians)
+                                                                .Select(technician => technician.Expert.UserName)
+                                                                .ToList();
+            foreach(string technician in techniciansThatCanPossiblyBeAssigned.ToList()) {
+                if(techniciansAlreadyWorkingOnTheRepairTask.Any(x => x.Equals(technician, StringComparison.OrdinalIgnoreCase))) {
+                    techniciansThatCanPossiblyBeAssigned.Remove(technician);
+                }
+            }
+            return techniciansThatCanPossiblyBeAssigned;
         }
 
         public IQueryable<string> GetAllNamesOfTechniciansWorkingOnAGivenTask(int taskId) {
